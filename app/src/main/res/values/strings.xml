@@ -1,0 +1,8 @@
+<resources>
+    <!-- Names -->
+    <string name="app_name">Digital Biosensor</string>
+    <string name="sampler_view">Sampler View</string>
+
+    <!-- Content descriptions -->
+    <string name="visualdot_description">To visualize sampling points</string>
+</resources>

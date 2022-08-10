@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tookPictureConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.DataCaptureActivity">
+
+    <ScrollView
+        android:id="@+id/DataCaptureImageScrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <HorizontalScrollView
+            android:id="@+id/DataCaptureHorizontalScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/DataCapturePictureView"
+                    android:layout_width="1000dp"
+                    android:layout_height="1000dp"
+                    android:background="#FFFFFF"
+                    android:scaleType="fitXY"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_launcher_background" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cLCircularSamplers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </HorizontalScrollView>
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/DataCaptureDoneBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/icons8_done_24" />
+
+    <ImageButton
+        android:id="@+id/DataCaptureOptionsBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="90dp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/icons8_settings_24" />
+
+    <ImageButton
+        android:id="@+id/DataCaptureAddSamplerBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="18dp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/DataCaptureOptionsConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="6dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/DataCaptureOptionsBackground"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/msu_green"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/DataCaptureOptionsFrame"
+            android:layout_width="400dp"
+            android:layout_height="230dp"
+            android:alpha="0.90"
+            android:background="@color/msu_green"
+            android:elevation="6dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/DataCaptureOptionsLabel1"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            android:text="Image Scale"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/msu_white"
+            app:layout_constraintBottom_toBottomOf="@id/DataCaptureEditScale"
+            app:layout_constraintEnd_toStartOf="@+id/DataCaptureEditScale"
+            app:layout_constraintStart_toStartOf="@+id/DataCaptureOptionsFrame"
+            app:layout_constraintTop_toTopOf="@id/DataCaptureEditScale" />
+
+        <TextView
+            android:id="@+id/DataCaptureOptionsLabel2"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            android:text="Sampler Radius"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/msu_white"
+            app:layout_constraintBottom_toBottomOf="@id/DataCaptureEditSamplerRadius"
+            app:layout_constraintEnd_toStartOf="@+id/DataCaptureEditSamplerRadius"
+            app:layout_constraintStart_toStartOf="@+id/DataCaptureOptionsFrame"
+            app:layout_constraintTop_toTopOf="@id/DataCaptureEditSamplerRadius" />
+
+        <TextView
+            android:id="@+id/DataCaptureOptionsLabel3"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            android:text="# Generated Points"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/msu_white"
+            app:layout_constraintBottom_toBottomOf="@id/DataCaptureEditNumTrials"
+            app:layout_constraintEnd_toStartOf="@+id/DataCaptureEditNumTrials"
+            app:layout_constraintStart_toStartOf="@+id/DataCaptureOptionsFrame"
+            app:layout_constraintTop_toTopOf="@id/DataCaptureEditNumTrials" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/DataCaptureEditScale"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            android:hint="Scale"
+            android:minHeight="48dp"
+            android:textColor="@color/msu_white"
+            android:textColorHint="@color/msu_white"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@+id/DataCaptureOptionsFrame"
+            app:layout_constraintTop_toTopOf="@+id/DataCaptureOptionsFrame" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/DataCaptureEditSamplerRadius"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            android:hint="Sampler Radius"
+            android:minHeight="48dp"
+            android:textColor="@color/msu_white"
+            android:textColorHint="@color/msu_white"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@+id/DataCaptureOptionsFrame"
+            app:layout_constraintTop_toBottomOf="@+id/DataCaptureEditScale" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/DataCaptureEditNumTrials"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            android:hint="# Sampling Points"
+            android:minHeight="48dp"
+            android:textColor="@color/msu_white"
+            android:textColorHint="@color/msu_white"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@+id/DataCaptureOptionsFrame"
+            app:layout_constraintTop_toBottomOf="@+id/DataCaptureEditSamplerRadius" />
+
+        <Button
+            android:id="@+id/DataCaptureOptionsConfirmBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="75dp"
+            android:layout_marginBottom="10dp"
+            android:elevation="100dp"
+            android:text="Confirm"
+            app:layout_constraintBottom_toBottomOf="@+id/DataCaptureOptionsFrame"
+            app:layout_constraintEnd_toEndOf="@+id/DataCaptureOptionsFrame" />
+
+        <Button
+            android:id="@+id/DataCaptureOptionsCancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:layout_marginBottom="10dp"
+            android:elevation="100dp"
+            android:text="Cancel"
+            app:layout_constraintBottom_toBottomOf="@+id/DataCaptureOptionsFrame"
+            app:layout_constraintStart_toStartOf="@+id/DataCaptureOptionsFrame" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

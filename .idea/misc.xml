@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1425" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1425" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout-land/activity_datacapture.xml" value="0.3082901554404145" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout-land/activity_main.xml" value="0.17239583333333333" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout-land/activity_menu.xml" value="0.3215049166310389" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout-land/activity_results.xml" value="0.15604959384352288" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout-land/activity_took_picture.xml" value="0.264" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/activity_datacapture.xml" value="0.25" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/activity_menu.xml" value="0.29259259259259257" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/activity_results.xml" value="0.5227077977720651" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/activity_saved_data.xml" value="0.34479166666666666" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/activity_saveddatabrowsing.xml" value="0.425" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/activity_took_picture.xml" value="0.33" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/activity_tookpicture.xml" value="0.425" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/circular_sampler_template.xml" value="1.1" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/circularsampler_circle.xml" value="5.0" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/circularsampler_visualdot.xml" value="0.259375" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/circularsamplertemplate.xml" value="0.1" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/listview_results_item.xml" value="0.26666666666666666" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/listview_resultsbrowsing_item.xml" value="0.26666666666666666" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/listview_saveddatabrowsing_item.xml" value="0.5" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/result_item.xml" value="0.4" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/result_item_linear.xml" value="0.4" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/saved_data_listview.xml" value="0.34479166666666666" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/testing.xml" value="0.18981481481481483" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/took_picture.xml" value="0.264" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/visualdot.xml" value="0.35625" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/layout/visualdots.xml" value="0.9" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2265" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.157" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/xml/file_paths.xml" value="0.1" />
+        <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/xml/result_item.xml" value="0.10275229357798166" />
+      </map>
+    </option>
+  </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../../../Digital Biosensor Documentation" />
+    <option name="OPTION_SCOPE" value="public" />
+    <option name="OPTION_HIERARCHY" value="false" />
+    <option name="OPTION_NAVIGATOR" value="false" />
+    <option name="OPTION_INDEX" value="false" />
+    <option name="OPTION_SEPARATE_INDEX" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="false" />
+    <option name="OPTION_DEPRECATED_LIST" value="false" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
