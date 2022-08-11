@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.myapplication.activities.DataCaptureActivity;
+import com.example.myapplication.datasystem.DataCaptureSettings;
 import com.example.myapplication.util.Visitor;
 
 import java.util.ArrayList;
@@ -17,13 +18,12 @@ import java.util.ArrayList;
  */
 public class CircularSamplerGenerator
 {
-    private int sampler_radius = 10;
-    private int sampler_trials = 10;
+    private final DataCaptureSettings settings;
 
-    /// Activity to get context and such.
+    // Activity to get context and such.
     private final DataCaptureActivity tookAct;
 
-    /// a list of all the samplers that was generated
+    // a list of all the samplers that was generated
     private final ArrayList<CircularSampler> samplers = new ArrayList<>();
 
     /**
@@ -31,7 +31,9 @@ public class CircularSamplerGenerator
      */
     public void doTrials()
     {
-        for (CircularSampler s : samplers) { s.doTrials(); }
+        for (CircularSampler s : samplers) {
+            s.doTrials();
+        }
     }
 
     /**
@@ -40,12 +42,13 @@ public class CircularSamplerGenerator
      * @param tookAct The Activity of TookPicture.
      * @param view    The view representing the circle that responds to user input.
      */
-    public CircularSamplerGenerator(DataCaptureActivity tookAct, View view)
+    public CircularSamplerGenerator(DataCaptureActivity tookAct, View view, DataCaptureSettings settings)
     {
         Log.d("DEBUG", "Creating a CircularSamplerGenerator");
 
         // need the Activity environment for inflater and finding views
         this.tookAct = tookAct;
+        this.settings = settings;
 
         // attach listener that will generate a new sampler on touch
         view.setOnTouchListener(new onTouchCreateSampler());
@@ -82,7 +85,7 @@ public class CircularSamplerGenerator
 
                 CircularSampler newSampler = new CircularSampler(
                         tookAct,
-                        sampler_trials, sampler_radius,
+                        settings,
                         xPos, yPos);
 
                 samplers.add(newSampler);

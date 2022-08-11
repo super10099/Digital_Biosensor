@@ -21,6 +21,7 @@ public class CircularSamplerView
     private static final int ROOT_LAYOUT_ID = R.id.cLCircularSamplers; /// Layout to store the views
     private static final int WEIRD_OFFSET = 5; // Needed for sampler to be in center of view
 
+    private final DataCaptureActivity dcAct;
 
     private final ImageView circleView;
     private TextView nameLabel;
@@ -36,6 +37,8 @@ public class CircularSamplerView
      */
     public CircularSamplerView(DataCaptureActivity dcAct)
     {
+        this.dcAct = dcAct;
+
         // Inflate a new circleView and set its root to the layout of activity_took... layout
         ConstraintLayout cL = dcAct.findViewById(ROOT_LAYOUT_ID);
         circleView = (ImageView) dcAct.getLayoutInflater()
@@ -84,16 +87,17 @@ public class CircularSamplerView
         {
             if (viewPosted)
             {
+                // disable scrollview from intercepting drag
+                circleView.getParent().requestDisallowInterceptTouchEvent(true);
+
                 switch (event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-
                         dX = circleView.getX() - event.getRawX();
                         dY = circleView.getY() - event.getRawY();
                         break;
 
                     case MotionEvent.ACTION_MOVE:
-
                         // update the logical position of sampler
                         sampler.setX(event.getRawX() + dX + (float)circleView.getWidth() / 2 - WEIRD_OFFSET);
                         sampler.setY(event.getRawY() + dY + (float)circleView.getWidth() / 2 - WEIRD_OFFSET);

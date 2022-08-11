@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -39,6 +41,9 @@ import java.util.Objects;
  */
 public class DataCaptureActivity extends AppCompatActivity
 {
+    private static final int DATA_CAPTURE_SCROLLVIEW_VERTICAL = R.id.DataCaptureImageScrollView;
+    private static final int DATA_CAPTURE_SCROLLVIEW_HORIZONTAL = R.id.DataCaptureHorizontalScroll;
+
     private static final int DURATION_BEFORE_NEXT_ACTIVITY = 3000;  // in milliseconds
     private static final int DATA_CAPTURE_DONE_BTN = R.id.DataCaptureDoneBtn;
     private static final int DATA_CAPTURE_PICTURE = R.id.DataCapturePictureView;
@@ -77,6 +82,8 @@ public class DataCaptureActivity extends AppCompatActivity
     private TextInputEditText scaleInputField;
     private TextInputEditText samplerRadiusInputField;
     private TextInputEditText samplerNumPointsInputField;
+
+    private boolean scrollingLocked = false;
 
 
     public ImageView getPictureView() { return pictureView; }
@@ -120,6 +127,8 @@ public class DataCaptureActivity extends AppCompatActivity
         dataCaptureOptionsBtn.setOnTouchListener(new onOptionsBtn());
         dataCaptureCancelBtn.setOnTouchListener(new onOptionsCancelBtn());
         dataCaptureConfirmBtn.setOnTouchListener(new onOptionsConfirmBtn());
+        ((ScrollView)findViewById(DATA_CAPTURE_SCROLLVIEW_VERTICAL)).requestDisallowInterceptTouchEvent(true);
+        ((HorizontalScrollView)findViewById(DATA_CAPTURE_SCROLLVIEW_HORIZONTAL)).requestDisallowInterceptTouchEvent(true);
 
         // set the picture after the view has been initialized
         pictureView.post(() ->
@@ -156,7 +165,7 @@ public class DataCaptureActivity extends AppCompatActivity
         });
 
         // create the generator after view is initialized.
-        csGenView.post(() -> csGen = new CircularSamplerGenerator(this, csGenView));
+        csGenView.post(() -> csGen = new CircularSamplerGenerator(this, csGenView, settings));
     }
 
 
@@ -237,23 +246,20 @@ public class DataCaptureActivity extends AppCompatActivity
 
                 csGen.doTrials();
 
+                // Create visitor to calculate comparative values of each sampler
+                ComparativeValueVisitor calculateCVVistor = new ComparativeValueVisitor();
+                csGen.acceptVisitor(calculateCVVistor);
+                calculateCVVistor.calculateComparativeValues();
+
+                // Create visitor to collect all the data and bundle it for data storage
+                DataBundlingVisitor dbVisitor = new DataBundlingVisitor();
+                csGen.acceptVisitor(dbVisitor);
+                String uKey = dbVisitor.PackDataSet();
+                goToResultsActivity(uKey);
+
                 // wait before going to next activity
-                new Handler().postDelayed(() ->
-                {
-                    // Create visitor to calculate comparative values of each sampler
-                    ComparativeValueVisitor calculateCVVistor = new ComparativeValueVisitor();
-                    csGen.acceptVisitor(calculateCVVistor);
-                    calculateCVVistor.calculateComparativeValues();
-
-                    // Create visitor to collect all the data and bundle it for data storage
-                    DataBundlingVisitor dbVisitor = new DataBundlingVisitor();
-                    csGen.acceptVisitor(dbVisitor);
-                    String uKey = dbVisitor.PackDataSet();
-
-                    // pack the collected data into a bundle
-                    goToResultsActivity(uKey);
-
-                }, DURATION_BEFORE_NEXT_ACTIVITY);
+//                new Handler().postDelayed(() ->
+//                        goToResultsActivity(uKey), DURATION_BEFORE_NEXT_ACTIVITY);
 
             }
             return true;
@@ -339,6 +345,27 @@ public class DataCaptureActivity extends AppCompatActivity
             return true;
         }
     }
+
+    private class onScrollVertical implements View.OnTouchListener
+    {
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            return scrollingLocked;
+        }
+    }
+
+    private class onScrollHorizontal implements View.OnTouchListener
+    {
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            return scrollingLocked;
+        }
+    }
+
+    public void setScrollingLocked(boolean status) { scrollingLocked = status; }
+
 
     /**
      * Move data to new activity, that activity can display the data.

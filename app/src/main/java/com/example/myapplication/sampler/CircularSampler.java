@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.DataCaptureActivity;
+import com.example.myapplication.datasystem.DataCaptureSettings;
 import com.example.myapplication.datasystem.DataProcessor;
 import com.example.myapplication.util.Visitor;
 
@@ -28,8 +29,7 @@ public class CircularSampler
 
     private final DataCaptureActivity dcAct;
 
-    private final int numTrials;  /// how many trials to take within the circle?
-    private final double radius;  /// radius of the circle view
+    private final DataCaptureSettings settings;
     private float x;   /// x position of circle
     private float y;   /// y position of circle
 
@@ -44,11 +44,10 @@ public class CircularSampler
      * Instantiate its member variables.
      * Instantiate a view for itself.
      */
-    public CircularSampler(DataCaptureActivity dcAct, int numTrials, double radius,
+    public CircularSampler(DataCaptureActivity dcAct, DataCaptureSettings settings,
                            float x, float y)
     {
-        this.numTrials = numTrials;
-        this.radius = radius;
+        this.settings = settings;
         this.x = x;
         this.y = y;
         this.dcAct = dcAct;
@@ -93,8 +92,9 @@ public class CircularSampler
         Random randomGenerator = new Random();
         ArrayList<Point> positions = new ArrayList<>();
         ConstraintLayout cL = dcAct.findViewById(ROOT_LAYOUT_ID);
+        int radius = settings.getSamplerRadius();
 
-        for (int i = 0; i < numTrials; i++)
+        for (int i = 0; i < settings.getNumSamplingPoints(); i++)
         {
             // randomly generate magnitude and radians
             double magnitude = randomGenerator.nextDouble() * radius;
@@ -110,6 +110,7 @@ public class CircularSampler
             positions.add(position);
             generateVisualDot(cL, position);
         }
+
         return positions;
     }
 

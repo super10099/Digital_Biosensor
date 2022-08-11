@@ -3,8 +3,8 @@ package com.example.myapplication.datasystem;
 public class DataCaptureSettings
 {
     private double imageScale = 5;
-    private int samplerRadius = 10;
-    private int numSamplingPoints = 10;
+    private int samplerRadius = 20;
+    private int numSamplingPoints = 100;
 
     public double getImageScale()
     {
