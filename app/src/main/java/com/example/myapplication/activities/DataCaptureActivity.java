@@ -28,6 +28,7 @@ import com.example.myapplication.sampler.CircularSamplerGenerator;
 import com.example.myapplication.sampler.ComparativeValueVisitor;
 import com.example.myapplication.datasystem.DataBundlingVisitor;
 import com.example.myapplication.R;
+import com.example.myapplication.util.ActivityTransitions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -377,7 +378,7 @@ public class DataCaptureActivity extends AppCompatActivity
         // pass the bundle to next activity
         Intent resultsActivity = new Intent(DataCaptureActivity.this, DataAnalysisActivity.class);
         resultsActivity.putExtra(DataBundlingVisitor.KEY_EXTRA_STRING, uKey);
-        resultsActivity.putExtra(DataStore.FROM, DataStore.FROM_DATA_CAPTURE_ACTIVITY);
+        resultsActivity.putExtra(ActivityTransitions.extraKey, ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY);
         startActivity(resultsActivity);
         finish();
     }

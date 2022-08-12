@@ -10,6 +10,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.myapplication.util.ActivityTransitions;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -33,10 +35,6 @@ public class DataStore
     private static final String TEMP_DIRECTORY_NAME = "temp";
     private static final String SAVE_DIRECTORY_NAME = "datasets";
     private static final String UKEY_SEPARATOR = "__";
-
-    public static final int FROM_DATA_CAPTURE_ACTIVITY = 0;
-    public static final int FROM_OTHER = 1;
-    public static final String FROM = "FROM";
 
     /** There will only be one data store (handles the app's database)
      * Initiated during MainActivity */
@@ -105,7 +103,7 @@ public class DataStore
      * @param dSet Collection of data processors that contain the data to store
      * @return A key as a reference to the stored data
      */
-    public String putNewDataSet(DataSet dSet, int from)
+    public String putNewDataSet(DataSet dSet, ActivityTransitions from)
     {
         return putNewDataSet(dSet, from, null);
     }
@@ -115,7 +113,7 @@ public class DataStore
      * @param dSet Collection of data processors that contain the data to store
      * @return A key as a reference to the stored data
      */
-    public String putNewDataSet(DataSet dSet, int from, String filename)
+    public String putNewDataSet(DataSet dSet, ActivityTransitions from, String filename)
     {
         String uKey = generateUniqueKey();
 
@@ -124,7 +122,7 @@ public class DataStore
             case FROM_DATA_CAPTURE_ACTIVITY:
                 saveDSet(dSet, uKey, getTempDir());
                 break;
-            case FROM_OTHER:
+            default:
                 saveDSet(dSet, filenameConform(filename), getSaveDir());
                 break;
         }
@@ -158,7 +156,7 @@ public class DataStore
      * @param from Which activity requested the dataset to be viewed.
      * @return The loaded DataSet that matched the unique key.
      */
-    public DataSet loadDSet(String uKey, int from)
+    public DataSet loadDSet(String uKey, ActivityTransitions from)
     {
         File dirTarget;
         switch (from)
@@ -166,11 +164,9 @@ public class DataStore
             case FROM_DATA_CAPTURE_ACTIVITY:
                 dirTarget = getTempDir();
                 break;
-            case FROM_OTHER:
+            default:
                 dirTarget = getSaveDir();
                 break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + from);
         }
 
         File file = new File(dirTarget, uKey + SERIALIZE_FILE_EXT);

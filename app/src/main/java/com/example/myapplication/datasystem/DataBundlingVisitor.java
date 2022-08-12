@@ -1,6 +1,7 @@
 package com.example.myapplication.datasystem;
 
 
+import com.example.myapplication.util.ActivityTransitions;
 import com.example.myapplication.util.Visitor;
 
 import java.util.ArrayList;
@@ -45,6 +46,6 @@ public class DataBundlingVisitor implements Visitor
         }
 
         // Store the new DataSet and retrieve a new unique key for future references
-        return DataStore.PrimaryDataStore.putNewDataSet(newDS, DataStore.FROM_DATA_CAPTURE_ACTIVITY);
+        return DataStore.PrimaryDataStore.putNewDataSet(newDS, ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY);
     }
 }

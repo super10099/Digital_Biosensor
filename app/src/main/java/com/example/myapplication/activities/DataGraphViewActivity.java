@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 /**
  * Activity for displaying trends from multiple data captures.
  */
-public class TemporalDynamicsActivity extends AppCompatActivity
+public class DataGraphViewActivity extends AppCompatActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)

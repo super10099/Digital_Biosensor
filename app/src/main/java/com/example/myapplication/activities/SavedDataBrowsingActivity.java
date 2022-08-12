@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.datasystem.DataBundlingVisitor;
 import com.example.myapplication.datasystem.DataStore;
+import com.example.myapplication.util.ActivityTransitions;
 
 import java.util.ArrayList;
 
@@ -152,7 +153,7 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
             {
                 Intent resultsActivity = new Intent(SavedDataBrowsingActivity.this, DataAnalysisActivity.class);
                 resultsActivity.putExtra(DataBundlingVisitor.KEY_EXTRA_STRING, uKey);
-                resultsActivity.putExtra(DataStore.FROM, DataStore.FROM_OTHER);
+                resultsActivity.putExtra(ActivityTransitions.extraKey, ActivityTransitions.FROM_SAVED_DATA_BROWSING);
                 startActivity(resultsActivity);
             }
             return true;

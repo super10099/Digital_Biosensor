@@ -3,6 +3,7 @@
 package com.example.myapplication.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import androidx.core.content.FileProvider;
 import com.example.myapplication.R;
 import com.example.myapplication.datasystem.DataBundlingVisitor;
 import com.example.myapplication.datasystem.DataStore;
+import com.example.myapplication.util.ActivityTransitions;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -114,12 +116,13 @@ public class DataAnalysisActivity extends AppCompatActivity
         saveResultsConfirmBtn.setOnTouchListener(new onSaveResultsConfirmSaveBtn());
 
         // load the dataset
-        String uKey = (String) getIntent().getExtras().get(DataBundlingVisitor.KEY_EXTRA_STRING);
-        int from = (int) getIntent().getExtras().get(DataStore.FROM);
+        Bundle extras = getIntent().getExtras();
+        String uKey = (String) extras.get(DataBundlingVisitor.KEY_EXTRA_STRING);
+        ActivityTransitions from = (ActivityTransitions) extras.getSerializable(ActivityTransitions.extraKey);
         loadedDataSet = DataStore.PrimaryDataStore.loadDSet(uKey, from);
 
         // only show save button if from data capture activity
-        if (from == DataStore.FROM_DATA_CAPTURE_ACTIVITY)
+        if (from == ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY)
         {
             saveResultsBtn.setVisibility(View.VISIBLE);
         }
@@ -340,7 +343,7 @@ public class DataAnalysisActivity extends AppCompatActivity
             if (event.getAction() == MotionEvent.ACTION_UP)
             {
                 String inputFileName = saveResultsFilenameEditText.getText().toString();
-                DataStore.PrimaryDataStore.putNewDataSet(loadedDataSet, DataStore.FROM_OTHER, inputFileName);
+                DataStore.PrimaryDataStore.putNewDataSet(loadedDataSet, ActivityTransitions.FROM_DATA_ANALYSIS_ACTIVITY, inputFileName);
                 saveResultsReset();
             }
             return true;
