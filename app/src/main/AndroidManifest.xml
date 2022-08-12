@@ -43,6 +43,12 @@
             android:screenOrientation="landscape">
         </activity>
 
+        <!-- Activity for graphing data   -->
+        <activity
+            android:name=".activities.DataGraphViewActivity"
+            android:screenOrientation="landscape">
+        </activity>
+
         <!--  for FileProvider      -->
         <provider
             android:name="androidx.core.content.FileProvider"

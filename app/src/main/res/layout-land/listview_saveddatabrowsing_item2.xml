@@ -24,4 +24,12 @@
         app:layout_constraintStart_toEndOf="@+id/savedDataNameBtn"
         app:layout_constraintTop_toTopOf="@+id/savedDataNameBtn" />
 
+    <CheckBox
+        android:id="@+id/savedDataCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/savedDataNameBtn"
+        app:layout_constraintEnd_toStartOf="@+id/savedDataNameBtn"
+        app:layout_constraintTop_toTopOf="@+id/savedDataNameBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

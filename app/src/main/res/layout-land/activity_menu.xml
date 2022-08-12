@@ -25,59 +25,65 @@
         style="@android:style/Widget.Material.Light.Button"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginStart="265dp"
-        android:layout_marginEnd="266dp"
         android:text="Take Picture"
         android:textAlignment="viewStart"
         app:icon="@android:drawable/ic_menu_camera"
         app:layout_constraintBottom_toTopOf="@+id/menuLoadPictureBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pictureView" />
+        app:layout_constraintTop_toTopOf="@+id/pictureView"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
         android:id="@+id/menuLoadPictureBtn"
         style="@android:style/Widget.Material.Light.Button"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginStart="265dp"
-        android:layout_marginEnd="266dp"
         android:text="Load Picture"
         android:textAlignment="viewStart"
         app:icon="@android:drawable/ic_menu_gallery"
-        app:layout_constraintBottom_toTopOf="@+id/menuSavedDataBtn"
+        app:layout_constraintBottom_toTopOf="@+id/menuDataGraphViewBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuTakePictureBtn" />
 
     <Button
-        android:id="@+id/menuTutorialBtn"
+        android:id="@+id/menuDataGraphViewBtn"
         style="@android:style/Widget.Material.Light.Button"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginStart="265dp"
-        android:layout_marginEnd="266dp"
-        android:text="Tutorial"
-        android:textAlignment="viewStart"
-        app:icon="@android:drawable/ic_menu_help"
-        app:layout_constraintBottom_toTopOf="@+id/pictureView"
+        android:text="Graph Data"
+        android:textAlignment="textStart"
+        app:icon="@android:drawable/ic_menu_month"
+        app:layout_constraintBottom_toTopOf="@+id/menuSavedDataBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuSavedDataBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/menuLoadPictureBtn" />
 
     <Button
         android:id="@+id/menuSavedDataBtn"
         style="@android:style/Widget.Material.Light.Button"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginStart="265dp"
-        android:layout_marginEnd="266dp"
         android:text="Saved Data"
         android:textAlignment="textStart"
         app:icon="@android:drawable/ic_menu_recent_history"
         app:layout_constraintBottom_toTopOf="@+id/menuTutorialBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuLoadPictureBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/menuDataGraphViewBtn" />
+
+    <Button
+        android:id="@+id/menuTutorialBtn"
+        style="@android:style/Widget.Material.Light.Button"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:text="Tutorial"
+        android:textAlignment="viewStart"
+        app:icon="@android:drawable/ic_menu_help"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuSavedDataBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

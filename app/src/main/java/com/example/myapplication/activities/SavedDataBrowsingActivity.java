@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,13 +31,18 @@ import java.util.ArrayList;
  */
 public class SavedDataBrowsingActivity extends AppCompatActivity
 {
-
     private static final int LISTVIEW_LAYOUT_ID = R.id.savedDataListView;
+
     private static final int LISTVIEW_ITEM_ID = R.layout.listview_saveddatabrowsing_item;
     private static final int LISTVIEW_ITEM_NAME_ID = R.id.savedDataNameBtn;
     private static final int LISTVIEW_ITEM_DATE_ID = R.id.savedDataDateBtn;
 
+    private static final int LISTVIEW_ITEM2_ID = R.layout.listview_saveddatabrowsing_item2; // from graph viewing activity
+    private static final int LISTVIEW_ITEM2_CHECKBOX_ID = R.id.savedDataCheckBox;
+
     private static final int EXIT_BTN_ID = R.id.savedDataExitBtn;
+
+    private ActivityTransitions from;
 
     /**
      * Initialize activity. Set the device settings (title bar, orientation)
@@ -57,6 +64,8 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
 
         // attach event listeners
         findViewById(EXIT_BTN_ID).setOnTouchListener(new exitBtnListener());
+
+        from = (ActivityTransitions) getIntent().getExtras().getSerializable(ActivityTransitions.extraKey);
 
         displaySavedData();
     }
@@ -100,8 +109,19 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
             // inflate the view with the xml template
             if (convertView == null)
             {
-                convertView = LayoutInflater.from(getContext())
-                        .inflate(LISTVIEW_ITEM_ID, parent, false);
+                if (from == ActivityTransitions.FROM_DATA_GRAPH_VIEW_ACTIVITY)
+                {
+                    convertView = LayoutInflater.from(getContext())
+                            .inflate(LISTVIEW_ITEM2_ID, parent, false);
+
+                    CheckBox cb = convertView.findViewById(LISTVIEW_ITEM2_CHECKBOX_ID);
+                    cb.setOnCheckedChangeListener(new OnCheckBox());
+                }
+                else
+                {
+                    convertView = LayoutInflater.from(getContext())
+                            .inflate(LISTVIEW_ITEM_ID, parent, false);
+                }
             }
             DataStore.DataSetListViewModel model = getItem(position);
 
@@ -160,4 +180,12 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
         }
     }
 
+    private class OnCheckBox implements CompoundButton.OnCheckedChangeListener
+    {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+        {
+
+        }
+    }
 }

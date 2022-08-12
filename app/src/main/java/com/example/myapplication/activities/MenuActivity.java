@@ -54,6 +54,8 @@ public class MenuActivity extends AppCompatActivity
     /** activity switch button to SavedDataBrowsingActivity */
     private Button savedDataBtn;
 
+    private Button graphDataBtn;
+
     /**
      * Initialize Activity by defining variables and attaching UI listeners.
      * Also initializes DataStore if PrimaryDataStore does not exist.
@@ -77,11 +79,13 @@ public class MenuActivity extends AppCompatActivity
         takePictureBtn = findViewById(R.id.menuTakePictureBtn);
         loadPictureBtn = findViewById(R.id.menuLoadPictureBtn);
         savedDataBtn = findViewById(R.id.menuSavedDataBtn);
+        graphDataBtn = findViewById(R.id.menuDataGraphViewBtn);
 
         // add listeners
         takePictureBtn.setOnClickListener(new OnTakePictureTouch());
         loadPictureBtn.setOnTouchListener(new OnLoadPictureTouch());
         savedDataBtn.setOnTouchListener(new OnSavedDataTouch());
+        graphDataBtn.setOnTouchListener(new OnGraphDataTouch());
 
         // initiate DataStore if does not exist
         if (DataStore.PrimaryDataStore == null)
@@ -207,6 +211,23 @@ public class MenuActivity extends AppCompatActivity
             {
                 Intent changeActivity = new Intent(MenuActivity.this, SavedDataBrowsingActivity.class);
                 changeActivity.putExtra("bitmapUri", pictureFileUri);
+                startActivity(changeActivity);
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Listener for activity switch to DataGrapbiewActivity
+     */
+    private class OnGraphDataTouch implements View.OnTouchListener
+    {
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            if (event.getAction() == MotionEvent.ACTION_UP)
+            {
+                Intent changeActivity = new Intent(MenuActivity.this, DataGraphViewActivity.class);
                 startActivity(changeActivity);
             }
             return true;
