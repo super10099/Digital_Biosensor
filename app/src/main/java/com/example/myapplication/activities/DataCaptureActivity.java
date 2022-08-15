@@ -65,26 +65,11 @@ public class DataCaptureActivity extends AppCompatActivity
      */
     private static DataCaptureSettings settings;
 
-    /**
-     * View of picture
-     */
     private ImageView pictureView;
     private Bitmap pictureBitmap;
 
-    /**
-     * Button user clicks after placing circular samplers
-     */
-    private ImageButton doneBtnView;
-
-    /**
-     * View of circular sampler generator (creates circular samplers on touch)
-     */
-    private ImageButton csGenView;
-
-    /**
-     * actual circular sampler generator
-     */
     private CircularSamplerGenerator csGen;
+    private ImageButton csGenView;
 
     private ConstraintLayout dataCaptureOptionsCL;
     private ImageButton dataCaptureOptionsBtn;
@@ -94,7 +79,7 @@ public class DataCaptureActivity extends AppCompatActivity
     private TextInputEditText samplerRadiusInputField;
     private TextInputEditText samplerNumPointsInputField;
 
-    private boolean scrollingLocked = false;
+    private ImageButton doneBtnView;
 
 
     public ImageView getPictureView()
@@ -141,8 +126,8 @@ public class DataCaptureActivity extends AppCompatActivity
         dataCaptureOptionsBtn.setOnTouchListener(new onOptionsBtn());
         dataCaptureCancelBtn.setOnTouchListener(new onOptionsCancelBtn());
         dataCaptureConfirmBtn.setOnTouchListener(new onOptionsConfirmBtn());
-        ((ScrollView) findViewById(DATA_CAPTURE_SCROLLVIEW_VERTICAL)).requestDisallowInterceptTouchEvent(true);
-        ((HorizontalScrollView) findViewById(DATA_CAPTURE_SCROLLVIEW_HORIZONTAL)).requestDisallowInterceptTouchEvent(true);
+//        ((ScrollView) findViewById(DATA_CAPTURE_SCROLLVIEW_VERTICAL)).requestDisallowInterceptTouchEvent(true);
+//        ((HorizontalScrollView) findViewById(DATA_CAPTURE_SCROLLVIEW_HORIZONTAL)).requestDisallowInterceptTouchEvent(true);
 
         // set the picture after the view has been initialized
         pictureView.post(() ->
@@ -359,7 +344,6 @@ public class DataCaptureActivity extends AppCompatActivity
                 settings.setImageScale(scale);
                 settings.setSamplerRadius(radius);
                 settings.setNumSamplingPoints(numPoints);
-
                 updatedSettings();
             }
 

@@ -5,7 +5,6 @@ package com.example.myapplication.sampler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.example.myapplication.activities.DataCaptureActivity;
 import com.example.myapplication.datasystem.DataCaptureSettings;

@@ -75,6 +75,9 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Show the entries representing saved data. User can click on an entry to display more details.
+     */
     private void displaySavedData()
     {
         ArrayList<DataStore.DataSetListViewModel> dataSetModels = DataStore.PrimaryDataStore.getDataSetListViewModels();
@@ -86,6 +89,9 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
         ((ListView) findViewById(LISTVIEW_LAYOUT_ID)).setAdapter(adapter);
     }
 
+    /**
+     * Adapter for DataSets to be viewed in list.
+     */
     private class DataSetModelArrayAdapter extends ArrayAdapter<DataStore.DataSetListViewModel>
     {
         /**
@@ -145,6 +151,9 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Exit activity
+     */
     private class exitBtnListener implements View.OnTouchListener
     {
         @Override
@@ -158,6 +167,9 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * View a data selection.
+     */
     private class OnDataView implements View.OnTouchListener
     {
         private String uKey;
@@ -196,11 +208,19 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
             this.compat = compat;
         }
 
+        /**
+         * Branching function
+         */
         public void takeOver()
         {
             compat.findViewById(R.id.savedDataGraphViewBranchDoneBtn).setOnTouchListener(new OnDoneDataSelection());
         }
 
+        /**
+         * Set the listener for when user changes the checkbox.
+         * @param cb
+         * @param uKey
+         */
         public void SetOnCheckedChangeListener(CheckBox cb, String uKey)
         {
             OnCheckedChangeListener l = new OnCheckedChangeListener();

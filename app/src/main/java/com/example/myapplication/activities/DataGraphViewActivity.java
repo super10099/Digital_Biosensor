@@ -1,6 +1,5 @@
 package com.example.myapplication.activities;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,15 +7,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
-import com.example.myapplication.util.ActivityTransitions;
 import com.example.myapplication.util.SelectDataSetContract;
 
-import java.util.ArrayList;
 
 //import com.jjoe64.graphview.*;
 

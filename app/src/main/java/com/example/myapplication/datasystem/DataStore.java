@@ -349,9 +349,9 @@ public class DataStore
      */
     public static class DataSetListViewModel
     {
-        private String name;
-        private String date;
-        private String uKey;
+        private final String name;
+        private final String date;
+        private final String uKey;
 
         public DataSetListViewModel(String name, String date, String uKey)
         {

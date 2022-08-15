@@ -13,7 +13,7 @@ public class ComparativeValueVisitor implements Visitor
 {
 
     /// a list of visited DataProcessor(s)
-    private ArrayList<DataProcessor> dps = new ArrayList<>();
+    private final ArrayList<DataProcessor> dps = new ArrayList<>();
 
     @Override
     public void visitSampler(DataProcessor dp)

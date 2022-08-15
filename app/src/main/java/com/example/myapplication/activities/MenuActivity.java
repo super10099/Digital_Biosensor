@@ -73,14 +73,8 @@ public class MenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        // disable title bar
         getSupportActionBar().hide();
-
-        // set the main layout
         setContentView(R.layout.activity_menu);
-
-        // set orientation of the device
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // init xml items and add listeners
@@ -224,7 +218,7 @@ public class MenuActivity extends AppCompatActivity
     }
 
     /**
-     * Listener for activity switch to DataGrapbiewActivity
+     * Listener for activity switch to DataGraphViewActivity
      */
     private class OnGraphDataTouch implements View.OnTouchListener
     {

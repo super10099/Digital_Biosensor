@@ -1,8 +1,6 @@
 package com.example.myapplication.sampler;
 
 import android.graphics.Point;
-import android.graphics.PointF;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -32,8 +30,6 @@ public class CircularSampler
     private final DataCaptureSettings settings;
     private float x;   /// x position of circle
     private float y;   /// y position of circle
-
-    private CircularSamplerView samplerView;
 
     public float getX()
     {
@@ -67,7 +63,7 @@ public class CircularSampler
         this.y = y;
         this.dcAct = dcAct;
 
-        samplerView = new CircularSamplerView(dcAct);
+        CircularSamplerView samplerView = new CircularSamplerView(dcAct);
         samplerView.setCircularSampler(this);
         samplerView.show();
     }

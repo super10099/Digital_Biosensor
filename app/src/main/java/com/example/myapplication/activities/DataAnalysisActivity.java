@@ -3,7 +3,6 @@
 package com.example.myapplication.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -47,22 +46,10 @@ public class DataAnalysisActivity extends AppCompatActivity
      */
     private static final String EXPORT_DATA_CHOOSER_TITLE = "Export Results";
 
-    /**
-     * The ListView in xml that will be displaying the dataset
-     */
-    private static final int LISTVIEW_ACTUAL = R.id.resultsListView;
-
-    /**
-     * Layout item used for ListView
-     */
-    private static final int LISTVIEW_LAYOUT_ID = R.layout.listview_results_item;
-
-    /**
-     * The TextView required to create an Adapter
-     */
-    private static final int LISTVIEW_TEXTVIEW = R.id.sampleLabel;
-
     // TextLabels for each sample
+    private static final int LISTVIEW_ACTUAL = R.id.resultsListView;
+    private static final int LISTVIEW_LAYOUT_ID = R.layout.listview_results_item;
+    private static final int LISTVIEW_TEXTVIEW = R.id.sampleLabel;
     private static final int LISTVIEW_SAMPLE_LABEL = R.id.sampleLabel;
     private static final int LISTVIEW_RGB_LABEL = R.id.RGBLabel;
     private static final int LISTVIEW_RPOINT_LABEL = R.id.RPointLabelTitle;
@@ -79,14 +66,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     private static final int SAVE_RESULTS_CONFIRM_BTN = R.id.saveResultsConfirmBtn;
     private static final int SAVE_RESULTS_FILENANME_EDITTEXT = R.id.editTextFilename;
 
-    // Views for actions
-    private Button newImageBtn;
-    private Button dataExportBtn;
-
     private ConstraintLayout saveResultsCL;
-    private Button saveResultsBtn;
-    private Button saveResultsCancelBtn;
-    private Button saveResultsConfirmBtn;
     private EditText saveResultsFilenameEditText;
 
     // Information passed from DataCaptureActivity
@@ -97,7 +77,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Init of the results activity.
      *
-     * @param savedInstanceState
+     * @param savedInstanceState Previously saved state.
      */
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -109,13 +89,14 @@ public class DataAnalysisActivity extends AppCompatActivity
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // variable inits
-        newImageBtn = findViewById(EXIT_BTN);
-        dataExportBtn = findViewById(EXPORT_DATA_BTN);
+        // Views for actions
+        Button newImageBtn = findViewById(EXIT_BTN);
+        Button dataExportBtn = findViewById(EXPORT_DATA_BTN);
 
         saveResultsCL = findViewById(SAVE_RESULTS_LAYOUT);
-        saveResultsBtn = findViewById(SAVE_RESULTS_BTN);
-        saveResultsCancelBtn = findViewById(SAVE_RESULTS_CANCEL_BTN);
-        saveResultsConfirmBtn = findViewById(SAVE_RESULTS_CONFIRM_BTN);
+        Button saveResultsBtn = findViewById(SAVE_RESULTS_BTN);
+        Button saveResultsCancelBtn = findViewById(SAVE_RESULTS_CANCEL_BTN);
+        Button saveResultsConfirmBtn = findViewById(SAVE_RESULTS_CONFIRM_BTN);
         saveResultsFilenameEditText = findViewById(SAVE_RESULTS_FILENANME_EDITTEXT);
 
         // attach event listeners
