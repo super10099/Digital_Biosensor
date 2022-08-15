@@ -1,6 +1,7 @@
 package com.example.myapplication.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -20,8 +21,10 @@ import com.example.myapplication.R;
 import com.example.myapplication.datasystem.DataBundlingVisitor;
 import com.example.myapplication.datasystem.DataStore;
 import com.example.myapplication.util.ActivityTransitions;
+import com.example.myapplication.util.SelectDataSetContract;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Activity responsible for displaying the saved data in internal storage of application.
@@ -33,16 +36,17 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
 {
     private static final int LISTVIEW_LAYOUT_ID = R.id.savedDataListView;
 
-    private static final int LISTVIEW_ITEM_ID = R.layout.listview_saveddatabrowsing_item;
     private static final int LISTVIEW_ITEM_NAME_ID = R.id.savedDataNameBtn;
     private static final int LISTVIEW_ITEM_DATE_ID = R.id.savedDataDateBtn;
 
-    private static final int LISTVIEW_ITEM2_ID = R.layout.listview_saveddatabrowsing_item2; // from graph viewing activity
+    private static final int LISTVIEW_ITEM_ID = R.layout.listview_saveddatabrowsing_item; // from graph viewing activity
     private static final int LISTVIEW_ITEM2_CHECKBOX_ID = R.id.savedDataCheckBox;
 
     private static final int EXIT_BTN_ID = R.id.savedDataExitBtn;
 
     private ActivityTransitions from;
+
+    private SavedDataBrowsingGraphViewBranch branch;
 
     /**
      * Initialize activity. Set the device settings (title bar, orientation)
@@ -52,22 +56,26 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        // disable title bar
         getSupportActionBar().hide();
-
-        // set the main layout
-        setContentView(R.layout.activity_saveddatabrowsing);
-
-        // set orientation of the device
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        // attach event listeners
-        findViewById(EXIT_BTN_ID).setOnTouchListener(new exitBtnListener());
 
         from = (ActivityTransitions) getIntent().getExtras().getSerializable(ActivityTransitions.extraKey);
 
-        displaySavedData();
+        // set the main layout
+        if (from == ActivityTransitions.FROM_DATA_GRAPH_VIEW_ACTIVITY)
+        {
+            setContentView(R.layout.activity_saveddatabrowsing_fromgraphview);
+            branch = new SavedDataBrowsingGraphViewBranch(this);
+            displaySavedData();
+            branch.takeOver();
+        }
+        else
+        {
+            setContentView(R.layout.activity_saveddatabrowsing);
+            findViewById(EXIT_BTN_ID).setOnTouchListener(new exitBtnListener());
+            displaySavedData();
+        }
+
     }
 
     private void displaySavedData()
@@ -105,25 +113,22 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
         public View getView(int position, View convertView, ViewGroup parent)
         {
             super.getView(position, convertView, parent);
+            DataStore.DataSetListViewModel model = getItem(position);
 
             // inflate the view with the xml template
             if (convertView == null)
             {
+
+                convertView = LayoutInflater.from(getContext())
+                        .inflate(LISTVIEW_ITEM_ID, parent, false);
+
                 if (from == ActivityTransitions.FROM_DATA_GRAPH_VIEW_ACTIVITY)
                 {
-                    convertView = LayoutInflater.from(getContext())
-                            .inflate(LISTVIEW_ITEM2_ID, parent, false);
-
                     CheckBox cb = convertView.findViewById(LISTVIEW_ITEM2_CHECKBOX_ID);
-                    cb.setOnCheckedChangeListener(new OnCheckBox());
-                }
-                else
-                {
-                    convertView = LayoutInflater.from(getContext())
-                            .inflate(LISTVIEW_ITEM_ID, parent, false);
+                    branch.SetOnCheckedChangeListener(cb, model.getUKey());
+                    cb.setVisibility(View.VISIBLE);
                 }
             }
-            DataStore.DataSetListViewModel model = getItem(position);
 
             // set listener
             OnDataView itemListener = new OnDataView();
@@ -137,7 +142,6 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
             // Setting the labels
             itemName.setText(model.getName());
             itemDate.setText(model.getDate());
-
 
             return convertView;
         }
@@ -158,7 +162,6 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
 
     private class OnDataView implements View.OnTouchListener
     {
-
         private String uKey;
 
         public void setuKey(String uKey)
@@ -180,12 +183,81 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
         }
     }
 
-    private class OnCheckBox implements CompoundButton.OnCheckedChangeListener
-    {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-        {
 
+    /**
+     * Branch here to handle ActivityTransitions from DataGraphView.
+     */
+    private class SavedDataBrowsingGraphViewBranch
+    {
+        private final SavedDataBrowsingActivity compat;
+
+        private HashMap<String, Boolean> selectedDataSetUKeys = new HashMap<>();
+
+        public SavedDataBrowsingGraphViewBranch(SavedDataBrowsingActivity compat)
+        {
+            this.compat = compat;
+        }
+
+        public void takeOver()
+        {
+            compat.findViewById(R.id.savedDataGraphViewBranchDoneBtn).setOnTouchListener(new OnDoneDataSelection());
+        }
+
+        public void SetOnCheckedChangeListener(CheckBox cb, String uKey)
+        {
+            OnCheckedChangeListener l = new OnCheckedChangeListener();
+            l.setUKey(uKey);
+            cb.setOnCheckedChangeListener(l);
+        }
+
+
+        /**
+         * Organizes the data and passes it as a result for the ActivityForResultContract
+         */
+        private class OnDoneDataSelection implements View.OnTouchListener
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    Intent intentData = new Intent();
+                    ArrayList<String> uKeysToView = new ArrayList<>();
+
+                    // loops through hashmap to check which uKeys were set to true
+                    // the ones set to true were the ones selected by user
+                    // so append it to an arraylist and set it as the result
+                    for (String s : selectedDataSetUKeys.keySet())
+                    {
+                        if (Boolean.TRUE.equals(selectedDataSetUKeys.get(s)))
+                        {
+                            uKeysToView.add(s);
+                        }
+                    }
+                    intentData.putExtra(SelectDataSetContract.EXTRA_KEY, uKeysToView);
+                    setResult(Activity.RESULT_OK, intentData);
+                    finish();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+
+        /**
+         * When a DataSet is selected, add it to the dictionary
+         */
+        private class OnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener
+        {
+            private String modelUKey;
+
+            public void setUKey(String uKey) { this.modelUKey = uKey; }
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                selectedDataSetUKeys.put(modelUKey, isChecked);
+            }
         }
     }
 }

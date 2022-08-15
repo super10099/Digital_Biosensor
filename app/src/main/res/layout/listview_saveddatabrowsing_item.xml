@@ -7,22 +7,29 @@
 
     <TextView
         android:id="@+id/savedDataNameBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/savedDataDateBtn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="80dp" />
 
     <TextView
         android:id="@+id/savedDataDateBtn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/savedDataNameBtn"
+        app:layout_constraintStart_toEndOf="@+id/savedDataNameBtn"
+        app:layout_constraintTop_toTopOf="@+id/savedDataNameBtn" />
+
+    <CheckBox
+        android:id="@+id/savedDataCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/savedDataNameBtn"
-        tools:layout_editor_absoluteY="80dp" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/savedDataNameBtn"
+        app:layout_constraintEnd_toStartOf="@+id/savedDataNameBtn"
+        app:layout_constraintTop_toTopOf="@+id/savedDataNameBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

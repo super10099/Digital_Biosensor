@@ -4,7 +4,7 @@ public class DataCaptureSettings
 {
     private double imageScale = 5;
     private int samplerRadius = 20;
-    private int numSamplingPoints = 100;
+    private int numSamplingPoints = 5;
 
     public double getImageScale()
     {
