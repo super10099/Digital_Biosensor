@@ -14,14 +14,19 @@ import java.util.ArrayList;
 public class DataBundlingVisitor implements Visitor
 {
 
-    /** String to pass and access extra in bundle passed between activities */
+    /**
+     * String to pass and access extra in bundle passed between activities
+     */
     public static String KEY_EXTRA_STRING = "uKey";
 
-    /** List of data processors */
+    /**
+     * List of data processors
+     */
     private ArrayList<DataProcessor> dps = new ArrayList<>();
 
     /**
      * Visit sampler to gather all data from each sampler and bundle for data storage
+     *
      * @param dp DataProcessor of the visited sampler.
      */
     @Override
@@ -34,6 +39,7 @@ public class DataBundlingVisitor implements Visitor
     /**
      * Pack the gathered data into a DataSet object
      * Put the DataSet object into DataStore
+     *
      * @return unique key corresponding to the DataSet
      */
     public String PackDataSet()
@@ -42,7 +48,7 @@ public class DataBundlingVisitor implements Visitor
         for (DataProcessor dp : dps)
         {
             newDS.newElement(dp.getAvgRValue(), dp.getAvgGValue(), dp.getAvgBValue(),
-                             dp.getAvgRPoint(), dp.getRPointSTD(), dp.getComparativeValue());
+                    dp.getAvgRPoint(), dp.getRPointSTD(), dp.getComparativeValue());
         }
 
         // Store the new DataSet and retrieve a new unique key for future references

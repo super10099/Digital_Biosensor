@@ -42,15 +42,24 @@ import java.util.Map;
  */
 public class DataAnalysisActivity extends AppCompatActivity
 {
+    /**
+     * Title for export menu
+     */
     private static final String EXPORT_DATA_CHOOSER_TITLE = "Export Results";
 
-    /** The ListView in xml that will be displaying the dataset */
+    /**
+     * The ListView in xml that will be displaying the dataset
+     */
     private static final int LISTVIEW_ACTUAL = R.id.resultsListView;
 
-    /** Layout item used for ListView */
+    /**
+     * Layout item used for ListView
+     */
     private static final int LISTVIEW_LAYOUT_ID = R.layout.listview_results_item;
 
-    /** The TextView required to create an Adapter */
+    /**
+     * The TextView required to create an Adapter
+     */
     private static final int LISTVIEW_TEXTVIEW = R.id.sampleLabel;
 
     // TextLabels for each sample
@@ -71,25 +80,26 @@ public class DataAnalysisActivity extends AppCompatActivity
     private static final int SAVE_RESULTS_FILENANME_EDITTEXT = R.id.editTextFilename;
 
     // Views for actions
-    Button newImageBtn;
-    Button dataExportBtn;
+    private Button newImageBtn;
+    private Button dataExportBtn;
 
-    ConstraintLayout saveResultsCL;
-    Button saveResultsBtn;
-    Button saveResultsCancelBtn;
-    Button saveResultsConfirmBtn;
-    EditText saveResultsFilenameEditText;
+    private ConstraintLayout saveResultsCL;
+    private Button saveResultsBtn;
+    private Button saveResultsCancelBtn;
+    private Button saveResultsConfirmBtn;
+    private EditText saveResultsFilenameEditText;
 
-    Bundle dataBundle; /// Information passed from TookPictureActivity
-    SampleDataModelAdapter sampleDataModels;
+    // Information passed from DataCaptureActivity
+    private SampleDataModelAdapter sampleDataModels;
 
-    DataStore.DataSet loadedDataSet;
+    private DataStore.DataSet loadedDataSet;
 
     /**
      * Init of the results activity.
      *
      * @param savedInstanceState
      */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -104,9 +114,9 @@ public class DataAnalysisActivity extends AppCompatActivity
 
         saveResultsCL = findViewById(SAVE_RESULTS_LAYOUT);
         saveResultsBtn = findViewById(SAVE_RESULTS_BTN);
-            saveResultsCancelBtn = findViewById(SAVE_RESULTS_CANCEL_BTN);
-            saveResultsConfirmBtn = findViewById(SAVE_RESULTS_CONFIRM_BTN);
-            saveResultsFilenameEditText = findViewById(SAVE_RESULTS_FILENANME_EDITTEXT);
+        saveResultsCancelBtn = findViewById(SAVE_RESULTS_CANCEL_BTN);
+        saveResultsConfirmBtn = findViewById(SAVE_RESULTS_CONFIRM_BTN);
+        saveResultsFilenameEditText = findViewById(SAVE_RESULTS_FILENANME_EDITTEXT);
 
         // attach event listeners
         newImageBtn.setOnTouchListener(new newImageOnTouch());
@@ -125,16 +135,13 @@ public class DataAnalysisActivity extends AppCompatActivity
         if (from == ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY)
         {
             saveResultsBtn.setVisibility(View.VISIBLE);
-        }
-        else
+        } else
         {
             saveResultsBtn.setVisibility(View.GONE);
         }
 
         Log.d("DEBUG", "ResultsActivity onCreate is running.");
 
-        // Fetch the bundle to displaying the data
-        dataBundle = getIntent().getExtras();
         sampleDataModels = new SampleDataModelAdapter(this);
 
         // create the ListView and ArrayAdapter
@@ -164,12 +171,8 @@ public class DataAnalysisActivity extends AppCompatActivity
      */
     private void convertData()
     {
-        Log.d("DEBUG", "CONVERTING DATA");
-        Log.d("DEBUG", "sampleDataModels size: " + sampleDataModels.getCount());
-
-        // iterate through DataSet
         Iterator<DataStore.DataSet.DataSetElement> dsIterator = loadedDataSet.getIterator();
-        while(dsIterator.hasNext())
+        while (dsIterator.hasNext())
         {
             DataStore.DataSet.DataSetElement elem = dsIterator.next();
             Map<String, Double> sampleColor = new HashMap<>();
@@ -183,18 +186,15 @@ public class DataAnalysisActivity extends AppCompatActivity
                             elem.getRPointSTD(),
                             elem.getComparativeValue());
             sampleDataModels.add(newData);
-            Log.d("DEBUG", "Adding SampleDataModel");
         }
     }
 
     /**
-     * Display data given the data bundle
+     * Display data into listview.
      */
     private void displayData()
     {
-        Log.d("DEBUG", "DISPLAYING DATA");
         ListView resultsListView = findViewById(LISTVIEW_ACTUAL);
-        Log.d("DEBUG", "resultsListView.getCount() = " + resultsListView.getCount());
         resultsListView.setAdapter(sampleDataModels);
     }
 
@@ -217,17 +217,49 @@ public class DataAnalysisActivity extends AppCompatActivity
             this.comparisonValue = comparisonValue;
         }
 
-        public Double getR() { return sampleColor.get("avgR"); }
-        public Double getG() { return sampleColor.get("avgG"); }
-        public Double getB() { return sampleColor.get("avgB"); }
+        /**
+         * @return average R value.
+         */
+        public Double getR()
+        {
+            return sampleColor.get("avgR");
+        }
 
+        /**
+         * @return average G value
+         */
+        public Double getG()
+        {
+            return sampleColor.get("avgG");
+        }
+
+        /**
+         * @return Average B value
+         */
+        public Double getB()
+        {
+            return sampleColor.get("avgB");
+        }
+
+        /**
+         * @return Ratio divided by ratio of control.
+         */
         public double getRPoint()
         {
             return RPoint;
         }
 
-        public double getRPointSTD() { return RPointSTD; }
+        /**
+         * @return Standard deviation of R point values.
+         */
+        public double getRPointSTD()
+        {
+            return RPointSTD;
+        }
 
+        /**
+         * @return Ratio of current sample
+         */
         public double getComparisonValue()
         {
             return comparisonValue;
@@ -280,8 +312,7 @@ public class DataAnalysisActivity extends AppCompatActivity
             if (position == 0)
             {
                 sampleLabel.setText("Control");
-            }
-            else
+            } else
             {
                 sampleLabel.setText("x" + position);
             }
@@ -301,7 +332,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     }
 
     /**
-     * When the user clicks to save results btn
+     * Open save results menu
      */
     private class onSaveResultsBtn implements View.OnTouchListener
     {
@@ -317,7 +348,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     }
 
     /**
-     * Listener for when user cancel the save results.
+     * Cancel the act of saving results.
      */
     private class onSaveResultsCancelBtn implements View.OnTouchListener
     {
@@ -333,7 +364,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     }
 
     /**
-     * Listener on when user confirms the save results.
+     * Confirm save results
      */
     private class onSaveResultsConfirmSaveBtn implements View.OnTouchListener
     {
@@ -351,7 +382,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     }
 
     /**
-     * When user clicks export btn
+     * Export data
      */
     private class onExportBtn implements View.OnTouchListener
     {
@@ -380,8 +411,7 @@ public class DataAnalysisActivity extends AppCompatActivity
                     exportDataIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     exportDataIntent.putExtra(Intent.EXTRA_STREAM, csvFileUri);
                     startActivity(Intent.createChooser(exportDataIntent, EXPORT_DATA_CHOOSER_TITLE));
-                }
-                catch (IOException e)
+                } catch (IOException e)
                 {
                     e.printStackTrace();
                 }

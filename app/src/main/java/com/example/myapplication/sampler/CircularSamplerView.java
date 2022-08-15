@@ -52,9 +52,13 @@ public class CircularSamplerView
 
     /**
      * Set the CircularSampler that the view represents.
+     *
      * @param sampler CircularSampler of the view.
      */
-    public void setCircularSampler(CircularSampler sampler) { this.sampler = sampler; }
+    public void setCircularSampler(CircularSampler sampler)
+    {
+        this.sampler = sampler;
+    }
 
     /**
      * Only call after setting the sampler
@@ -99,8 +103,8 @@ public class CircularSamplerView
 
                     case MotionEvent.ACTION_MOVE:
                         // update the logical position of sampler
-                        sampler.setX(event.getRawX() + dX + (float)circleView.getWidth() / 2 - WEIRD_OFFSET);
-                        sampler.setY(event.getRawY() + dY + (float)circleView.getWidth() / 2 - WEIRD_OFFSET);
+                        sampler.setX(event.getRawX() + dX + (float) circleView.getWidth() / 2 - WEIRD_OFFSET);
+                        sampler.setY(event.getRawY() + dY + (float) circleView.getWidth() / 2 - WEIRD_OFFSET);
 
                         // do the animation
                         view.animate()
@@ -126,7 +130,7 @@ public class CircularSamplerView
      */
     private float getX()
     {
-        return (sampler.getX()) - (float)(circleView.getWidth() / 2);
+        return (sampler.getX()) - (float) (circleView.getWidth() / 2);
     }
 
     /**
@@ -134,7 +138,7 @@ public class CircularSamplerView
      */
     private float getY()
     {
-        return (sampler.getY()) - (float)(circleView.getHeight() / 2);
+        return (sampler.getY()) - (float) (circleView.getHeight() / 2);
     }
 
 }

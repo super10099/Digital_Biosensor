@@ -35,13 +35,10 @@ import java.util.HashMap;
 public class SavedDataBrowsingActivity extends AppCompatActivity
 {
     private static final int LISTVIEW_LAYOUT_ID = R.id.savedDataListView;
-
     private static final int LISTVIEW_ITEM_NAME_ID = R.id.savedDataNameBtn;
     private static final int LISTVIEW_ITEM_DATE_ID = R.id.savedDataDateBtn;
-
     private static final int LISTVIEW_ITEM_ID = R.layout.listview_saveddatabrowsing_item; // from graph viewing activity
     private static final int LISTVIEW_ITEM2_CHECKBOX_ID = R.id.savedDataCheckBox;
-
     private static final int EXIT_BTN_ID = R.id.savedDataExitBtn;
 
     private ActivityTransitions from;
@@ -50,6 +47,7 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
 
     /**
      * Initialize activity. Set the device settings (title bar, orientation)
+     *
      * @param savedInstanceState saved instances for this activity
      */
     @Override
@@ -68,8 +66,7 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
             branch = new SavedDataBrowsingGraphViewBranch(this);
             displaySavedData();
             branch.takeOver();
-        }
-        else
+        } else
         {
             setContentView(R.layout.activity_saveddatabrowsing);
             findViewById(EXIT_BTN_ID).setOnTouchListener(new exitBtnListener());
@@ -86,13 +83,14 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
         {
             adapter.add(m);
         }
-        ((ListView)findViewById(LISTVIEW_LAYOUT_ID)).setAdapter(adapter);
+        ((ListView) findViewById(LISTVIEW_LAYOUT_ID)).setAdapter(adapter);
     }
 
     private class DataSetModelArrayAdapter extends ArrayAdapter<DataStore.DataSetListViewModel>
     {
         /**
          * Constructor
+         *
          * @param context Activity context
          */
         public DataSetModelArrayAdapter(SavedDataBrowsingActivity context)
@@ -251,7 +249,10 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
         {
             private String modelUKey;
 
-            public void setUKey(String uKey) { this.modelUKey = uKey; }
+            public void setUKey(String uKey)
+            {
+                this.modelUKey = uKey;
+            }
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)

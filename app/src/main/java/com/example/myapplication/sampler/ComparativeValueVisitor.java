@@ -32,7 +32,8 @@ public class ComparativeValueVisitor implements Visitor
 
         // Iterate through the list of rPoints and calculate the comparative values
         // The comparative values are added to the list.
-        for (DataProcessor dp : dps) {
+        for (DataProcessor dp : dps)
+        {
             double nComparativeVal = dp.getAvgRPoint() / controlRPoint;
             dp.setComparativeValue(nComparativeVal);
         }

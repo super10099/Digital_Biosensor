@@ -60,20 +60,30 @@ public class DataCaptureActivity extends AppCompatActivity
     private static final int DATA_CAPTURE_OPTIONS_SAMPLER_RADIUS_FIELD = R.id.DataCaptureEditSamplerRadius;
     private static final int DATA_CAPTURE_OPTIONS_SAMPLER_NUM_POINTS = R.id.DataCaptureEditNumTrials;
 
-    /** Settings of data capture, has options for user to adjust */
+    /**
+     * Settings of data capture, has options for user to adjust
+     */
     private static DataCaptureSettings settings;
 
-    /** View of picture */
+    /**
+     * View of picture
+     */
     private ImageView pictureView;
     private Bitmap pictureBitmap;
 
-    /** Button user clicks after placing circular samplers */
+    /**
+     * Button user clicks after placing circular samplers
+     */
     private ImageButton doneBtnView;
 
-    /** View of circular sampler generator (creates circular samplers on touch) */
+    /**
+     * View of circular sampler generator (creates circular samplers on touch)
+     */
     private ImageButton csGenView;
 
-    /** actual circular sampler generator */
+    /**
+     * actual circular sampler generator
+     */
     private CircularSamplerGenerator csGen;
 
     private ConstraintLayout dataCaptureOptionsCL;
@@ -87,7 +97,10 @@ public class DataCaptureActivity extends AppCompatActivity
     private boolean scrollingLocked = false;
 
 
-    public ImageView getPictureView() { return pictureView; }
+    public ImageView getPictureView()
+    {
+        return pictureView;
+    }
 
 
     /**
@@ -128,14 +141,15 @@ public class DataCaptureActivity extends AppCompatActivity
         dataCaptureOptionsBtn.setOnTouchListener(new onOptionsBtn());
         dataCaptureCancelBtn.setOnTouchListener(new onOptionsCancelBtn());
         dataCaptureConfirmBtn.setOnTouchListener(new onOptionsConfirmBtn());
-        ((ScrollView)findViewById(DATA_CAPTURE_SCROLLVIEW_VERTICAL)).requestDisallowInterceptTouchEvent(true);
-        ((HorizontalScrollView)findViewById(DATA_CAPTURE_SCROLLVIEW_HORIZONTAL)).requestDisallowInterceptTouchEvent(true);
+        ((ScrollView) findViewById(DATA_CAPTURE_SCROLLVIEW_VERTICAL)).requestDisallowInterceptTouchEvent(true);
+        ((HorizontalScrollView) findViewById(DATA_CAPTURE_SCROLLVIEW_HORIZONTAL)).requestDisallowInterceptTouchEvent(true);
 
         // set the picture after the view has been initialized
         pictureView.post(() ->
         {
             Uri currentPhotoUri = (Uri) getIntent().getExtras().get("bitmapUri");
-            try {
+            try
+            {
                 // load original bitmap
                 InputStream is = getContentResolver().openInputStream(currentPhotoUri);
                 pictureBitmap = BitmapFactory.decodeStream(is);
@@ -144,22 +158,22 @@ public class DataCaptureActivity extends AppCompatActivity
                 // calculate scale to fit phone length
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                double scale = (double)displayMetrics.widthPixels / pictureBitmap.getWidth();
+                double scale = (double) displayMetrics.widthPixels / pictureBitmap.getWidth();
                 settings.setImageScale(scale);  // update settings
 
                 layoutImageView();
 
+                // rotate bitmap
+//                Bitmap pBitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
+//                bitmapXScale = (double)pictureView.getWidth() / (double)pictureBitmap.getWidth();
+//                bitmapYScale = (double)pictureView.getHeight() / (double)pictureBitmap.getHeight();
+//                Matrix matrix = new Matrix();
+//                matrix.postRotate(90);
+//                Bitmap rotatedBitmap = Bitmap.createBitmap(pBitmap, 0, 0, pBitmap.getWidth(), pBitmap.getHeight(), matrix, true);
+//                Bitmap pictureBitmap = rotatedBitmap;
 
-                // rotate
-//              Bitmap pBitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
-//              bitmapXScale = (double)pictureView.getWidth() / (double)pictureBitmap.getWidth();
-//              bitmapYScale = (double)pictureView.getHeight() / (double)pictureBitmap.getHeight();
-//              Matrix matrix = new Matrix();
-//              matrix.postRotate(90);
-//              Bitmap rotatedBitmap = Bitmap.createBitmap(pBitmap, 0, 0, pBitmap.getWidth(), pBitmap.getHeight(), matrix, true);
-//              Bitmap pictureBitmap = rotatedBitmap;
-            }
-            catch (FileNotFoundException e)
+
+            } catch (FileNotFoundException e)
             {
                 e.printStackTrace();
             }
@@ -173,6 +187,7 @@ public class DataCaptureActivity extends AppCompatActivity
     /**
      * Calculates argb value in bitmap given a global position.
      * Beforehand, the global position changed to a relative position to pictureView.
+     *
      * @param p Global position
      * @return Integer representation of argb.
      */
@@ -181,8 +196,8 @@ public class DataCaptureActivity extends AppCompatActivity
         // Convert absolute coordinates to relative coordinates of pictureView
         // Descale the position to the unscaled bitmap.
         double scale = settings.getImageScale();
-        int unscaledX = (int) ( (p.x - pictureView.getX()) / scale);
-        int unscaledY = (int) ( (p.y - pictureView.getY()) / scale);
+        int unscaledX = (int) ((p.x - pictureView.getX()) / scale);
+        int unscaledY = (int) ((p.y - pictureView.getY()) / scale);
         Log.d("DEBUG", String.format("scaled position = %d,%d", p.x, p.y));
         Log.d("DEBUG", String.format("descaled position = %d,%d", unscaledX, unscaledY));
 
@@ -194,7 +209,8 @@ public class DataCaptureActivity extends AppCompatActivity
     /**
      * Animate a given visual dot to the target position.
      * NOTE: Target position is in global space.
-     * @param visualDotView ImageView to animate
+     *
+     * @param visualDotView  ImageView to animate
      * @param targetPosition Target position in global space.
      */
     public void animateVisualDot(ImageView visualDotView, Point targetPosition)
@@ -203,8 +219,6 @@ public class DataCaptureActivity extends AppCompatActivity
         int relativeY = Math.round(targetPosition.y);
         visualDotView.setX(relativeX - Math.round(visualDotView.getWidth() / 2f));
         visualDotView.setY(relativeY - Math.round(visualDotView.getHeight() / 2f));
-//        visualDotView.animate().x(relativeX - Math.round(visualDotView.getWidth() / 2f));
-//        visualDotView.animate().y(relativeY - Math.round(visualDotView.getHeight() / 2f));
     }
 
     /**
@@ -243,8 +257,8 @@ public class DataCaptureActivity extends AppCompatActivity
         @Override
         public boolean onTouch(View view, MotionEvent event)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-
+            if (event.getAction() == MotionEvent.ACTION_UP)
+            {
                 csGen.doTrials();
 
                 // Create visitor to calculate comparative values of each sampler
@@ -257,11 +271,6 @@ public class DataCaptureActivity extends AppCompatActivity
                 csGen.acceptVisitor(dbVisitor);
                 String uKey = dbVisitor.PackDataSet();
                 goToResultsActivity(uKey);
-
-                // wait before going to next activity
-//                new Handler().postDelayed(() ->
-//                        goToResultsActivity(uKey), DURATION_BEFORE_NEXT_ACTIVITY);
-
             }
             return true;
         }
@@ -269,7 +278,7 @@ public class DataCaptureActivity extends AppCompatActivity
 
 
     /**
-     * Listener purposed for debugging (mouse clicks).
+     * Debugging mouse clicks
      */
     private class screenDebugging implements View.OnTouchListener
     {
@@ -282,12 +291,16 @@ public class DataCaptureActivity extends AppCompatActivity
                 double y = event.getY();
                 double rx = event.getRawX();
                 double ry = event.getRawY();
-                Log.d("DEBUG", String.format("Clicked %f,%f,%f,%f", x,y,rx,ry));
+                Log.d("DEBUG", String.format("Clicked %f,%f,%f,%f", x, y, rx, ry));
             }
             return true;
         }
     }
 
+
+    /**
+     * Options menu
+     */
     private class onOptionsBtn implements View.OnTouchListener
     {
         @Override
@@ -310,6 +323,9 @@ public class DataCaptureActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Cancel options menu
+     */
     private class onOptionsCancelBtn implements View.OnTouchListener
     {
         @Override
@@ -323,6 +339,10 @@ public class DataCaptureActivity extends AppCompatActivity
         }
     }
 
+
+    /**
+     * Confirm options menu
+     */
     private class onOptionsConfirmBtn implements View.OnTouchListener
     {
         @Override
@@ -346,26 +366,6 @@ public class DataCaptureActivity extends AppCompatActivity
             return true;
         }
     }
-
-    private class onScrollVertical implements View.OnTouchListener
-    {
-        @Override
-        public boolean onTouch(View v, MotionEvent event)
-        {
-            return scrollingLocked;
-        }
-    }
-
-    private class onScrollHorizontal implements View.OnTouchListener
-    {
-        @Override
-        public boolean onTouch(View v, MotionEvent event)
-        {
-            return scrollingLocked;
-        }
-    }
-
-    public void setScrollingLocked(boolean status) { scrollingLocked = status; }
 
 
     /**

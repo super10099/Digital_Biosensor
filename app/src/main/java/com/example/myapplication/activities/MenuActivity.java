@@ -34,10 +34,8 @@ import com.example.myapplication.R;
  */
 public class MenuActivity extends AppCompatActivity
 {
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_LOAD_IMAGE = 2;
-    private static final int ACTIVITY_SAVED_DATA_BTN = R.id.menuSavedDataBtn;
-
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_LOAD_IMAGE = 2;
 
     /**
      * Uri for the image file from loading or camera capture.
@@ -45,20 +43,30 @@ public class MenuActivity extends AppCompatActivity
      */
     private Uri pictureFileUri;
 
-    /** activity switch button to initiate intent="ACTION_IMAGE_CAPTURE Activity" */
+    /**
+     * activity switch button to initiate intent="ACTION_IMAGE_CAPTURE Activity"
+     */
     private Button takePictureBtn;
 
-    /** activity switch button to load a picture from the photo gallery */
+    /**
+     * activity switch button to load a picture from the photo gallery
+     */
     private Button loadPictureBtn;
 
-    /** activity switch button to SavedDataBrowsingActivity */
+    /**
+     * activity switch button to SavedDataBrowsingActivity
+     */
     private Button savedDataBtn;
 
+    /**
+     * Button to switch to graph viewing activity
+     */
     private Button graphDataBtn;
 
     /**
      * Initialize Activity by defining variables and attaching UI listeners.
      * Also initializes DataStore if PrimaryDataStore does not exist.
+     *
      * @param savedInstanceState saved instances for this activity
      */
     @Override
@@ -138,8 +146,7 @@ public class MenuActivity extends AppCompatActivity
         {
             setPictureView();
             Log.d("DEBUG", "Picture Took");
-        }
-        else if (requestCode == REQUEST_LOAD_IMAGE && resultCode == RESULT_OK && data != null)
+        } else if (requestCode == REQUEST_LOAD_IMAGE && resultCode == RESULT_OK && data != null)
         {
             pictureFileUri = data.getData();
             setPictureView();
@@ -161,8 +168,7 @@ public class MenuActivity extends AppCompatActivity
             // Create a Uri to the image file
             // Use the Uri as an extra in ACTION_IMAGE_CAPTURE
             File pictureFile = null;
-            try { pictureFile = createImageFile(); }
-            catch (IOException e) { e.printStackTrace(); }
+            try {pictureFile = createImageFile();} catch (IOException e) {e.printStackTrace();}
 
             // Ensure that the image file was successfully created
             // If successful, create the Intent and attach file Uri

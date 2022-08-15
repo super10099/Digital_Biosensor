@@ -36,35 +36,52 @@ public class DataStore
     private static final String SAVE_DIRECTORY_NAME = "datasets";
     private static final String UKEY_SEPARATOR = "__";
 
-    /** There will only be one data store (handles the app's database)
-     * Initiated during MainActivity */
+    /**
+     * There will only be one data store (handles the app's database)
+     * Initiated during MainActivity
+     */
     public static DataStore PrimaryDataStore;
 
-    /** reference allows access to Internal Storage */
+    /**
+     * reference allows access to Internal Storage
+     */
     private Context appContext;
 
-    /** Directory to temporary data folder
-     * The directory is cleared each time the application starts. */
+    /**
+     * Directory to temporary data folder
+     * The directory is cleared each time the application starts.
+     */
     private final File tempDir;
 
-    /** Directory to saved data */
+    /**
+     * Directory to saved data
+     */
     private final File saveDir;
 
-    public File getTempDir() { return tempDir; }
-    public File getSaveDir() { return saveDir; }
+    public File getTempDir()
+    {
+        return tempDir;
+    }
+
+    public File getSaveDir()
+    {
+        return saveDir;
+    }
 
 
-    /** Declare application's Context object. */
+    /**
+     * Declare application's Context object.
+     */
     public DataStore(Context context)
     {
         appContext = context;
         saveDir = new File(appContext.getFilesDir(), SAVE_DIRECTORY_NAME);
         tempDir = new File(appContext.getFilesDir(), TEMP_DIRECTORY_NAME);
-        if (!saveDir.exists()) { saveDir.mkdir(); }
-        if (!tempDir.exists()) { tempDir.mkdir(); }
+        if (!saveDir.exists()) {saveDir.mkdir();}
+        if (!tempDir.exists()) {tempDir.mkdir();}
 
         // Clear temporary directory
-        for ( File f : tempDir.listFiles())
+        for (File f : tempDir.listFiles())
         {
             if (!f.delete())
             {
@@ -82,6 +99,7 @@ public class DataStore
 
     /**
      * Conform the filename to the standards.
+     *
      * @return a filename corresponding to the naming conventions.
      */
     private String filenameConform(String filename)
@@ -100,6 +118,7 @@ public class DataStore
 
     /**
      * Store new data and return a unique key for the data
+     *
      * @param dSet Collection of data processors that contain the data to store
      * @return A key as a reference to the stored data
      */
@@ -110,6 +129,7 @@ public class DataStore
 
     /**
      * Store new data and return a unique key for the data
+     *
      * @param dSet Collection of data processors that contain the data to store
      * @return A key as a reference to the stored data
      */
@@ -132,6 +152,7 @@ public class DataStore
     /**
      * Save DataSet into local storage
      * Need ApplicationContext to access Internal Storage.
+     *
      * @param dSet DataSet to save to local storage
      */
     private void saveDSet(DataSet dSet, String uKey, File dir)
@@ -143,8 +164,7 @@ public class DataStore
             FileOutputStream fileOS = new FileOutputStream(file);
             ObjectOutputStream fileOOS = new ObjectOutputStream(fileOS);
             fileOOS.writeObject(dSet);
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             Log.d("DEBUG", e.toString());
         }
@@ -152,6 +172,7 @@ public class DataStore
 
     /**
      * Load a DataSet from Internal Storage
+     *
      * @param uKey Unique key corresponding to a DataSet in Internal Storage.
      * @param from Which activity requested the dataset to be viewed.
      * @return The loaded DataSet that matched the unique key.
@@ -177,8 +198,7 @@ public class DataStore
             FileInputStream fileIS = new FileInputStream(file);
             ObjectInputStream fileOIS = new ObjectInputStream(fileIS);
             dSet = (DataSet) fileOIS.readObject();
-        }
-        catch (IOException | ClassNotFoundException e)
+        } catch (IOException | ClassNotFoundException e)
         {
             Log.d("DEBUG", e.toString());
         }
@@ -214,12 +234,35 @@ public class DataStore
                 this.comparativeValue = comparativeValue;
             }
 
-            public double getAvgR() { return avgR; }
-            public double getAvgG() { return avgG; }
-            public double getAvgB() { return avgB; }
-            public double getRPoint() { return rPoint; }
-            public double getRPointSTD() {return rPointSTD; }
-            public double getComparativeValue() { return comparativeValue; }
+            public double getAvgR()
+            {
+                return avgR;
+            }
+
+            public double getAvgG()
+            {
+                return avgG;
+            }
+
+            public double getAvgB()
+            {
+                return avgB;
+            }
+
+            public double getRPoint()
+            {
+                return rPoint;
+            }
+
+            public double getRPointSTD()
+            {
+                return rPointSTD;
+            }
+
+            public double getComparativeValue()
+            {
+                return comparativeValue;
+            }
         }
 
         private ArrayList<DataSetElement> elements = new ArrayList<>();
@@ -227,10 +270,13 @@ public class DataStore
         /**
          * Constructor
          */
-        public DataSet() {}
+        public DataSet()
+        {
+        }
 
         /**
          * Add a new element to the dataset with the given values
+         *
          * @param avgR
          * @param avgG
          * @param avgB
@@ -314,8 +360,19 @@ public class DataStore
             this.uKey = uKey;
         }
 
-        public String getName() { return name; }
-        public String getDate() { return date; }
-        public String getUKey() { return uKey; }
+        public String getName()
+        {
+            return name;
+        }
+
+        public String getDate()
+        {
+            return date;
+        }
+
+        public String getUKey()
+        {
+            return uKey;
+        }
     }
 }

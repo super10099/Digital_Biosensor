@@ -35,10 +35,25 @@ public class CircularSampler
 
     private CircularSamplerView samplerView;
 
-    public float getX() { return x; }
-    public float getY() { return y; }
-    public void setX(float x) { this.x = x; }
-    public void setY(float y) { this.y = y; }
+    public float getX()
+    {
+        return x;
+    }
+
+    public float getY()
+    {
+        return y;
+    }
+
+    public void setX(float x)
+    {
+        this.x = x;
+    }
+
+    public void setY(float y)
+    {
+        this.y = y;
+    }
 
     /**
      * Instantiate its member variables.
@@ -117,6 +132,7 @@ public class CircularSampler
 
     /**
      * Generate dots to show to the user where each point was generated.
+     *
      * @param cL Parent layout for visualdot view.
      */
     private void generateVisualDot(ConstraintLayout cL, Point position)

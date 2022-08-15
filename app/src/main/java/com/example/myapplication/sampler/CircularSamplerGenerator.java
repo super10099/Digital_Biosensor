@@ -31,7 +31,8 @@ public class CircularSamplerGenerator
      */
     public void doTrials()
     {
-        for (CircularSampler s : samplers) {
+        for (CircularSampler s : samplers)
+        {
             s.doTrials();
         }
     }
@@ -59,7 +60,7 @@ public class CircularSamplerGenerator
      */
     public void acceptVisitor(Visitor visitor)
     {
-        for (CircularSampler s : samplers) { s.acceptVisitor(visitor); }
+        for (CircularSampler s : samplers) {s.acceptVisitor(visitor);}
     }
 
 
