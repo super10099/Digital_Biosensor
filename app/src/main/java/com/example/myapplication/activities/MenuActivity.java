@@ -1,5 +1,3 @@
-
-
 package com.example.myapplication.activities;
 
 import java.io.File;
@@ -44,26 +42,6 @@ public class MenuActivity extends AppCompatActivity
     private Uri pictureFileUri;
 
     /**
-     * activity switch button to initiate intent="ACTION_IMAGE_CAPTURE Activity"
-     */
-    private Button takePictureBtn;
-
-    /**
-     * activity switch button to load a picture from the photo gallery
-     */
-    private Button loadPictureBtn;
-
-    /**
-     * activity switch button to SavedDataBrowsingActivity
-     */
-    private Button savedDataBtn;
-
-    /**
-     * Button to switch to graph viewing activity
-     */
-    private Button graphDataBtn;
-
-    /**
      * Initialize Activity by defining variables and attaching UI listeners.
      * Also initializes DataStore if PrimaryDataStore does not exist.
      *
@@ -78,12 +56,10 @@ public class MenuActivity extends AppCompatActivity
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // init xml items and add listeners
-        takePictureBtn = findViewById(R.id.menuTakePictureBtn);
-        loadPictureBtn = findViewById(R.id.menuLoadPictureBtn);
-        savedDataBtn = findViewById(R.id.menuSavedDataBtn);
-        graphDataBtn = findViewById(R.id.menuDataGraphViewBtn);
-
-        // add listeners
+        Button takePictureBtn = findViewById(R.id.menuTakePictureBtn);
+        Button loadPictureBtn = findViewById(R.id.menuLoadPictureBtn);
+        Button savedDataBtn = findViewById(R.id.menuSavedDataBtn);
+        Button graphDataBtn = findViewById(R.id.menuDataGraphViewBtn);
         takePictureBtn.setOnClickListener(new OnTakePictureTouch());
         loadPictureBtn.setOnTouchListener(new OnLoadPictureTouch());
         savedDataBtn.setOnTouchListener(new OnSavedDataTouch());

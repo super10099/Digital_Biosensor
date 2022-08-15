@@ -35,7 +35,6 @@ public class CircularSamplerView
      */
     public CircularSamplerView(DataCaptureActivity dcAct)
     {
-
         // Inflate a new circleView and set its root to the layout of activity_took... layout
         ConstraintLayout cL = dcAct.findViewById(ROOT_LAYOUT_ID);
         circleView = (ImageView) dcAct.getLayoutInflater()

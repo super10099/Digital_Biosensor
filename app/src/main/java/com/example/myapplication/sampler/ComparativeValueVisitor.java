@@ -38,6 +38,4 @@ public class ComparativeValueVisitor implements Visitor
             dp.setComparativeValue(nComparativeVal);
         }
     }
-
-
 }

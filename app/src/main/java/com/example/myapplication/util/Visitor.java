@@ -7,7 +7,5 @@ import com.example.myapplication.datasystem.DataProcessor;
  */
 public interface Visitor
 {
-
     void visitSampler(DataProcessor dp);
-
 }
