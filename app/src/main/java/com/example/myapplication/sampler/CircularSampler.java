@@ -133,16 +133,17 @@ public class CircularSampler
      */
     private void generateVisualDot(ConstraintLayout cL, Point position)
     {
-        ImageView visualDotView = (ImageView) dcAct.getLayoutInflater()
-                .inflate(VIEW_VISUALDOT_LAYOUT, cL, false);
-
-        Point targetPoint = new Point(
-                Math.round(position.x - visualDotView.getWidth() / 2f),
-                Math.round(position.y - visualDotView.getHeight() / 2f)
-        );
-
-        cL.addView(visualDotView);
-        dcAct.animateVisualDot(visualDotView, targetPoint);
+        // Commented out due to memory bursts. Race condition, possibly.
+//        ImageView visualDotView = (ImageView) dcAct.getLayoutInflater()
+//                .inflate(VIEW_VISUALDOT_LAYOUT, cL, false);
+//
+//        Point targetPoint = new Point(
+//                Math.round(position.x - visualDotView.getWidth() / 2f),
+//                Math.round(position.y - visualDotView.getHeight() / 2f)
+//        );
+//
+//        cL.addView(visualDotView);
+//        dcAct.animateVisualDot(visualDotView, targetPoint);
     }
 
     /**

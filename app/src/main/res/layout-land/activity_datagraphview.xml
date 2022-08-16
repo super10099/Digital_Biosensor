@@ -12,6 +12,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GraphView_Graph"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <com.jjoe64.graphview.GraphView
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:seriesType="line"
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/GraphView_Graph" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
