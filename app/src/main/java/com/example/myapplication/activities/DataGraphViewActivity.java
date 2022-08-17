@@ -84,6 +84,44 @@ public class DataGraphViewActivity extends AppCompatActivity
         selectDataLauncher.launch(this);
     }
 
+    /**
+     * https://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+     * @return
+     */
+    private int unique_color()
+    {
+        final double golden_ratio_conjugate = 0.618033988749895;
+        double h = Math.random();
+        h += golden_ratio_conjugate;
+        h %= 1;
+        return hsvToRGB(h, 0.5, 0.95);
+    }
+
+    /**
+     * https://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+     * @param h
+     * @param s
+     * @param v
+     * @return
+     */
+    private int hsvToRGB(double h, double s, double v)
+    {
+        int h_i = (int) (h*6);
+        double f = h*6 - h_i;
+        double p = v * (1 - s);
+        double q = v * (1 - f*s);
+        double t = v * (1 - (1 - f) * s);
+
+        double r=0,g=0,b=0;
+        if (h_i == 0) { r=v; g=t; b=p; }
+        if (h_i == 1) { r=q; g=v; b=p; }
+        if (h_i == 2) { r=p; g=v; b=t; }
+        if (h_i == 3) { r=p; g=q; b=v; }
+        if (h_i == 4) { r=t; g=p; b=v; }
+        if (h_i == 5) { r=v; g=p; b=q; }
+
+        return Color.rgb((int) (r*256),(int) (g*256),(int) (b*256));
+    }
 
     /**
      * Called after datasets are loaded.
@@ -97,8 +135,11 @@ public class DataGraphViewActivity extends AppCompatActivity
         // get datasets into a 2D array to iterator by column major
         // make the array is normal (all rows have same sizes)
         ArrayList<ArrayList<DataStore.DataSet.DataSetElement>> arr2D = new ArrayList<>();
+        ArrayList<DataStore.DataSet> RowSets = new ArrayList<>();    // for names;
         for (DataStore.DataSet ds : loadedDSets)
         {
+            RowSets.add(ds);
+
             Iterator<DataStore.DataSet.DataSetElement> it = ds.getIterator();
             ArrayList<DataStore.DataSet.DataSetElement> row = new ArrayList<>();
             while (it.hasNext())
@@ -108,7 +149,8 @@ public class DataGraphViewActivity extends AppCompatActivity
             arr2D.add(row);
         }
 
-        for (int col = 0; col < arr2D.get(0).size(); col++)
+        // skip first column (skip control series)
+        for (int col = 1; col < arr2D.get(0).size(); col++)
         {
             ArrayList<Double> seriesNumbers = new ArrayList<>();
             for (int row = 0; row < arr2D.size(); row++)
@@ -116,11 +158,12 @@ public class DataGraphViewActivity extends AppCompatActivity
                 seriesNumbers.add(arr2D.get(row).get(col).getComparativeValue());
             }
 
+            String seriesTitle = String.format("x%d", col);
             XYSeries series = new SimpleXYSeries(
-                    seriesNumbers, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, String.format("Series %d", col));
+                    seriesNumbers, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, seriesTitle);
 
             // series formatting
-            LineAndPointFormatter seriesFormat = new LineAndPointFormatter(Color.RED, Color.GREEN, null, null);
+            LineAndPointFormatter seriesFormat = new LineAndPointFormatter(unique_color(), Color.GREEN, null, null);
             seriesFormat.getLinePaint().setPathEffect(new DashPathEffect(new float[]{
                     PixelUtils.dpToPix(20),
                     PixelUtils.dpToPix(15)}, 0));
