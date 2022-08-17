@@ -12,18 +12,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/GraphView_Graph"
+        app:layout_constraintTop_toBottomOf="@+id/GraphView_Plot"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <com.jjoe64.graphview.GraphView
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.androidplot.xy.XYPlot
+        android:id="@+id/GraphView_Plot"
+        style="@style/APDefacto.Light"
+        android:layout_width="fill_parent"
+        android:layout_height="350dp"
+        app:domainTitle="Date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:seriesType="line"
-        android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:id="@+id/GraphView_Graph" />
+        app:lineLabelRotationBottom="-45"
+        app:lineLabels="left|bottom"
+        app:rangeTitle="RGB Ratio"
+        app:title="RGB Ratio Over Time" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

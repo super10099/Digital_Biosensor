@@ -21,6 +21,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -90,13 +91,6 @@ public class DataStore
         }
     }
 
-    private String addDate(String filename)
-    {
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
-        return filename + timeStamp;
-    }
-
-
     /**
      * Conform the filename to the standards.
      *
@@ -104,16 +98,8 @@ public class DataStore
      */
     private String filenameConform(String filename)
     {
-        return addDate("") + UKEY_SEPARATOR + filename;
-    }
-
-    /**
-     * @return A unique name for a file with date ane name encodings.
-     */
-    private String generateUniqueKey()
-    {
-        String name = "NA";
-        return filenameConform(name);
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+        return timeStamp + UKEY_SEPARATOR + filename;
     }
 
     /**
@@ -135,17 +121,23 @@ public class DataStore
      */
     public String putNewDataSet(DataSet dSet, ActivityTransitions from, String filename)
     {
-        String uKey = generateUniqueKey();
+        String uKey;
+        Date dateCreated = Calendar.getInstance().getTime();
+        File dir;
 
-        switch (from)
+        if (from == ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY)
         {
-            case FROM_DATA_CAPTURE_ACTIVITY:
-                saveDSet(dSet, uKey, getTempDir());
-                break;
-            default:
-                saveDSet(dSet, filenameConform(filename), getSaveDir());
-                break;
+            uKey = filenameConform("NA");
+            dSet.setMetaData(uKey, dateCreated);
+            dir = getTempDir();
+        } else
+        {
+            uKey = filenameConform(filename);
+            dSet.setMetaData(uKey, dateCreated);
+            dir = getSaveDir();
         }
+        saveDSet(dSet, uKey, dir);
+
         return uKey;
     }
 
@@ -206,11 +198,41 @@ public class DataStore
         return dSet;
     }
 
+
+    /**
+     * Provides meta data for datasets
+     * Useful for displaying datasets in graph (X-axis as date).
+     */
+    private static class DataSetMetaData implements Serializable
+    {
+        private String name;
+        private Date date;
+
+        public DataSetMetaData(String name, Date date)
+        {
+            this.name = name;
+            this.date = date;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public Date getDate()
+        {
+            return date;
+        }
+    }
+
     /**
      * An abstract data model to store data from each data capture activity.
      */
     public static class DataSet implements Serializable
     {
+
+        private DataSetMetaData metaData;
+
         /**
          * Element of the data set.
          * Each element represents data from a tube.
@@ -273,6 +295,25 @@ public class DataStore
         public DataSet()
         {
         }
+
+
+        /**
+         * Set the meta data of this DataSet
+         * @param name Name of DataSet
+         * @param dateCreated Date created
+         */
+        public void setMetaData(String name, Date dateCreated)
+        {
+            metaData = new DataSetMetaData(name, dateCreated);
+        }
+
+
+        /**
+         * get MetaData
+         * @return
+         */
+        public DataSetMetaData getMetaData() { return metaData; }
+
 
         /**
          * Add a new element to the dataset with the given values

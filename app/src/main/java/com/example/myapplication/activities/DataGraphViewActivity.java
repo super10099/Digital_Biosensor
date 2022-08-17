@@ -13,16 +13,21 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.androidplot.util.PixelUtils;
+import com.androidplot.xy.CatmullRomInterpolator;
+import com.androidplot.xy.LineAndPointFormatter;
+import com.androidplot.xy.SimpleXYSeries;
+import com.androidplot.xy.XYGraphWidget;
+import com.androidplot.xy.XYPlot;
+import com.androidplot.xy.XYSeries;
 import com.example.myapplication.R;
 import com.example.myapplication.datasystem.DataStore;
 import com.example.myapplication.util.ActivityTransitions;
 import com.example.myapplication.util.SelectDataSetContract;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LegendRenderer;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -86,58 +91,78 @@ public class DataGraphViewActivity extends AppCompatActivity
      */
     private void displayDataSets()
     {
-        GraphView graph = findViewById(R.id.GraphView_Graph);
-        Calendar calendar = Calendar.getInstance();
-        ArrayList<Date> dates = new ArrayList<>();
+        XYPlot plot = findViewById(R.id.GraphView_Plot);
+        plot.clear();
 
-        int count = 0;
+        // get datasets into a 2D array to iterator by column major
+        // make the array is normal (all rows have same sizes)
+        ArrayList<ArrayList<DataStore.DataSet.DataSetElement>> arr2D = new ArrayList<>();
         for (DataStore.DataSet ds : loadedDSets)
         {
             Iterator<DataStore.DataSet.DataSetElement> it = ds.getIterator();
-            ArrayList<DataPoint> points = new ArrayList<>();
+            ArrayList<DataStore.DataSet.DataSetElement> row = new ArrayList<>();
             while (it.hasNext())
             {
-                DataStore.DataSet.DataSetElement elem = it.next();
-                Date date = calendar.getTime();
-                DataPoint p = new DataPoint(date, elem.getComparativeValue());
-                points.add(p);
-
-                dates.add(date);
-                calendar.add(Calendar.DATE, 1);
+                row.add(it.next());
             }
-            DataPoint[] arr = new DataPoint[points.size()];
-            points.toArray(arr);
-            LineGraphSeries<DataPoint> series = new LineGraphSeries<>(arr);
-
-            // styling
-            series.setTitle(String.valueOf(count));
-            series.setColor(Color.GREEN);
-            series.setDrawDataPoints(true);
-            series.setDataPointsRadius(20);
-            series.setThickness(8);
-
-            // custom paint to make a dotted line
-            Paint paint = new Paint();
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(10);
-            paint.setPathEffect(new DashPathEffect(new float[]{5, 5}, 0));
-            series.setCustomPaint(paint);
-
-            graph.addSeries(series);
-
-            count++;
+            arr2D.add(row);
         }
 
-        // legend
-        graph.getLegendRenderer().setVisible(true);
-        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        for (int col = 0; col < arr2D.get(0).size(); col++)
+        {
+            ArrayList<Double> seriesNumbers = new ArrayList<>();
+            for (int row = 0; row < arr2D.size(); row++)
+            {
+                seriesNumbers.add(arr2D.get(row).get(col).getComparativeValue());
+            }
 
-        // set date label formatter
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getApplicationContext()));
-        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
-        graph.getViewport().setMinX(dates.get(0).getTime());
-        graph.getViewport().setMaxX(dates.get(2).getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
+            XYSeries series = new SimpleXYSeries(
+                    seriesNumbers, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, String.format("Series %d", col));
+
+            // series formatting
+            LineAndPointFormatter seriesFormat = new LineAndPointFormatter(Color.RED, Color.GREEN, null, null);
+            seriesFormat.getLinePaint().setPathEffect(new DashPathEffect(new float[]{
+                    PixelUtils.dpToPix(20),
+                    PixelUtils.dpToPix(15)}, 0));
+
+            plot.addSeries(series, seriesFormat);
+        }
+
+
+//        int count = 1;
+//        for (DataStore.DataSet ds : loadedDSets)
+//        {
+//            ArrayList<Double> seriesNumbers = new ArrayList<>();
+//            Iterator<DataStore.DataSet.DataSetElement> it = ds.getIterator();
+//            while (it.hasNext())
+//            {
+//                DataStore.DataSet.DataSetElement elem = it.next();
+//                seriesNumbers.add(elem.getComparativeValue());
+//            }
+//
+//            XYSeries series = new SimpleXYSeries(
+//                    seriesNumbers, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, String.format("Series %d", count++));
+//
+//            // series formatting
+//            LineAndPointFormatter seriesFormat = new LineAndPointFormatter(Color.RED, Color.GREEN, null, null);
+//            seriesFormat.getLinePaint().setPathEffect(new DashPathEffect(new float[]{
+//                    PixelUtils.dpToPix(20),
+//                    PixelUtils.dpToPix(15)}, 0));
+//
+//            plot.addSeries(series, seriesFormat);
+//
+//            plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
+//                @Override
+//                public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+//                    int i = Math.round(((Number) obj).floatValue());
+//                    return toAppendTo.append(domainLabels[i]);
+//                }
+//                @Override
+//                public Object parseObject(String source, ParsePosition pos) {
+//                    return null;
+//                }
+//            });
+//        }
     }
 
 
