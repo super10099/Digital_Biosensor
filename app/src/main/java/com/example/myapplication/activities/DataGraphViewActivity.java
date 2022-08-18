@@ -61,7 +61,6 @@ public class DataGraphViewActivity extends AppCompatActivity
 
 
     /**
-     *
      * @param savedInstanceState
      */
     @Override
@@ -93,6 +92,7 @@ public class DataGraphViewActivity extends AppCompatActivity
 
     /**
      * https://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+     *
      * @return
      */
     private int unique_color()
@@ -106,6 +106,7 @@ public class DataGraphViewActivity extends AppCompatActivity
 
     /**
      * https://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+     *
      * @param h
      * @param s
      * @param v
@@ -113,21 +114,51 @@ public class DataGraphViewActivity extends AppCompatActivity
      */
     private int hsvToRGB(double h, double s, double v)
     {
-        int h_i = (int) (h*6);
-        double f = h*6 - h_i;
+        int h_i = (int) (h * 6);
+        double f = h * 6 - h_i;
         double p = v * (1 - s);
-        double q = v * (1 - f*s);
+        double q = v * (1 - f * s);
         double t = v * (1 - (1 - f) * s);
 
-        double r=0,g=0,b=0;
-        if (h_i == 0) { r=v; g=t; b=p; }
-        if (h_i == 1) { r=q; g=v; b=p; }
-        if (h_i == 2) { r=p; g=v; b=t; }
-        if (h_i == 3) { r=p; g=q; b=v; }
-        if (h_i == 4) { r=t; g=p; b=v; }
-        if (h_i == 5) { r=v; g=p; b=q; }
+        double r = 0, g = 0, b = 0;
+        if (h_i == 0)
+        {
+            r = v;
+            g = t;
+            b = p;
+        }
+        if (h_i == 1)
+        {
+            r = q;
+            g = v;
+            b = p;
+        }
+        if (h_i == 2)
+        {
+            r = p;
+            g = v;
+            b = t;
+        }
+        if (h_i == 3)
+        {
+            r = p;
+            g = q;
+            b = v;
+        }
+        if (h_i == 4)
+        {
+            r = t;
+            g = p;
+            b = v;
+        }
+        if (h_i == 5)
+        {
+            r = v;
+            g = p;
+            b = q;
+        }
 
-        return Color.rgb((int) (r*256),(int) (g*256),(int) (b*256));
+        return Color.rgb((int) (r * 256), (int) (g * 256), (int) (b * 256));
     }
 
     /**
@@ -140,7 +171,8 @@ public class DataGraphViewActivity extends AppCompatActivity
         XYPlot plot = findViewById(R.id.GraphView_Plot);
         plot.clear();
 
-        loadedDSets.sort(new Comparator<DataStore.DataSet>() {
+        loadedDSets.sort(new Comparator<DataStore.DataSet>()
+        {
             @Override
             public int compare(DataStore.DataSet o1, DataStore.DataSet o2)
             {
@@ -191,13 +223,16 @@ public class DataGraphViewActivity extends AppCompatActivity
                 private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
 
                 @Override
-                public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+                public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos)
+                {
                     long millis = ((Number) obj).longValue();
                     Date date = new Date(millis);
                     return dateFormat.format(date, toAppendTo, pos);
                 }
+
                 @Override
-                public Object parseObject(String source, ParsePosition pos) {
+                public Object parseObject(String source, ParsePosition pos)
+                {
                     return null;
                 }
             });
