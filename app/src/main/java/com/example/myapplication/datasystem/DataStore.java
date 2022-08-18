@@ -203,7 +203,7 @@ public class DataStore
      * Provides meta data for datasets
      * Useful for displaying datasets in graph (X-axis as date).
      */
-    private static class DataSetMetaData implements Serializable
+    public static class DataSetMetaData implements Serializable
     {
         private String name;
         private Date date;
@@ -239,6 +239,7 @@ public class DataStore
          */
         public class DataSetElement implements Serializable
         {
+            private DataSet parent;
             private double avgR;
             private double avgG;
             private double avgB;
@@ -285,6 +286,10 @@ public class DataStore
             {
                 return comparativeValue;
             }
+
+            public DataSet getParent() { return parent; }
+
+            public void setParent(DataSet parent) { this.parent = parent; }
         }
 
         private ArrayList<DataSetElement> elements = new ArrayList<>();
@@ -328,6 +333,7 @@ public class DataStore
         public void newElement(double avgR, double avgG, double avgB, double rPoint, double rPointSTD, double comparativeValue)
         {
             DataSetElement newElem = new DataSetElement(avgR, avgG, avgB, rPoint, rPointSTD, comparativeValue);
+            newElem.setParent(this);
             elements.add(newElem);
         }
 

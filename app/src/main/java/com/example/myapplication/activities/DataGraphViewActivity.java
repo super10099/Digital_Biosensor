@@ -3,7 +3,7 @@ package com.example.myapplication.activities;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,12 +11,14 @@ import android.widget.ImageButton;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidplot.util.PixelUtils;
-import com.androidplot.xy.CatmullRomInterpolator;
+import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
+import com.androidplot.xy.StepMode;
 import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
@@ -28,11 +30,14 @@ import com.example.myapplication.util.SelectDataSetContract;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -40,6 +45,8 @@ import java.util.Iterator;
  */
 public class DataGraphViewActivity extends AppCompatActivity
 {
+    private static double UNIQUE_SATURATION = 0.50;
+    private static double UNIQUE_VALUE = 0.70;
 
     /**
      * DataSets to display is loaded here
@@ -94,7 +101,7 @@ public class DataGraphViewActivity extends AppCompatActivity
         double h = Math.random();
         h += golden_ratio_conjugate;
         h %= 1;
-        return hsvToRGB(h, 0.5, 0.95);
+        return hsvToRGB(h, UNIQUE_SATURATION, UNIQUE_VALUE);
     }
 
     /**
@@ -127,19 +134,26 @@ public class DataGraphViewActivity extends AppCompatActivity
      * Called after datasets are loaded.
      * Display the loaded datasets.
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void displayDataSets()
     {
         XYPlot plot = findViewById(R.id.GraphView_Plot);
         plot.clear();
 
+        loadedDSets.sort(new Comparator<DataStore.DataSet>() {
+            @Override
+            public int compare(DataStore.DataSet o1, DataStore.DataSet o2)
+            {
+                return o1.getMetaData().getDate().compareTo(o2.getMetaData().getDate());
+            }
+        });
+
+
         // get datasets into a 2D array to iterator by column major
         // make the array is normal (all rows have same sizes)
         ArrayList<ArrayList<DataStore.DataSet.DataSetElement>> arr2D = new ArrayList<>();
-        ArrayList<DataStore.DataSet> RowSets = new ArrayList<>();    // for names;
         for (DataStore.DataSet ds : loadedDSets)
         {
-            RowSets.add(ds);
-
             Iterator<DataStore.DataSet.DataSetElement> it = ds.getIterator();
             ArrayList<DataStore.DataSet.DataSetElement> row = new ArrayList<>();
             while (it.hasNext())
@@ -152,15 +166,18 @@ public class DataGraphViewActivity extends AppCompatActivity
         // skip first column (skip control series)
         for (int col = 1; col < arr2D.get(0).size(); col++)
         {
-            ArrayList<Double> seriesNumbers = new ArrayList<>();
+            ArrayList<Long> seriesNumbersX = new ArrayList<>();
+            ArrayList<Double> seriesNumbersY = new ArrayList<>();
             for (int row = 0; row < arr2D.size(); row++)
             {
-                seriesNumbers.add(arr2D.get(row).get(col).getComparativeValue());
+                DataStore.DataSet.DataSetElement elem = arr2D.get(row).get(col);
+                seriesNumbersX.add(elem.getParent().getMetaData().getDate().getTime());
+                seriesNumbersY.add(elem.getComparativeValue());
             }
 
+            // create series
             String seriesTitle = String.format("x%d", col);
-            XYSeries series = new SimpleXYSeries(
-                    seriesNumbers, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, seriesTitle);
+            XYSeries series = new SimpleXYSeries(seriesNumbersX, seriesNumbersY, seriesTitle);
 
             // series formatting
             LineAndPointFormatter seriesFormat = new LineAndPointFormatter(unique_color(), Color.GREEN, null, null);
@@ -168,44 +185,28 @@ public class DataGraphViewActivity extends AppCompatActivity
                     PixelUtils.dpToPix(20),
                     PixelUtils.dpToPix(15)}, 0));
 
+            // display dates in x-axis
+            plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format()
+            {
+                private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
+
+                @Override
+                public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+                    long millis = ((Number) obj).longValue();
+                    Date date = new Date(millis);
+                    return dateFormat.format(date, toAppendTo, pos);
+                }
+                @Override
+                public Object parseObject(String source, ParsePosition pos) {
+                    return null;
+                }
+            });
+
+            plot.setDomainStep(StepMode.SUBDIVIDE, arr2D.size());
+            plot.setRangeStep(StepMode.SUBDIVIDE, arr2D.get(0).size());
+//            plot.setRangeBoundaries(0, 3, BoundaryMode.FIXED);
             plot.addSeries(series, seriesFormat);
         }
-
-
-//        int count = 1;
-//        for (DataStore.DataSet ds : loadedDSets)
-//        {
-//            ArrayList<Double> seriesNumbers = new ArrayList<>();
-//            Iterator<DataStore.DataSet.DataSetElement> it = ds.getIterator();
-//            while (it.hasNext())
-//            {
-//                DataStore.DataSet.DataSetElement elem = it.next();
-//                seriesNumbers.add(elem.getComparativeValue());
-//            }
-//
-//            XYSeries series = new SimpleXYSeries(
-//                    seriesNumbers, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, String.format("Series %d", count++));
-//
-//            // series formatting
-//            LineAndPointFormatter seriesFormat = new LineAndPointFormatter(Color.RED, Color.GREEN, null, null);
-//            seriesFormat.getLinePaint().setPathEffect(new DashPathEffect(new float[]{
-//                    PixelUtils.dpToPix(20),
-//                    PixelUtils.dpToPix(15)}, 0));
-//
-//            plot.addSeries(series, seriesFormat);
-//
-//            plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
-//                @Override
-//                public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-//                    int i = Math.round(((Number) obj).floatValue());
-//                    return toAppendTo.append(domainLabels[i]);
-//                }
-//                @Override
-//                public Object parseObject(String source, ParsePosition pos) {
-//                    return null;
-//                }
-//            });
-//        }
     }
 
 
@@ -215,6 +216,7 @@ public class DataGraphViewActivity extends AppCompatActivity
      */
     private class selectDataCallBack implements ActivityResultCallback<ArrayList<String>>
     {
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onActivityResult(ArrayList<String> result)
         {

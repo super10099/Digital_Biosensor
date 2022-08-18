@@ -26,7 +26,8 @@
         app:lineLabelRotationBottom="-45"
         app:lineLabels="left|bottom"
         app:rangeTitle="RGB Ratio"
-        app:title="RGB Ratio Over Time" />
+        app:title="RGB Ratio Over Time"
+        app:domainTitleWidth="5dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
