@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -100,11 +101,11 @@ public class DataAnalysisActivity extends AppCompatActivity
         saveResultsFilenameEditText = findViewById(SAVE_RESULTS_FILENANME_EDITTEXT);
 
         // attach event listeners
-        newImageBtn.setOnTouchListener(new newImageOnTouch());
-        dataExportBtn.setOnTouchListener(new onExportBtn());
-        saveResultsBtn.setOnTouchListener(new onSaveResultsBtn());
-        saveResultsCancelBtn.setOnTouchListener(new onSaveResultsCancelBtn());
-        saveResultsConfirmBtn.setOnTouchListener(new onSaveResultsConfirmSaveBtn());
+        newImageBtn.setOnClickListener(new ExitOnClickListener());
+        dataExportBtn.setOnClickListener(new ExportOnClickListener());
+        saveResultsBtn.setOnClickListener(new SaveResultsMenuOnClickListener());
+        saveResultsCancelBtn.setOnClickListener(new SaveResultsCancelOnClickListener());
+        saveResultsConfirmBtn.setOnClickListener(new SaveResultsConfirmOnClickListener());
 
         // load the dataset
         Bundle extras = getIntent().getExtras();
@@ -133,17 +134,13 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Transition to MainActivity to restart the process.
      */
-    private class newImageOnTouch implements View.OnTouchListener
+    private class ExitOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                finish();
-                return true;
-            }
-            return false;
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            finish();
         }
     }
 
@@ -315,89 +312,79 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Open save results menu
      */
-    private class onSaveResultsBtn implements View.OnTouchListener
+    private class SaveResultsMenuOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                saveResultsCL.setVisibility(View.VISIBLE);
-            }
-            return true;
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            saveResultsCL.setVisibility(View.VISIBLE);
         }
     }
 
     /**
      * Cancel the act of saving results.
      */
-    private class onSaveResultsCancelBtn implements View.OnTouchListener
+    private class SaveResultsCancelOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                saveResultsReset();
-            }
-            return true;
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            saveResultsReset();
         }
     }
 
     /**
-     * Confirm save results
+     *
      */
-    private class onSaveResultsConfirmSaveBtn implements View.OnTouchListener
+    private class SaveResultsConfirmOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                String inputFileName = saveResultsFilenameEditText.getText().toString();
-                DataStore.PrimaryDataStore.putNewDataSet(loadedDataSet, ActivityTransitions.FROM_DATA_ANALYSIS_ACTIVITY, inputFileName);
-                saveResultsReset();
-            }
-            return true;
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+
+            String inputFileName = saveResultsFilenameEditText.getText().toString();
+            DataStore.PrimaryDataStore.putNewDataSet(loadedDataSet, ActivityTransitions.FROM_DATA_ANALYSIS_ACTIVITY, inputFileName);
+            saveResultsReset();
         }
     }
 
     /**
-     * Export data
+     *
      */
-    private class onExportBtn implements View.OnTouchListener
+    private class ExportOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+
+            String rawCSV = loadedDataSet.getCSV();
+
+            try
             {
-                String rawCSV = loadedDataSet.getCSV();
+                // create a temporary CSV file
+                File dir = DataStore.PrimaryDataStore.getTempDir();
+                File csvFile = File.createTempFile("resultsExport", ".csv", dir);
+                FileOutputStream OStream = new FileOutputStream(csvFile);
+                OStream.write(rawCSV.getBytes());
+                Uri csvFileUri = FileProvider.getUriForFile(getApplicationContext(),
+                        "com.example.myapplication.fileprovider",
+                        csvFile);
 
-                try
-                {
-                    // create a temporary CSV file
-                    File dir = DataStore.PrimaryDataStore.getTempDir();
-                    File csvFile = File.createTempFile("resultsExport", ".csv", dir);
-                    FileOutputStream OStream = new FileOutputStream(csvFile);
-                    OStream.write(rawCSV.getBytes());
-                    Uri csvFileUri = FileProvider.getUriForFile(getApplicationContext(),
-                            "com.example.myapplication.fileprovider",
-                            csvFile);
-
-                    // send as an intent
-                    Intent exportDataIntent = new Intent(Intent.ACTION_SEND);
-                    exportDataIntent.setType("text/csv");
-                    exportDataIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    exportDataIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    exportDataIntent.putExtra(Intent.EXTRA_STREAM, csvFileUri);
-                    startActivity(Intent.createChooser(exportDataIntent, EXPORT_DATA_CHOOSER_TITLE));
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
+                // send as an intent
+                Intent exportDataIntent = new Intent(Intent.ACTION_SEND);
+                exportDataIntent.setType("text/csv");
+                exportDataIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                exportDataIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                exportDataIntent.putExtra(Intent.EXTRA_STREAM, csvFileUri);
+                startActivity(Intent.createChooser(exportDataIntent, EXPORT_DATA_CHOOSER_TITLE));
+            } catch (IOException e)
+            {
+                e.printStackTrace();
             }
-            return true;
         }
     }
 }

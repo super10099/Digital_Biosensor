@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
 
@@ -60,10 +60,10 @@ public class MenuActivity extends AppCompatActivity
         Button loadPictureBtn = findViewById(R.id.menuLoadPictureBtn);
         Button savedDataBtn = findViewById(R.id.menuSavedDataBtn);
         Button graphDataBtn = findViewById(R.id.menuDataGraphViewBtn);
-        takePictureBtn.setOnClickListener(new OnTakePictureTouch());
-        loadPictureBtn.setOnTouchListener(new OnLoadPictureTouch());
-        savedDataBtn.setOnTouchListener(new OnSavedDataTouch());
-        graphDataBtn.setOnTouchListener(new OnGraphDataTouch());
+        takePictureBtn.setOnClickListener(new TakePictureOnClickListener());
+        loadPictureBtn.setOnClickListener(new LoadPictureOnClickListener());
+        savedDataBtn.setOnClickListener(new SavedDataOnClickListener());
+        graphDataBtn.setOnClickListener(new GraphDataOnClickListener());
 
         // initiate DataStore if does not exist
         if (DataStore.PrimaryDataStore == null)
@@ -129,11 +129,13 @@ public class MenuActivity extends AppCompatActivity
     /**
      * Listener for a request to capture picture
      */
-    private class OnTakePictureTouch implements View.OnClickListener
+    private class TakePictureOnClickListener implements View.OnClickListener
     {
         @Override
-        public void onClick(View event)
+        public void onClick(View v)
         {
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+
             // Create an image file to store the capture
             // Create a Uri to the image file
             // Use the Uri as an extra in ACTION_IMAGE_CAPTURE
@@ -159,18 +161,15 @@ public class MenuActivity extends AppCompatActivity
     /**
      * Listener for request to load a picture from gallery
      */
-    private class OnLoadPictureTouch implements View.OnTouchListener
+    private class LoadPictureOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                Intent pickPictureIntent = new Intent(Intent.ACTION_PICK,
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPictureIntent, REQUEST_LOAD_IMAGE);
-            }
-            return true;
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            Intent pickPictureIntent = new Intent(Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(pickPictureIntent, REQUEST_LOAD_IMAGE);
         }
     }
 
@@ -178,35 +177,29 @@ public class MenuActivity extends AppCompatActivity
     /**
      * Listener for activity switch to SavedDataBrowsing
      */
-    private class OnSavedDataTouch implements View.OnTouchListener
+    private class SavedDataOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                Intent changeActivity = new Intent(MenuActivity.this, SavedDataBrowsingActivity.class);
-                changeActivity.putExtra("bitmapUri", pictureFileUri);
-                startActivity(changeActivity);
-            }
-            return true;
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            Intent changeActivity = new Intent(MenuActivity.this, SavedDataBrowsingActivity.class);
+            changeActivity.putExtra("bitmapUri", pictureFileUri);
+            startActivity(changeActivity);
         }
     }
 
     /**
      * Listener for activity switch to DataGraphViewActivity
      */
-    private class OnGraphDataTouch implements View.OnTouchListener
+    private class GraphDataOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                Intent changeActivity = new Intent(MenuActivity.this, DataGraphViewActivity.class);
-                startActivity(changeActivity);
-            }
-            return true;
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            Intent changeActivity = new Intent(MenuActivity.this, DataGraphViewActivity.class);
+            startActivity(changeActivity);
         }
     }
 }

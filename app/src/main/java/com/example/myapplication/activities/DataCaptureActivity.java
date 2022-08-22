@@ -8,28 +8,25 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.myapplication.datasystem.DataCaptureSettings;
-import com.example.myapplication.datasystem.DataStore;
 import com.example.myapplication.sampler.CircularSamplerGenerator;
 import com.example.myapplication.sampler.ComparativeValueVisitor;
 import com.example.myapplication.datasystem.DataBundlingVisitor;
 import com.example.myapplication.R;
 import com.example.myapplication.util.ActivityTransitions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.FileNotFoundException;
@@ -42,24 +39,6 @@ import java.util.Objects;
  */
 public class DataCaptureActivity extends AppCompatActivity
 {
-    private static final int DATA_CAPTURE_SCROLLVIEW_VERTICAL = R.id.DataCaptureImageScrollView;
-    private static final int DATA_CAPTURE_SCROLLVIEW_HORIZONTAL = R.id.DataCaptureHorizontalScroll;
-
-    private static final int DURATION_BEFORE_NEXT_ACTIVITY = 3000;  // in milliseconds
-    private static final int DATA_CAPTURE_DONE_BTN = R.id.DataCaptureDoneBtn;
-    private static final int DATA_CAPTURE_PICTURE = R.id.DataCapturePictureView;
-    private static final int DATA_CAPTURE_ADDSAMPLER = R.id.DataCaptureAddSamplerBtn;
-    private static final int DATA_CAPTURE_SAMPLERS_CL = R.id.cLCircularSamplers;
-
-    private static final int DATA_CAPTURE_OPTIONS_CL = R.id.DataCaptureOptionsConstraintLayout;
-    private static final int DATA_CAPTURE_OPTIONS_FRAME = R.id.DataCaptureOptionsFrame;
-    private static final int DATA_CAPTURE_OPTIONS_BTN = R.id.DataCaptureOptionsBtn;
-    private static final int DATA_CAPTURE_OPTIONS_CANCEL_BTN = R.id.DataCaptureOptionsCancelBtn;
-    private static final int DATA_CAPTURE_OPTIONS_CONFIRM_BTN = R.id.DataCaptureOptionsConfirmBtn;
-    private static final int DATA_CAPTURE_OPTIONS_SCALE_FIELD = R.id.DataCaptureEditScale;
-    private static final int DATA_CAPTURE_OPTIONS_SAMPLER_RADIUS_FIELD = R.id.DataCaptureEditSamplerRadius;
-    private static final int DATA_CAPTURE_OPTIONS_SAMPLER_NUM_POINTS = R.id.DataCaptureEditNumTrials;
-
     /**
      * Settings of data capture, has options for user to adjust
      */
@@ -72,14 +51,9 @@ public class DataCaptureActivity extends AppCompatActivity
     private ImageButton csGenView;
 
     private ConstraintLayout dataCaptureOptionsCL;
-    private ImageButton dataCaptureOptionsBtn;
-    private Button dataCaptureCancelBtn;
-    private Button dataCaptureConfirmBtn;
     private TextInputEditText scaleInputField;
     private TextInputEditText samplerRadiusInputField;
     private TextInputEditText samplerNumPointsInputField;
-
-    private ImageButton doneBtnView;
 
 
     public ImageView getPictureView()
@@ -100,8 +74,8 @@ public class DataCaptureActivity extends AppCompatActivity
         setContentView(R.layout.activity_datacapture);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // initializations
         if (settings == null)
@@ -109,25 +83,23 @@ public class DataCaptureActivity extends AppCompatActivity
             settings = new DataCaptureSettings();
         }
 
-        pictureView = findViewById(DATA_CAPTURE_PICTURE);
-        doneBtnView = findViewById(DATA_CAPTURE_DONE_BTN);
-        csGenView = findViewById(DATA_CAPTURE_ADDSAMPLER);
-        dataCaptureOptionsCL = findViewById(DATA_CAPTURE_OPTIONS_CL);
-        dataCaptureOptionsBtn = findViewById(DATA_CAPTURE_OPTIONS_BTN);
-        dataCaptureCancelBtn = findViewById(DATA_CAPTURE_OPTIONS_CANCEL_BTN);
-        dataCaptureConfirmBtn = findViewById(DATA_CAPTURE_OPTIONS_CONFIRM_BTN);
-        scaleInputField = findViewById(DATA_CAPTURE_OPTIONS_SCALE_FIELD);
-        samplerRadiusInputField = findViewById(DATA_CAPTURE_OPTIONS_SAMPLER_RADIUS_FIELD);
-        samplerNumPointsInputField = findViewById(DATA_CAPTURE_OPTIONS_SAMPLER_NUM_POINTS);
+        pictureView = findViewById(R.id.DataCapturePictureView);
+        ImageButton doneBtnView = findViewById(R.id.DataCaptureDoneBtn);
+        csGenView = findViewById(R.id.DataCaptureAddSamplerBtn);
+        dataCaptureOptionsCL = findViewById(R.id.DataCaptureOptionsConstraintLayout);
+        ImageButton dataCaptureOptionsBtn = findViewById(R.id.DataCaptureOptionsBtn);
+        Button dataCaptureCancelBtn = findViewById(R.id.DataCaptureOptionsCancelBtn);
+        Button dataCaptureConfirmBtn = findViewById(R.id.DataCaptureOptionsConfirmBtn);
+        scaleInputField = findViewById(R.id.DataCaptureEditScale);
+        samplerRadiusInputField = findViewById(R.id.DataCaptureEditSamplerRadius);
+        samplerNumPointsInputField = findViewById(R.id.DataCaptureEditNumTrials);
 
         // add listeners for doneBtn
-        doneBtnView.setOnTouchListener(new deployedSamplers());
-        pictureView.setOnTouchListener(new screenDebugging());
-        dataCaptureOptionsBtn.setOnTouchListener(new onOptionsBtn());
-        dataCaptureCancelBtn.setOnTouchListener(new onOptionsCancelBtn());
-        dataCaptureConfirmBtn.setOnTouchListener(new onOptionsConfirmBtn());
-//        ((ScrollView) findViewById(DATA_CAPTURE_SCROLLVIEW_VERTICAL)).requestDisallowInterceptTouchEvent(true);
-//        ((HorizontalScrollView) findViewById(DATA_CAPTURE_SCROLLVIEW_HORIZONTAL)).requestDisallowInterceptTouchEvent(true);
+        doneBtnView.setOnClickListener(new DeployedSamplersOnClickListener());
+        pictureView.setOnTouchListener(new ScreenDebuggingOnTouchListener());
+        dataCaptureOptionsBtn.setOnClickListener(new OptionsOnClickListener());
+        dataCaptureCancelBtn.setOnClickListener(new OptionsCancelOnClickListener());
+        dataCaptureConfirmBtn.setOnClickListener(new OptionsConfirmOnClickListener());
 
         // set the picture after the view has been initialized
         pictureView.post(() ->
@@ -147,16 +119,6 @@ public class DataCaptureActivity extends AppCompatActivity
                 settings.setImageScale(scale);  // update settings
 
                 layoutImageView();
-
-                // rotate bitmap
-//                Bitmap pBitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
-//                bitmapXScale = (double)pictureView.getWidth() / (double)pictureBitmap.getWidth();
-//                bitmapYScale = (double)pictureView.getHeight() / (double)pictureBitmap.getHeight();
-//                Matrix matrix = new Matrix();
-//                matrix.postRotate(90);
-//                Bitmap rotatedBitmap = Bitmap.createBitmap(pBitmap, 0, 0, pBitmap.getWidth(), pBitmap.getHeight(), matrix, true);
-//                Bitmap pictureBitmap = rotatedBitmap;
-
 
             } catch (FileNotFoundException e)
             {
@@ -221,7 +183,7 @@ public class DataCaptureActivity extends AppCompatActivity
     {
         // set the dimensions of view according to scale settings
         double scale = settings.getImageScale();
-        ConstraintLayout samplersCL = findViewById(DATA_CAPTURE_SAMPLERS_CL);
+        ConstraintLayout samplersCL = findViewById(R.id.cLCircularSamplers);
         int scaledWit = (int) (pictureBitmap.getWidth() * scale);
         int scaledHit = (int) (pictureBitmap.getHeight() * scale);
         pictureView.getLayoutParams().width = scaledWit;
@@ -237,27 +199,25 @@ public class DataCaptureActivity extends AppCompatActivity
      * Listener for when the user is done picking deploying the samplers.
      * Mostly, this function generates the data and passes it the results activity.
      */
-    private class deployedSamplers implements View.OnTouchListener
+    private class DeployedSamplersOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View view, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                csGen.doTrials();
+            v.playSoundEffect(SoundEffectConstants.CLICK);
 
-                // Create visitor to calculate comparative values of each sampler
-                ComparativeValueVisitor calculateCVVistor = new ComparativeValueVisitor();
-                csGen.acceptVisitor(calculateCVVistor);
-                calculateCVVistor.calculateComparativeValues();
+            csGen.doTrials();
 
-                // Create visitor to collect all the data and bundle it for data storage
-                DataBundlingVisitor dbVisitor = new DataBundlingVisitor();
-                csGen.acceptVisitor(dbVisitor);
-                String uKey = dbVisitor.PackDataSet();
-                goToResultsActivity(uKey);
-            }
-            return true;
+            // Create visitor to calculate comparative values of each sampler
+            ComparativeValueVisitor calculateCVVistor = new ComparativeValueVisitor();
+            csGen.acceptVisitor(calculateCVVistor);
+            calculateCVVistor.calculateComparativeValues();
+
+            // Create visitor to collect all the data and bundle it for data storage
+            DataBundlingVisitor dbVisitor = new DataBundlingVisitor();
+            csGen.acceptVisitor(dbVisitor);
+            String uKey = dbVisitor.PackDataSet();
+            goToResultsActivity(uKey);
         }
     }
 
@@ -265,7 +225,7 @@ public class DataCaptureActivity extends AppCompatActivity
     /**
      * Debugging mouse clicks
      */
-    private class screenDebugging implements View.OnTouchListener
+    private class ScreenDebuggingOnTouchListener implements View.OnTouchListener
     {
         @Override
         public boolean onTouch(View v, MotionEvent event)
@@ -284,70 +244,59 @@ public class DataCaptureActivity extends AppCompatActivity
 
 
     /**
-     * Options menu
+     *
      */
-    private class onOptionsBtn implements View.OnTouchListener
+    private class OptionsOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                dataCaptureOptionsCL.setVisibility(View.VISIBLE);
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            dataCaptureOptionsCL.setVisibility(View.VISIBLE);
 
-                // update fields to current settings
-                double scale = settings.getImageScale();
-                int radius = settings.getSamplerRadius();
-                int numPoints = settings.getNumSamplingPoints();
-                scaleInputField.setText(Double.toString(scale));
-                samplerRadiusInputField.setText(Integer.toString(radius));
-                samplerNumPointsInputField.setText(Integer.toString(numPoints));
-            }
-
-            return true;
+            // update fields to current settings
+            double scale = settings.getImageScale();
+            int radius = settings.getSamplerRadius();
+            int numPoints = settings.getNumSamplingPoints();
+            scaleInputField.setText(Double.toString(scale));
+            samplerRadiusInputField.setText(Integer.toString(radius));
+            samplerNumPointsInputField.setText(Integer.toString(numPoints));
         }
     }
 
     /**
-     * Cancel options menu
+     *
      */
-    private class onOptionsCancelBtn implements View.OnTouchListener
+    private class OptionsCancelOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                dataCaptureOptionsCL.setVisibility(View.GONE);
-            }
-            return true;
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            dataCaptureOptionsCL.setVisibility(View.GONE);
         }
     }
 
 
     /**
-     * Confirm options menu
+     *
      */
-    private class onOptionsConfirmBtn implements View.OnTouchListener
+    private class OptionsConfirmOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                dataCaptureOptionsCL.setVisibility(View.GONE);
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            dataCaptureOptionsCL.setVisibility(View.GONE);
 
-                // update settings
-                double scale = Double.parseDouble(scaleInputField.getText().toString());
-                int radius = Integer.parseInt(samplerRadiusInputField.getText().toString());
-                int numPoints = Integer.parseInt(samplerNumPointsInputField.getText().toString());
-                settings.setImageScale(scale);
-                settings.setSamplerRadius(radius);
-                settings.setNumSamplingPoints(numPoints);
-                updatedSettings();
-            }
-
-            return true;
+            // update settings
+            double scale = Double.parseDouble(scaleInputField.getText().toString());
+            int radius = Integer.parseInt(samplerRadiusInputField.getText().toString());
+            int numPoints = Integer.parseInt(samplerNumPointsInputField.getText().toString());
+            settings.setImageScale(scale);
+            settings.setSamplerRadius(radius);
+            settings.setNumSamplingPoints(numPoints);
+            updatedSettings();
         }
     }
 

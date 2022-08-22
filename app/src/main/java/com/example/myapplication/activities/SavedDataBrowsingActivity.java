@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -201,7 +202,7 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
     {
         private final SavedDataBrowsingActivity compat;
 
-        private HashMap<String, Boolean> selectedDataSetUKeys = new HashMap<>();
+        private final HashMap<String, Boolean> selectedDataSetUKeys = new HashMap<>();
 
         public SavedDataBrowsingGraphViewBranch(SavedDataBrowsingActivity compat)
         {
@@ -213,7 +214,7 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
          */
         public void takeOver()
         {
-            compat.findViewById(R.id.savedDataGraphViewBranchDoneBtn).setOnTouchListener(new OnDoneDataSelection());
+            compat.findViewById(R.id.savedDataGraphViewBranchDoneBtn).setOnClickListener(new DataSelectionDoneOnClickListener());
         }
 
         /**
@@ -232,32 +233,29 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
         /**
          * Organizes the data and passes it as a result for the ActivityForResultContract
          */
-        private class OnDoneDataSelection implements View.OnTouchListener
+        private class DataSelectionDoneOnClickListener implements View.OnClickListener
         {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
+            public void onClick(View v)
             {
-                if (event.getAction() == MotionEvent.ACTION_UP)
-                {
-                    Intent intentData = new Intent();
-                    ArrayList<String> uKeysToView = new ArrayList<>();
+                v.playSoundEffect(SoundEffectConstants.CLICK);
 
-                    // loops through hashmap to check which uKeys were set to true
-                    // the ones set to true were the ones selected by user
-                    // so append it to an arraylist and set it as the result
-                    for (String s : selectedDataSetUKeys.keySet())
+                Intent intentData = new Intent();
+                ArrayList<String> uKeysToView = new ArrayList<>();
+
+                // loops through hashmap to check which uKeys were set to true
+                // the ones set to true were the ones selected by user
+                // so append it to an arraylist and set it as the result
+                for (String s : selectedDataSetUKeys.keySet())
+                {
+                    if (Boolean.TRUE.equals(selectedDataSetUKeys.get(s)))
                     {
-                        if (Boolean.TRUE.equals(selectedDataSetUKeys.get(s)))
-                        {
-                            uKeysToView.add(s);
-                        }
+                        uKeysToView.add(s);
                     }
-                    intentData.putExtra(SelectDataSetContract.EXTRA_KEY, uKeysToView);
-                    setResult(Activity.RESULT_OK, intentData);
-                    finish();
-                    return true;
                 }
-                return false;
+                intentData.putExtra(SelectDataSetContract.EXTRA_KEY, uKeysToView);
+                setResult(Activity.RESULT_OK, intentData);
+                finish();
             }
         }
 
@@ -277,6 +275,7 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
+                buttonView.playSoundEffect(SoundEffectConstants.CLICK);
                 selectedDataSetUKeys.put(modelUKey, isChecked);
             }
         }

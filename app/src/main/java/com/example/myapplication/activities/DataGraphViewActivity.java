@@ -6,6 +6,7 @@ import android.graphics.DashPathEffect;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -45,23 +46,22 @@ import java.util.List;
  */
 public class DataGraphViewActivity extends AppCompatActivity
 {
-    private static double UNIQUE_SATURATION = 0.50;
-    private static double UNIQUE_VALUE = 0.70;
+    private final static double UNIQUE_SATURATION = 0.50;
+    private final static double UNIQUE_VALUE = 0.70;
 
     /**
      * DataSets to display is loaded here
      */
-    private ArrayList<DataStore.DataSet> loadedDSets = new ArrayList<>();
+    private final ArrayList<DataStore.DataSet> loadedDSets = new ArrayList<>();
 
     /**
      *
      */
-    private ActivityResultLauncher<DataGraphViewActivity> selectDataLauncher =
+    private final ActivityResultLauncher<DataGraphViewActivity> selectDataLauncher =
             registerForActivityResult(new SelectDataSetContract(), new selectDataCallBack());
 
 
     /**
-     * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -77,8 +77,7 @@ public class DataGraphViewActivity extends AppCompatActivity
         // set orientation of the device
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        ImageButton addDataSetsBtn = findViewById(R.id.GraphViewAddDataSetsBtn);
-        addDataSetsBtn.setOnTouchListener(new OnAddDataSetsBtn());
+        findViewById(R.id.GraphViewAddDataSetsBtn).setOnClickListener(new AddDataSetsOnClickListener());
     }
 
 
@@ -272,17 +271,13 @@ public class DataGraphViewActivity extends AppCompatActivity
     /**
      * The user clicked on button to add datasets to display.
      */
-    private class OnAddDataSetsBtn implements View.OnTouchListener
+    private class AddDataSetsOnClickListener implements View.OnClickListener
     {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
+        public void onClick(View v)
         {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                switchToBrowseSavedDataActivity();
-                return true;
-            }
-            return false;
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            switchToBrowseSavedDataActivity();
         }
     }
 }
