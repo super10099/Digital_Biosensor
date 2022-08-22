@@ -51,7 +51,7 @@ public class CircularSamplerGenerator
         this.settings = settings;
 
         // attach listener that will generate a new sampler on touch
-        view.setOnTouchListener(new onTouchCreateSampler());
+        view.setOnTouchListener(new CreateSamplerOnTouchListener());
     }
 
     /**
@@ -66,7 +66,7 @@ public class CircularSamplerGenerator
     /**
      * Create a new sampler everytime the view has been touched
      */
-    private class onTouchCreateSampler implements View.OnTouchListener
+    private class CreateSamplerOnTouchListener implements View.OnTouchListener
     {
         @Override
         public boolean onTouch(View v, MotionEvent event)
@@ -89,6 +89,19 @@ public class CircularSamplerGenerator
                         xPos, yPos);
 
                 samplers.add(newSampler);
+
+                // set name of sampler
+                String name;
+                int ith = samplers.size();
+                if (ith == 1)
+                {
+                    name = "control";
+                }
+                else
+                {
+                    name = String.format("x%d", ith - 1);
+                }
+                newSampler.setName(name);
             }
 
             return true;

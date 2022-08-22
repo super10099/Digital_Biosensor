@@ -1,5 +1,6 @@
 package com.example.myapplication.sampler;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,33 +18,53 @@ import com.example.myapplication.activities.DataCaptureActivity;
  */
 public class CircularSamplerView
 {
-    private static final int VIEW_TEMPLATE_LAYOUT = R.layout.circularsampler_circle; /// template for generator
-    private static final int ROOT_LAYOUT_ID = R.id.cLCircularSamplers; /// Layout to store the views
     private static final int WEIRD_OFFSET = 5; // Needed for sampler to be in center of view
 
     private final ImageView circleView;
-    private TextView nameLabel;
-
-    private float dX, dY;   /// for translating the view
+    private final TextView labelView;
 
     private CircularSampler sampler;
 
-    boolean viewPosted = false;  // only true after circleView is posted (ready).
+    // for translating the view
+    private float dX, dY;
+
+    // only true after circleView is posted (ready).
+    boolean viewPosted = false;
 
     /**
      * Instantiate the views as well as attach listeners to them.
      */
+    @SuppressLint("ClickableViewAccessibility")
     public CircularSamplerView(DataCaptureActivity dcAct)
     {
-        // Inflate a new circleView and set its root to the layout of activity_took... layout
-        ConstraintLayout cL = dcAct.findViewById(ROOT_LAYOUT_ID);
+        ConstraintLayout cL = dcAct.findViewById(R.id.cLCircularSamplers);
+
+        // Inflate circle
         circleView = (ImageView) dcAct.getLayoutInflater()
-                .inflate(VIEW_TEMPLATE_LAYOUT, cL, false);
+                .inflate(R.layout.circularsampler_circle, cL, false);
         cL.addView(circleView);
-
-
-        // add listener to view
         circleView.setOnTouchListener(new onDragListener());
+
+        // inflate label
+        labelView = (TextView) dcAct.getLayoutInflater()
+                .inflate(R.layout.circularsampler_label, cL, false);
+        cL.addView(labelView);
+    }
+
+    /**
+     * Get the view's x position
+     */
+    private float getX()
+    {
+        return (sampler.getX()) - (float) (circleView.getWidth() / 2);
+    }
+
+    /**
+     * Get the view's y position
+     */
+    private float getY()
+    {
+        return (sampler.getY()) - (float) (circleView.getHeight() / 2);
     }
 
     /**
@@ -57,7 +78,8 @@ public class CircularSamplerView
     }
 
     /**
-     * Only call after setting the sampler
+     * Only call after setting the sampler.
+     * Animate views to their positions.
      */
     public void show()
     {
@@ -73,6 +95,12 @@ public class CircularSamplerView
             );
         });
 
+        labelView.post(() ->
+        {
+            labelView.setText(sampler.getName());
+            labelView.animate().x(getX());
+            labelView.animate().y(getY());
+        });
     }
 
 
@@ -82,6 +110,7 @@ public class CircularSamplerView
      */
     private class onDragListener implements View.OnTouchListener
     {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View view, MotionEvent event)
         {
@@ -119,22 +148,4 @@ public class CircularSamplerView
             return true;
         }
     }
-
-
-    /**
-     * Get the view's x position
-     */
-    private float getX()
-    {
-        return (sampler.getX()) - (float) (circleView.getWidth() / 2);
-    }
-
-    /**
-     * Get the view's y position
-     */
-    private float getY()
-    {
-        return (sampler.getY()) - (float) (circleView.getHeight() / 2);
-    }
-
 }

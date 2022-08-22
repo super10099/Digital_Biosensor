@@ -20,16 +20,18 @@ import java.util.Random;
  */
 public class CircularSampler
 {
-    private static final int ROOT_LAYOUT_ID = R.id.cLCircularSamplers; /// Layout to store the views
+    private static final int ROOT_LAYOUT_ID = R.id.cLCircularSamplers; // Layout to store the views
     private static final int VIEW_VISUALDOT_LAYOUT = R.layout.circularsampler_visualdot;
 
-    private final DataProcessor dProcessor = new DataProcessor();   /// brain of this sampler
+    private final DataProcessor dProcessor = new DataProcessor();   // brain of this sampler
 
     private final DataCaptureActivity dcAct;
 
     private final DataCaptureSettings settings;
-    private float x;   /// x position of circle
-    private float y;   /// y position of circle
+    private float x;   // x position of circle
+    private float y;   // y position of circle
+
+    private String name;    // name for labeling the circle
 
     public float getX()
     {
@@ -154,4 +156,13 @@ public class CircularSampler
         visitor.visitSampler(dProcessor);
     }
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
 }
