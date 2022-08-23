@@ -57,12 +57,9 @@ public class CircularSampler
      * Instantiate its member variables.
      * Instantiate a view for itself.
      */
-    public CircularSampler(DataCaptureActivity dcAct, DataCaptureSettings settings,
-                           float x, float y)
+    public CircularSampler(DataCaptureActivity dcAct, DataCaptureSettings settings)
     {
         this.settings = settings;
-        this.x = x;
-        this.y = y;
         this.dcAct = dcAct;
 
         CircularSamplerView samplerView = new CircularSamplerView(dcAct);

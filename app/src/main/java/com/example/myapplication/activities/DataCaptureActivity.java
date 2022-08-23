@@ -15,8 +15,10 @@ import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -55,10 +57,23 @@ public class DataCaptureActivity extends AppCompatActivity
     private TextInputEditText samplerRadiusInputField;
     private TextInputEditText samplerNumPointsInputField;
 
+    private ScrollView scrollView;
+    private HorizontalScrollView horizontalScrollView;
+
 
     public ImageView getPictureView()
     {
         return pictureView;
+    }
+
+    public ScrollView getScrollView()
+    {
+        return scrollView;
+    }
+
+    public HorizontalScrollView getHorizontalScrollViewScrollView()
+    {
+        return horizontalScrollView;
     }
 
 
@@ -83,6 +98,8 @@ public class DataCaptureActivity extends AppCompatActivity
             settings = new DataCaptureSettings();
         }
 
+        scrollView = findViewById(R.id.DataCaptureImageScrollView);
+        horizontalScrollView = findViewById(R.id.DataCaptureHorizontalScroll);
         pictureView = findViewById(R.id.DataCapturePictureView);
         ImageButton doneBtnView = findViewById(R.id.DataCaptureDoneBtn);
         csGenView = findViewById(R.id.DataCaptureAddSamplerBtn);

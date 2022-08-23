@@ -5,6 +5,8 @@ package com.example.myapplication.sampler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 
 import com.example.myapplication.activities.DataCaptureActivity;
 import com.example.myapplication.datasystem.DataCaptureSettings;
@@ -73,21 +75,7 @@ public class CircularSamplerGenerator
         {
             if (event.getAction() == MotionEvent.ACTION_UP)
             {
-                // create new sampler at specified location (relative to bitmap)
-                int[] baseCoords = new int[2];
-                tookAct.getPictureView().getLocationOnScreen(baseCoords);
-
-                int xPos = (int) (event.getRawX() - baseCoords[0]);
-                int yPos = (int) (event.getRawY() - baseCoords[1]);
-
-//                int xPos = (int) (v.getX() + event.getX());
-//                int yPos = (int) (v.getY() + event.getY());
-
-                CircularSampler newSampler = new CircularSampler(
-                        tookAct,
-                        settings,
-                        xPos, yPos);
-
+                CircularSampler newSampler = new CircularSampler(tookAct, settings);
                 samplers.add(newSampler);
 
                 // set name of sampler
