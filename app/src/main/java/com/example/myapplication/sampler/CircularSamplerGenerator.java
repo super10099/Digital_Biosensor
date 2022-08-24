@@ -57,6 +57,17 @@ public class CircularSamplerGenerator
     }
 
     /**
+     *
+     */
+    public void redraw()
+    {
+        for (CircularSampler sampler : samplers)
+        {
+            sampler.redraw();
+        }
+    }
+
+    /**
      * Accept visitor
      */
     public void acceptVisitor(Visitor visitor)

@@ -24,7 +24,9 @@ public class CircularSamplerView
     private final float[] circleViewOffset = new float[2];
     private final float[] labelViewOffset = new float[2];
 
-    private CircularSampler sampler;
+    private final float crosshair_buffer_zone = 1.5f;
+
+    private final CircularSampler sampler;
 
     // for translating the view
     private float dX, dY;
@@ -38,55 +40,73 @@ public class CircularSamplerView
      * Instantiate the views as well as attach listeners to them.
      */
     @SuppressLint("ClickableViewAccessibility")
-    public CircularSamplerView(DataCaptureActivity dcAct)
+    public CircularSamplerView(DataCaptureActivity dcAct, CircularSampler sampler)
     {
         this.dcAct = dcAct;
+        this.sampler = sampler;
+
         ConstraintLayout cL = dcAct.findViewById(R.id.cLCircularSamplers);
 
         // Inflate sampler (target, stick, label)
         ConstraintLayout samplerCL = (ConstraintLayout) dcAct.getLayoutInflater()
-                .inflate(R.layout.circularsampler_circle_test, cL, false);
-        cL.addView(samplerCL);
+                .inflate(R.layout.circularsampler_sampler, cL, false);
+        cL.addView(samplerCL, 0);
 
         circleView = samplerCL.findViewById(R.id.samplerTarget);
         stickView = samplerCL.findViewById(R.id.samplerStick);
         labelView = samplerCL.findViewById(R.id.samplerLabel);
 
         stickView.setOnTouchListener(new onDragListener());
-    }
 
-    /**
-     * Set the CircularSampler that the view represents.
-     *
-     * @param sampler CircularSampler of the view.
-     */
-    public void setCircularSampler(CircularSampler sampler)
-    {
-        this.sampler = sampler;
-    }
+        samplerCL.post(() -> {
+            // set text label
+            labelView.setText(sampler.getName());
 
-    /**
-     * Only call after setting the sampler.
-     * Set up views after they are finished laying out.
-     */
-    public void show()
-    {
-        stickView.post(() ->
-        {
+            // adjust size of circle based on settings
+            adjustCircle();
+
+            // get the initial starting offset relative to stick
+            labelViewOffset[0] = labelView.getX() - stickView.getX();
+            labelViewOffset[1] = labelView.getY() - stickView.getY();
+
+            // update y-pos based on vertical scroll
+            update(stickView.getX(), stickView.getY() + dcAct.getScrollView().getScrollY());
+            draw();
             viewPosted = true;
-            update(stickView.getX(), stickView.getY());  // set x and y based on xml starting layout
         });
-
-        labelView.post(() ->
-            {
-                labelView.setText(sampler.getName());
-                // get the initial starting offset relative to circleView
-                circleViewOffset[0] = circleView.getX() - stickView.getX();
-                circleViewOffset[1] = circleView.getY() - stickView.getY();
-                labelViewOffset[0] = labelView.getX() - stickView.getX();
-                labelViewOffset[1] = labelView.getY() - stickView.getY();
-            });
     }
+
+    /**
+     *
+     */
+    private void adjustCircle()
+    {
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) circleView.getLayoutParams();
+        float factor = dcAct.getApplicationContext().getResources().getDisplayMetrics().density;
+        int radius = sampler.getSettings().getSamplerRadius();  // radius is in density independent pixels
+        radius *= crosshair_buffer_zone;    // buffer zone, since the crosshair is a bit smaller than the actual radius
+        params.width = (int)(2 * radius * factor);
+        params.height = (int)(2 * radius * factor);
+        circleView.setX(stickView.getX() - (float)params.width / 2);
+        circleView.setY(stickView.getY() - (float)params.height / 2);
+
+        // update offset
+        circleViewOffset[0] = circleView.getX() - stickView.getX();
+        circleViewOffset[1] = circleView.getY() - stickView.getY();
+    }
+
+
+    /**
+     * Only called when needing to adjust circle
+     */
+    public void redraw()
+    {
+        adjustCircle();
+        circleView.requestLayout();
+        draw();
+    }
+
+
 
 
     /**

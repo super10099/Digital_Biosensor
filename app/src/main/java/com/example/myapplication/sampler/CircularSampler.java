@@ -33,6 +33,8 @@ public class CircularSampler
 
     private String name;    // name for labeling the circle
 
+    private CircularSamplerView samplerView;
+
     public float getX()
     {
         return x;
@@ -53,6 +55,8 @@ public class CircularSampler
         this.y = y;
     }
 
+    public DataCaptureSettings getSettings() { return settings; }
+
     /**
      * Instantiate its member variables.
      * Instantiate a view for itself.
@@ -62,9 +66,7 @@ public class CircularSampler
         this.settings = settings;
         this.dcAct = dcAct;
 
-        CircularSamplerView samplerView = new CircularSamplerView(dcAct);
-        samplerView.setCircularSampler(this);
-        samplerView.show();
+        samplerView = new CircularSamplerView(dcAct, this);
     }
 
     /**
@@ -102,12 +104,13 @@ public class CircularSampler
         Random randomGenerator = new Random();
         ArrayList<Point> positions = new ArrayList<>();
         ConstraintLayout cL = dcAct.findViewById(ROOT_LAYOUT_ID);
+        float factor = dcAct.getApplicationContext().getResources().getDisplayMetrics().density;
         int radius = settings.getSamplerRadius();
 
         for (int i = 0; i < settings.getNumSamplingPoints(); i++)
         {
             // randomly generate magnitude and radians
-            double magnitude = randomGenerator.nextDouble() * radius;
+            double magnitude = randomGenerator.nextDouble() * (radius * factor);   // density independent units to pixels
             double rads = randomGenerator.nextDouble() * 2 * Math.PI;
 
             // make a new position and make the position relative to the sampler's center
@@ -133,16 +136,21 @@ public class CircularSampler
     private void generateVisualDot(ConstraintLayout cL, Point position)
     {
         // Commented out due to memory bursts. Race condition, possibly.
-//        ImageView visualDotView = (ImageView) dcAct.getLayoutInflater()
-//                .inflate(VIEW_VISUALDOT_LAYOUT, cL, false);
-//
-//        Point targetPoint = new Point(
-//                Math.round(position.x - visualDotView.getWidth() / 2f),
-//                Math.round(position.y - visualDotView.getHeight() / 2f)
-//        );
-//
-//        cL.addView(visualDotView);
-//        dcAct.animateVisualDot(visualDotView, targetPoint);
+        ImageView visualDotView = (ImageView) dcAct.getLayoutInflater()
+                .inflate(VIEW_VISUALDOT_LAYOUT, cL, false);
+
+        Point targetPoint = new Point(
+                Math.round(position.x - visualDotView.getWidth() / 2f),
+                Math.round(position.y - visualDotView.getHeight() / 2f)
+        );
+
+        cL.addView(visualDotView);
+        dcAct.animateVisualDot(visualDotView, targetPoint);
+    }
+
+    public void redraw()
+    {
+        samplerView.redraw();
     }
 
     /**
