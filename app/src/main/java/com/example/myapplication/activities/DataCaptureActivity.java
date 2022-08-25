@@ -235,7 +235,7 @@ public class DataCaptureActivity extends AppCompatActivity
             DataBundlingVisitor dbVisitor = new DataBundlingVisitor();
             csGen.acceptVisitor(dbVisitor);
             String uKey = dbVisitor.PackDataSet();
-            //goToResultsActivity(uKey);
+            goToResultsActivity(uKey);
         }
     }
 

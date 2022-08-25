@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -61,6 +62,11 @@ public class DataGraphViewActivity extends AppCompatActivity
             registerForActivityResult(new SelectDataSetContract(), new selectDataCallBack());
 
 
+    private ImageButton addDataSetBtn;
+    private Button exitBtn;
+    private XYPlot plot;
+
+
     /**
      */
     @Override
@@ -77,7 +83,12 @@ public class DataGraphViewActivity extends AppCompatActivity
         // set orientation of the device
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        findViewById(R.id.GraphViewAddDataSetsBtn).setOnClickListener(new AddDataSetsOnClickListener());
+        addDataSetBtn = findViewById(R.id.GraphViewAddDataSetsBtn);
+        exitBtn = findViewById(R.id.GraphView_ExitBtn);
+        plot = findViewById(R.id.GraphView_Plot);
+
+        addDataSetBtn.setOnClickListener(new AddDataSetsOnClickListener());
+        exitBtn.setOnClickListener(new ExitOnClickListener());
     }
 
 
@@ -167,7 +178,6 @@ public class DataGraphViewActivity extends AppCompatActivity
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void displayDataSets()
     {
-        XYPlot plot = findViewById(R.id.GraphView_Plot);
         plot.clear();
 
         loadedDSets.sort(new Comparator<DataStore.DataSet>()
@@ -241,6 +251,10 @@ public class DataGraphViewActivity extends AppCompatActivity
 //            plot.setRangeBoundaries(0, 3, BoundaryMode.FIXED);
             plot.addSeries(series, seriesFormat);
         }
+
+        addDataSetBtn.setVisibility(View.GONE);
+        exitBtn.setVisibility(View.VISIBLE);
+        plot.setVisibility(View.VISIBLE);
     }
 
 
@@ -278,6 +292,19 @@ public class DataGraphViewActivity extends AppCompatActivity
         {
             v.playSoundEffect(SoundEffectConstants.CLICK);
             switchToBrowseSavedDataActivity();
+        }
+    }
+
+    /**
+     * The user clicked on button exit activity
+     */
+    private class ExitOnClickListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            v.playSoundEffect(SoundEffectConstants.CLICK);
+            finish();
         }
     }
 }

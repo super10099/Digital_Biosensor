@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/GraphView_ExitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="EXIT"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GraphView_Plot" />
+
     <ImageButton
         android:id="@+id/GraphViewAddDataSetsBtn"
         android:layout_width="100dp"
@@ -12,22 +24,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/GraphView_Plot"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <com.androidplot.xy.XYPlot
         android:id="@+id/GraphView_Plot"
         style="@style/APDefacto.Light"
         android:layout_width="fill_parent"
-        android:layout_height="350dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
         app:domainTitle="Date"
+        app:domainTitleWidth="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/GraphView_ExitBtn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lineLabelRotationBottom="-45"
         app:lineLabels="left|bottom"
         app:rangeTitle="RGB Ratio"
-        app:title="RGB Ratio Over Time"
-        app:domainTitleWidth="5dp" />
+        app:title="RGB Ratio Over Time" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
