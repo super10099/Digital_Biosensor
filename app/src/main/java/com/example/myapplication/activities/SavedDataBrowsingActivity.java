@@ -26,6 +26,7 @@ import com.example.myapplication.util.SelectDataSetContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Activity responsible for displaying the saved data in internal storage of application.
@@ -45,6 +46,9 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
     private ActivityTransitions from;
 
     private SavedDataBrowsingGraphViewBranch branch;
+
+    // Need to keep a list so they can be disconnected
+    private HashMap<String, View.OnClickListener> checkBoxListeners = new HashMap<>();
 
     /**
      * Initialize activity. Set the device settings (title bar, orientation)
@@ -123,16 +127,15 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
             // inflate the view with the xml template
             if (convertView == null)
             {
-
                 convertView = LayoutInflater.from(getContext())
                         .inflate(LISTVIEW_ITEM_ID, parent, false);
+            }
 
-                if (from == ActivityTransitions.FROM_DATA_GRAPH_VIEW_ACTIVITY)
-                {
-                    CheckBox cb = convertView.findViewById(LISTVIEW_ITEM2_CHECKBOX_ID);
-                    branch.SetOnCheckedChangeListener(cb, model.getUKey());
-                    cb.setVisibility(View.VISIBLE);
-                }
+            if (from == ActivityTransitions.FROM_DATA_GRAPH_VIEW_ACTIVITY)
+            {
+                CheckBox cb = convertView.findViewById(LISTVIEW_ITEM2_CHECKBOX_ID);
+                branch.SetOnCheckedChangeListener(cb, model.getUKey());
+                cb.setVisibility(View.VISIBLE);
             }
 
             // set listener

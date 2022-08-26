@@ -80,6 +80,7 @@
         android:layout_height="40dp"
         android:text="Tutorial"
         android:textAlignment="viewStart"
+        android:visibility="gone"
         app:icon="@android:drawable/ic_menu_help"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

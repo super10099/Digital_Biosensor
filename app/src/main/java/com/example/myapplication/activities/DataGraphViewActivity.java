@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
@@ -214,7 +215,9 @@ public class DataGraphViewActivity extends AppCompatActivity
                 DataStore.DataSet.DataSetElement elem = arr2D.get(row).get(col);
                 seriesNumbersX.add(elem.getParent().getMetaData().getDate().getTime());
                 seriesNumbersY.add(elem.getComparativeValue());
+                Log.d("DEBUG", String.format("%d,%f\t", elem.getParent().getMetaData().getDate().getTime(), elem.getComparativeValue()));
             }
+            Log.d("DEBUG", "\n");
 
             // create series
             String seriesTitle = String.format("x%d", col);
@@ -248,7 +251,7 @@ public class DataGraphViewActivity extends AppCompatActivity
 
             plot.setDomainStep(StepMode.SUBDIVIDE, arr2D.size());
             plot.setRangeStep(StepMode.SUBDIVIDE, arr2D.get(0).size());
-//            plot.setRangeBoundaries(0, 3, BoundaryMode.FIXED);
+            plot.setRangeBoundaries(0, 1.5, BoundaryMode.FIXED);
             plot.addSeries(series, seriesFormat);
         }
 
