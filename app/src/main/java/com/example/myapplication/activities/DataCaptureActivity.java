@@ -222,8 +222,6 @@ public class DataCaptureActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
-
             csGen.doTrials();
 
             // Create visitor to calculate comparative values of each sampler
@@ -269,7 +267,6 @@ public class DataCaptureActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             dataCaptureOptionsCL.setVisibility(View.VISIBLE);
 
             // update fields to current settings
@@ -290,7 +287,6 @@ public class DataCaptureActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             dataCaptureOptionsCL.setVisibility(View.GONE);
         }
     }
@@ -304,7 +300,6 @@ public class DataCaptureActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             dataCaptureOptionsCL.setVisibility(View.GONE);
 
             // update settings

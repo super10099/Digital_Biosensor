@@ -52,6 +52,6 @@ public class DataBundlingVisitor implements Visitor
         }
 
         // Store the new DataSet and retrieve a new unique key for future references
-        return DataStore.PrimaryDataStore.putNewDataSet(newDS, ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY);
+        return DataStore.primaryDataStore.putNewDataSet(newDS, ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY);
     }
 }

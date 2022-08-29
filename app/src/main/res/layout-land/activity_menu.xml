@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.MenuActivity">
 
+
     <ImageView
         android:id="@+id/pictureView"
         android:layout_width="match_parent"
@@ -86,5 +87,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuSavedDataBtn" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menuTakePictureHelp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="2dp"
+        android:visibility="gone">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/photos_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.tabs.TabLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </androidx.viewpager.widget.ViewPager>
+
+        <ImageView
+            android:id="@+id/takePictureHelpFrame"
+            android:layout_width="400dp"
+            android:layout_height="230dp"
+            android:background="@color/msu_green"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="400dp"
+            android:layout_height="230dp"
+            app:layout_constraintStart_toStartOf="@+id/takePictureHelpFrame"
+            app:layout_constraintTop_toTopOf="@+id/takePictureHelpFrame" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

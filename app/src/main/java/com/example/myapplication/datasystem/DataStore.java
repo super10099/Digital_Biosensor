@@ -41,7 +41,9 @@ public class DataStore
      * There will only be one data store (handles the app's database)
      * Initiated during MainActivity
      */
-    public static DataStore PrimaryDataStore;
+    public static DataStore primaryDataStore;
+
+    public static ToolTipMemory primaryToolTipMemory;
 
     /**
      * reference allows access to Internal Storage
@@ -196,6 +198,30 @@ public class DataStore
         }
 
         return dSet;
+    }
+
+
+    /**
+     * Load ttm, if does not exist, create a new one.
+     */
+    public ToolTipMemory loadToolTipMemory()
+    {
+
+        ToolTipMemory ttm;
+        File file = new File("ToolTipMemory.ser");
+
+        try
+        {
+            FileInputStream fileIS = new FileInputStream(file);
+            ObjectInputStream fileOIS = new ObjectInputStream(fileIS);
+            ttm = (ToolTipMemory) fileOIS.readObject();
+        } catch (IOException | ClassNotFoundException e)
+        {
+            Log.d("DEBUG", e.toString());
+            return new ToolTipMemory();
+        }
+
+        return ttm;
     }
 
 

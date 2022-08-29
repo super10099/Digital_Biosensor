@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -111,7 +109,7 @@ public class DataAnalysisActivity extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
         String uKey = (String) extras.get(DataBundlingVisitor.KEY_EXTRA_STRING);
         ActivityTransitions from = (ActivityTransitions) extras.getSerializable(ActivityTransitions.extraKey);
-        loadedDataSet = DataStore.PrimaryDataStore.loadDSet(uKey, from);
+        loadedDataSet = DataStore.primaryDataStore.loadDSet(uKey, from);
 
         // only show save button if from data capture activity
         if (from == ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY)
@@ -139,7 +137,6 @@ public class DataAnalysisActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             finish();
         }
     }
@@ -317,7 +314,6 @@ public class DataAnalysisActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             saveResultsCL.setVisibility(View.VISIBLE);
         }
     }
@@ -330,7 +326,6 @@ public class DataAnalysisActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             saveResultsReset();
         }
     }
@@ -343,10 +338,8 @@ public class DataAnalysisActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
-
             String inputFileName = saveResultsFilenameEditText.getText().toString();
-            DataStore.PrimaryDataStore.putNewDataSet(loadedDataSet, ActivityTransitions.FROM_DATA_ANALYSIS_ACTIVITY, inputFileName);
+            DataStore.primaryDataStore.putNewDataSet(loadedDataSet, ActivityTransitions.FROM_DATA_ANALYSIS_ACTIVITY, inputFileName);
             saveResultsReset();
         }
     }
@@ -359,14 +352,12 @@ public class DataAnalysisActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
-
             String rawCSV = loadedDataSet.getCSV();
 
             try
             {
                 // create a temporary CSV file
-                File dir = DataStore.PrimaryDataStore.getTempDir();
+                File dir = DataStore.primaryDataStore.getTempDir();
                 File csvFile = File.createTempFile("resultsExport", ".csv", dir);
                 FileOutputStream OStream = new FileOutputStream(csvFile);
                 OStream.write(rawCSV.getBytes());

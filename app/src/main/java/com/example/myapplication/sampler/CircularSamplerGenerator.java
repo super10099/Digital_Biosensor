@@ -4,6 +4,7 @@ package com.example.myapplication.sampler;
 
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
@@ -86,6 +87,7 @@ public class CircularSamplerGenerator
         {
             if (event.getAction() == MotionEvent.ACTION_UP)
             {
+                v.playSoundEffect(SoundEffectConstants.CLICK);
                 CircularSampler newSampler = new CircularSampler(tookAct, settings);
                 samplers.add(newSampler);
 

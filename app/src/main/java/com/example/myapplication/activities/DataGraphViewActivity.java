@@ -6,8 +6,6 @@ import android.graphics.DashPathEffect;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -35,12 +33,9 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -275,7 +270,7 @@ public class DataGraphViewActivity extends AppCompatActivity
 
             for (String uKey : result)
             {
-                DataStore.DataSet dSet = DataStore.PrimaryDataStore
+                DataStore.DataSet dSet = DataStore.primaryDataStore
                         .loadDSet(uKey, ActivityTransitions.FROM_DATA_GRAPH_VIEW_ACTIVITY);
                 loadedDSets.add(dSet);
             }
@@ -293,7 +288,6 @@ public class DataGraphViewActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             switchToBrowseSavedDataActivity();
         }
     }
@@ -306,7 +300,6 @@ public class DataGraphViewActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             finish();
         }
     }

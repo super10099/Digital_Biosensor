@@ -26,7 +26,6 @@ import com.example.myapplication.util.SelectDataSetContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Activity responsible for displaying the saved data in internal storage of application.
@@ -85,7 +84,7 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
      */
     private void displaySavedData()
     {
-        ArrayList<DataStore.DataSetListViewModel> dataSetModels = DataStore.PrimaryDataStore.getDataSetListViewModels();
+        ArrayList<DataStore.DataSetListViewModel> dataSetModels = DataStore.primaryDataStore.getDataSetListViewModels();
         DataSetModelArrayAdapter adapter = new DataSetModelArrayAdapter(this);
         for (DataStore.DataSetListViewModel m : dataSetModels)
         {
@@ -241,8 +240,6 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                v.playSoundEffect(SoundEffectConstants.CLICK);
-
                 Intent intentData = new Intent();
                 ArrayList<String> uKeysToView = new ArrayList<>();
 

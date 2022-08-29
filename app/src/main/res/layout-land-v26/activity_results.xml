@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:text="EXIT"
+            android:tooltipText="Return to main menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/saveResultsBtn"
             app:layout_constraintHorizontal_bias="0.5"
@@ -75,7 +76,6 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:scaleType="center"
-                android:contentDescription="The average RGB values from all sampling points."
                 android:tooltipText="The average RGB values from all sampling points."
                 app:srcCompat="@android:drawable/ic_menu_info_details" />
 

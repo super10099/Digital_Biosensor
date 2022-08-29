@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
 
@@ -66,9 +65,15 @@ public class MenuActivity extends AppCompatActivity
         graphDataBtn.setOnClickListener(new GraphDataOnClickListener());
 
         // initiate DataStore if does not exist
-        if (DataStore.PrimaryDataStore == null)
+        if (DataStore.primaryDataStore == null)
         {
-            DataStore.PrimaryDataStore = new DataStore(getApplicationContext());
+            DataStore.primaryDataStore = new DataStore(getApplicationContext());
+        }
+
+        // initialize tooltipmemory
+        if (DataStore.primaryToolTipMemory == null)
+        {
+            DataStore.primaryDataStore.loadToolTipMemory();
         }
     }
 
@@ -134,8 +139,6 @@ public class MenuActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
-
             // Create an image file to store the capture
             // Create a Uri to the image file
             // Use the Uri as an extra in ACTION_IMAGE_CAPTURE
@@ -166,7 +169,6 @@ public class MenuActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             Intent pickPictureIntent = new Intent(Intent.ACTION_PICK,
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(pickPictureIntent, REQUEST_LOAD_IMAGE);
@@ -182,7 +184,6 @@ public class MenuActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             Intent changeActivity = new Intent(MenuActivity.this, SavedDataBrowsingActivity.class);
             changeActivity.putExtra("bitmapUri", pictureFileUri);
             startActivity(changeActivity);
@@ -197,7 +198,6 @@ public class MenuActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            v.playSoundEffect(SoundEffectConstants.CLICK);
             Intent changeActivity = new Intent(MenuActivity.this, DataGraphViewActivity.class);
             startActivity(changeActivity);
         }
