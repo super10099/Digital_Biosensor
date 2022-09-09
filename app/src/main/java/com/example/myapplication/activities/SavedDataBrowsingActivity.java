@@ -26,6 +26,8 @@ import com.example.myapplication.util.SelectDataSetContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Activity responsible for displaying the saved data in internal storage of application.
@@ -147,7 +149,11 @@ public class SavedDataBrowsingActivity extends AppCompatActivity
             TextView itemDate = convertView.findViewById(LISTVIEW_ITEM_DATE_ID);
 
             // Setting the labels
-            itemName.setText(model.getName());
+            Pattern p = Pattern.compile("([a-zA-Z0-9]+)");
+            Matcher m = p.matcher(model.getName());
+            m.lookingAt();
+            itemName.setText(m.group(1));   // exclude file extension
+
             itemDate.setText(model.getDate());
 
             return convertView;
