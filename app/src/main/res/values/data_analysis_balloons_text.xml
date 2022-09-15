@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="avg_rgb">Average RGB values from all sampling points within the given sample</string>
+    <string name="avg_rval">Average value of how red selected area from the sample is</string>
+    <string name="avg_rvalstd">Spread of each sampling point with respect to rval</string>
+    <string name="ratio">The respective rval / rval_c. Where rval_c is of the control</string>
+
+</resources>

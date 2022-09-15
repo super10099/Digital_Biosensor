@@ -75,8 +75,6 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:scaleType="center"
-                android:contentDescription="The average RGB values from all sampling points."
-                android:tooltipText="The average RGB values from all sampling points."
                 app:srcCompat="@android:drawable/ic_menu_info_details" />
 
             <TextView

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.datasystem.DataBundlingVisitor;
 import com.example.myapplication.datasystem.DataStore;
 import com.example.myapplication.util.ActivityTransitions;
+import com.example.myapplication.util.DataAnalysisBalloons;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,6 +74,8 @@ public class DataAnalysisActivity extends AppCompatActivity
     private SampleDataModelAdapter sampleDataModels;
 
     private DataStore.DataSet loadedDataSet;
+
+    private DataAnalysisBalloons balloons;
 
     /**
      * Init of the results activity.
@@ -127,6 +131,94 @@ public class DataAnalysisActivity extends AppCompatActivity
         // create the ListView and ArrayAdapter
         convertData();
         displayData();
+
+        // create balloons for tooltips
+        balloons = new DataAnalysisBalloons(this);
+        setBalloonListeners();
+    }
+
+    /**
+     * Set OnClickListeners for tooltip buttons
+     */
+    private void setBalloonListeners()
+    {
+        ImageButton b1 = findViewById(R.id.avgrgbTip);
+        ImageButton b2 = findViewById(R.id.avgrgbTip2);
+        ImageButton b3 = findViewById(R.id.avgrgbTip3);
+        ImageButton b4 = findViewById(R.id.avgrgbTip4);
+
+        b1.setOnClickListener(new avgRGBOnClickListener(b1));
+        b2.setOnClickListener(new avgRValOnClickListener(b2));
+        b3.setOnClickListener(new avgRValSTDOnClickListener(b3));
+        b4.setOnClickListener(new RatioOnClickListener(b4));
+    }
+
+    /**
+     * Tooltip listener
+     */
+    private class avgRGBOnClickListener implements View.OnClickListener
+    {
+        private ImageButton button;
+        public avgRGBOnClickListener(ImageButton button) {
+            this.button = button;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            balloons.getAvgRGBBalloon().showAlignBottom(button);
+        }
+    }
+
+    /**
+     * Tooltip listener
+     */
+    private class avgRValOnClickListener implements View.OnClickListener
+    {
+        private ImageButton button;
+        public avgRValOnClickListener(ImageButton button) {
+            this.button = button;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            balloons.getAvgRValBalloon().showAlignBottom(button);
+        }
+    }
+
+    /**
+     * Tooltip listener
+     */
+    private class avgRValSTDOnClickListener implements View.OnClickListener
+    {
+        private ImageButton button;
+        public avgRValSTDOnClickListener(ImageButton button) {
+            this.button = button;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            balloons.getAvgRValSTDBalloon().showAlignBottom(button);
+        }
+    }
+
+    /**
+     * Tooltip listener
+     */
+    private class RatioOnClickListener implements View.OnClickListener
+    {
+        private ImageButton button;
+        public RatioOnClickListener(ImageButton button) {
+            this.button = button;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            balloons.getRatioBalloon().showAlignBottom(button);
+        }
     }
 
     /**
