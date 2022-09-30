@@ -50,7 +50,7 @@ public class DataProcessor
     }
 
     /**
-     * Do r / (g+b) algorithm, this calculates the R point.
+     * Do (r + g)/ b algorithm, this calculates the R point.
      *
      * @return a list of rPoints in order.
      */
@@ -62,7 +62,7 @@ public class DataProcessor
             int r = Color.red(sampleColors.get(i));
             int g = Color.green(sampleColors.get(i));
             int b = Color.blue(sampleColors.get(i));
-            double rPoint = (double) r / (g + b);
+            double rPoint = (double) (r + g) / b;
             rPoints.add(rPoint);
         }
         return rPoints;
