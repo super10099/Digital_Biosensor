@@ -123,4 +123,12 @@
             app:layout_constraintTop_toTopOf="@+id/takePictureHelpFrame" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <Switch
+        android:id="@+id/TutorialSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tutorial"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

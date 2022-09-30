@@ -26,7 +26,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.datasystem.DataBundlingVisitor;
 import com.example.myapplication.datasystem.DataStore;
 import com.example.myapplication.util.ActivityTransitions;
-import com.example.myapplication.util.DataAnalysisBalloons;
+import com.example.myapplication.balloons.DataAnalysisBalloons;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,6 +56,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     private static final int LISTVIEW_RPOINT_LABEL = R.id.RPointLabelTitle;
     private static final int LISTVIEW_RPOINTSTD_LABEL = R.id.RPointSTDLabel;
     private static final int LISTVIEW_COMPARISONVALUE_LABEL = R.id.comparisonValueLabel;
+    private static final int LIST_VIEW_TRANSFORMEDVALUE_LABEL = R.id.transformedValueLabel;
 
     private static final int EXIT_BTN = R.id.discardBtn;
     private static final int EXPORT_DATA_BTN = R.id.exportDataBtn;
@@ -251,7 +252,8 @@ public class DataAnalysisActivity extends AppCompatActivity
                             sampleColor,
                             elem.getRPoint(),
                             elem.getRPointSTD(),
-                            elem.getComparativeValue());
+                            elem.getComparativeValue(),
+                            elem.getTransformedValue());
             sampleDataModels.add(newData);
         }
     }
@@ -275,13 +277,15 @@ public class DataAnalysisActivity extends AppCompatActivity
         private final double RPoint;
         private final double RPointSTD;
         private final double comparisonValue;
+        private final double transformedValue;
 
-        public SampleDataModel(Map<String, Double> sampleColor, double RPoint, double RPointSTD, double comparisonValue)
+        public SampleDataModel(Map<String, Double> sampleColor, double RPoint, double RPointSTD, double comparisonValue, double transformedValue)
         {
             this.sampleColor = sampleColor;
             this.RPoint = RPoint;
             this.RPointSTD = RPointSTD;
             this.comparisonValue = comparisonValue;
+            this.transformedValue = transformedValue;
         }
 
         /**
@@ -332,6 +336,7 @@ public class DataAnalysisActivity extends AppCompatActivity
             return comparisonValue;
         }
 
+        public double getTransformedValue() { return transformedValue; }
     }
 
     private class SampleDataModelAdapter extends ArrayAdapter<SampleDataModel>
@@ -374,6 +379,7 @@ public class DataAnalysisActivity extends AppCompatActivity
             TextView RPointLabel = convertView.findViewById(LISTVIEW_RPOINT_LABEL);
             TextView RPointSTDLabel = convertView.findViewById(LISTVIEW_RPOINTSTD_LABEL);
             TextView comparisonValueLabel = convertView.findViewById(LISTVIEW_COMPARISONVALUE_LABEL);
+            TextView transformedValueLabel = convertView.findViewById(LIST_VIEW_TRANSFORMEDVALUE_LABEL);
 
             // Setting the labels
             if (position == 0)
@@ -387,6 +393,7 @@ public class DataAnalysisActivity extends AppCompatActivity
             RPointLabel.setText(String.format("%.2f", sampleData.getRPoint()));
             RPointSTDLabel.setText(String.format("%.2E", sampleData.getRPointSTD()));
             comparisonValueLabel.setText(String.format("%.2f", sampleData.getComparisonValue()));
+            transformedValueLabel.setText(String.format("%.2f", sampleData.getTransformedValue()));
 
             return convertView;
         }

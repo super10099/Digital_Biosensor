@@ -5,4 +5,5 @@
 
     <!-- Content descriptions -->
     <string name="visualdot_description">To visualize sampling points</string>
+    <string name="takePictureBtnBalloon">Make sure to take the picture with your phone in landscape mode!</string>
 </resources>

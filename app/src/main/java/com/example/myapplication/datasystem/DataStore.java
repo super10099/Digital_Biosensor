@@ -272,8 +272,9 @@ public class DataStore
             private double rPoint;
             private double rPointSTD;
             private double comparativeValue;
+            private double transformedValue;
 
-            public DataSetElement(double avgR, double avgG, double avgB, double rPoint, double rPointSTD, double comparativeValue)
+            public DataSetElement(double avgR, double avgG, double avgB, double rPoint, double rPointSTD, double comparativeValue, double transformedValue)
             {
                 this.avgR = avgR;
                 this.avgG = avgG;
@@ -281,6 +282,7 @@ public class DataStore
                 this.rPoint = rPoint;
                 this.rPointSTD = rPointSTD;
                 this.comparativeValue = comparativeValue;
+                this.transformedValue = transformedValue;
             }
 
             public double getAvgR()
@@ -313,9 +315,15 @@ public class DataStore
                 return comparativeValue;
             }
 
+            public double getTransformedValue()
+            {
+                return transformedValue;
+            }
+
             public DataSet getParent() { return parent; }
 
             public void setParent(DataSet parent) { this.parent = parent; }
+
         }
 
         private ArrayList<DataSetElement> elements = new ArrayList<>();
@@ -356,9 +364,9 @@ public class DataStore
          * @param rPointSTD
          * @param comparativeValue
          */
-        public void newElement(double avgR, double avgG, double avgB, double rPoint, double rPointSTD, double comparativeValue)
+        public void newElement(double avgR, double avgG, double avgB, double rPoint, double rPointSTD, double comparativeValue, double transformedValue)
         {
-            DataSetElement newElem = new DataSetElement(avgR, avgG, avgB, rPoint, rPointSTD, comparativeValue);
+            DataSetElement newElem = new DataSetElement(avgR, avgG, avgB, rPoint, rPointSTD, comparativeValue, transformedValue);
             newElem.setParent(this);
             elements.add(newElem);
         }

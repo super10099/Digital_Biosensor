@@ -1,4 +1,4 @@
-package com.example.myapplication.util;
+package com.example.myapplication.balloons;
 
 import android.content.res.Resources;
 
@@ -12,18 +12,23 @@ import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
 
-public class DataAnalysisBalloons {
 
-    // balloons for tooltips
-    private Balloon avgRGBBalloon;
-    private Balloon avgRValBalloon;
-    private Balloon avgRValSTDBalloon;
-    private Balloon ratioBalloon;
+/**
+ * A factory class for creating Balloon Builders
+ */
+public class BalloonBuilderFactory {
 
-    public DataAnalysisBalloons(AppCompatActivity context)
+    private Resources res;
+    private AppCompatActivity context;
+
+    public BalloonBuilderFactory(AppCompatActivity context)
     {
-        Resources res = context.getResources();
+        res = context.getResources();
+        this.context = context;
+    }
 
+    public Balloon.Builder createDefaultBuilder()
+    {
         // instantiate builder with preferred settings
         Balloon.Builder balloonBuilder = new Balloon.Builder(context)
                 .setArrowSize(10)
@@ -41,36 +46,6 @@ public class DataAnalysisBalloons {
                 .setBackgroundColor(ContextCompat.getColor(context, R.color.msu_green))
                 .setBalloonAnimation(BalloonAnimation.FADE);
 
-        avgRGBBalloon = balloonBuilder
-                .setText(res.getString(R.string.avg_rgb))
-                .build();
-
-        avgRValBalloon = balloonBuilder
-                .setText(res.getString(R.string.avg_rval))
-                .build();
-
-        avgRValSTDBalloon = balloonBuilder
-                .setText(res.getString(R.string.avg_rvalstd))
-                .build();
-
-        ratioBalloon = balloonBuilder
-                .setText(res.getString(R.string.ratio))
-                .build();
-    }
-
-    public Balloon getAvgRGBBalloon() {
-        return avgRGBBalloon;
-    }
-
-    public Balloon getAvgRValBalloon() {
-        return avgRValBalloon;
-    }
-
-    public Balloon getAvgRValSTDBalloon() {
-        return avgRValSTDBalloon;
-    }
-
-    public Balloon getRatioBalloon() {
-        return ratioBalloon;
+        return balloonBuilder;
     }
 }

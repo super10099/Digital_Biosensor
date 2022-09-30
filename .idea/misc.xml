@@ -52,8 +52,15 @@
         <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/xml/file_paths.xml" value="0.1" />
         <entry key="..\:/Users/Thinh Nguyen/Documents/From Old PC/Summer 2023-2022/EnSure Biosensors Lab/App/MyApplication/app/src/main/res/xml/result_item.xml" value="0.10275229357798166" />
         <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land-v26/activity_results.xml" value="0.35978835978835977" />
-        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/activity_results.xml" value="0.30104166666666665" />
-        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/listview_results_item.xml" value="0.35978835978835977" />
+        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/activity_datacapture.xml" value="0.31922398589065254" />
+        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/activity_datagraphview.xml" value="0.31922398589065254" />
+        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/activity_menu.xml" value="0.33" />
+        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/activity_results.xml" value="0.25" />
+        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/activity_saveddatabrowsing.xml" value="0.31922398589065254" />
+        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/activity_saveddatabrowsing_fromgraphview.xml" value="0.4354166666666667" />
+        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/circularsampler_sampler.xml" value="0.31922398589065254" />
+        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/circularsampler_visualdot.xml" value="0.31922398589065254" />
+        <entry key="..\:/Users/f2nol/StudioProjects/Digital_Biosensor/app/src/main/res/layout-land/listview_results_item.xml" value="0.33" />
       </map>
     </option>
   </component>

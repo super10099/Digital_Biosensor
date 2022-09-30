@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteX="155dp">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/sampleLabel"
@@ -43,11 +43,19 @@
 
         <TextView
             android:id="@+id/comparisonValueLabel"
-            android:layout_width="145dp"
+            android:layout_width="110dp"
             android:layout_height="35dp"
             android:layout_marginStart="35dp"
             android:gravity="center_vertical"
             android:text="Comparative Val" />
+
+        <TextView
+            android:id="@+id/transformedValueLabel"
+            android:layout_width="145dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="35dp"
+            android:gravity="center_vertical"
+            android:text="Transformed Val" />
 
     </LinearLayout>
 

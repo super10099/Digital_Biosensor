@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -33,6 +36,10 @@ public class MenuActivity extends AppCompatActivity
 {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_LOAD_IMAGE = 2;
+
+    private static boolean tutorial_mode = false;
+    private boolean isTutorialModeOn() { return tutorial_mode; }
+    private void setTutorialMode(boolean b) { tutorial_mode = b; }
 
     /**
      * Uri for the image file from loading or camera capture.
@@ -59,10 +66,12 @@ public class MenuActivity extends AppCompatActivity
         Button loadPictureBtn = findViewById(R.id.menuLoadPictureBtn);
         Button savedDataBtn = findViewById(R.id.menuSavedDataBtn);
         Button graphDataBtn = findViewById(R.id.menuDataGraphViewBtn);
+        Switch tutorialSwitch = findViewById(R.id.TutorialSwitch);
         takePictureBtn.setOnClickListener(new TakePictureOnClickListener());
         loadPictureBtn.setOnClickListener(new LoadPictureOnClickListener());
         savedDataBtn.setOnClickListener(new SavedDataOnClickListener());
         graphDataBtn.setOnClickListener(new GraphDataOnClickListener());
+        tutorialSwitch.setOnCheckedChangeListener(new TutorialOnCheckListener());
 
         // initiate DataStore if does not exist
         if (DataStore.primaryDataStore == null)
@@ -119,7 +128,20 @@ public class MenuActivity extends AppCompatActivity
         // Check to make sure it is the result that needs to be handled
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
         {
+            // saving it to storage
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), pictureFileUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,
+                    pictureFileUri.getLastPathSegment(), // last path is the name of the actual file
+                    "Picture taken by user");
+            Log.d("DEBUG", "image lastpath " + pictureFileUri.getLastPathSegment());
+
             setPictureView();
+
             Log.d("DEBUG", "Picture Took");
         } else if (requestCode == REQUEST_LOAD_IMAGE && resultCode == RESULT_OK && data != null)
         {
@@ -200,6 +222,16 @@ public class MenuActivity extends AppCompatActivity
         {
             Intent changeActivity = new Intent(MenuActivity.this, DataGraphViewActivity.class);
             startActivity(changeActivity);
+        }
+    }
+
+    /**
+     * Listener for tutorial mode switch
+     */
+    private class TutorialOnCheckListener implements CompoundButton.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            setTutorialMode(b);
         }
     }
 }

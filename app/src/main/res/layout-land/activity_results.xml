@@ -126,6 +126,21 @@
                 android:gravity="center_vertical"
                 android:text="RATIO" />
 
+            <ImageButton
+                android:id="@+id/avgrgbTip5"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_weight="0"
+                android:scaleType="center"
+                app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+            <TextView
+                android:id="@+id/transformedValueLabel"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
+                android:gravity="center_vertical"
+                android:text="FINAL" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

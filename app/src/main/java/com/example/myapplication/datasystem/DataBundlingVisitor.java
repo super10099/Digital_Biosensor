@@ -48,7 +48,7 @@ public class DataBundlingVisitor implements Visitor
         for (DataProcessor dp : dps)
         {
             newDS.newElement(dp.getAvgRValue(), dp.getAvgGValue(), dp.getAvgBValue(),
-                    dp.getAvgRPoint(), dp.getRPointSTD(), dp.getComparativeValue());
+                    dp.getAvgRPoint(), dp.getRPointSTD(), dp.getComparativeValue(), dp.getTransformedValue());
         }
 
         // Store the new DataSet and retrieve a new unique key for future references
