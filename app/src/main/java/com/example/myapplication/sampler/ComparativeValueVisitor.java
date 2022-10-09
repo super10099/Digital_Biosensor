@@ -29,13 +29,20 @@ public class ComparativeValueVisitor implements Visitor
     {
         // The denominator of each calculation
         double controlRPoint = dps.get(0).getAvgRPoint();
+        double transformedRPoint = nonlinearTransform(controlRPoint);
 
         // Iterate through the list of rPoints and calculate the comparative values
         // The comparative values are added to the list.
         for (DataProcessor dp : dps)
         {
-            double nComparativeVal = dp.getAvgRPoint() / controlRPoint;
+            // double nComparativeVal = dp.getAvgRPoint() / controlRPoint;
+            double nComparativeVal = nonlinearTransform(dp.getAvgRPoint()) / transformedRPoint;
             dp.setComparativeValue(nComparativeVal);
         }
+    }
+
+    private double nonlinearTransform(double r)
+    {
+        return r*Math.exp(r);
     }
 }

@@ -232,7 +232,7 @@ public class DataCaptureActivity extends AppCompatActivity
             // Create visitor to collect all the data and bundle it for data storage
             DataBundlingVisitor dbVisitor = new DataBundlingVisitor();
             csGen.acceptVisitor(dbVisitor);
-            String uKey = dbVisitor.PackDataSet();
+            String uKey = dbVisitor.saveData();
             goToResultsActivity(uKey);
         }
     }

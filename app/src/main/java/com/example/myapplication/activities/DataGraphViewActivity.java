@@ -24,8 +24,10 @@ import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.example.myapplication.R;
+import com.example.myapplication.datasystem.DataModule;
 import com.example.myapplication.datasystem.DataStore;
 import com.example.myapplication.util.ActivityTransitions;
+import com.example.myapplication.util.DataCaptureModule;
 import com.example.myapplication.util.SelectDataSetContract;
 
 import java.text.FieldPosition;
@@ -49,7 +51,7 @@ public class DataGraphViewActivity extends AppCompatActivity
     /**
      * DataSets to display is loaded here
      */
-    private final ArrayList<DataStore.DataSet> loadedDSets = new ArrayList<>();
+    private final ArrayList<DataCaptureModule> loadedDataModules = new ArrayList<>();
 
     /**
      *
@@ -172,27 +174,19 @@ public class DataGraphViewActivity extends AppCompatActivity
      * Display the loaded datasets.
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void displayDataSets()
+    private void displayDataModules()
     {
         plot.clear();
 
-        loadedDSets.sort(new Comparator<DataStore.DataSet>()
-        {
-            @Override
-            public int compare(DataStore.DataSet o1, DataStore.DataSet o2)
-            {
-                return o1.getMetaData().getDate().compareTo(o2.getMetaData().getDate());
-            }
-        });
-
+        loadedDataModules.sort(Comparator.comparing(DataModule::getDate));
 
         // get datasets into a 2D array to iterator by column major
         // make the array is normal (all rows have same sizes)
-        ArrayList<ArrayList<DataStore.DataSet.DataSetElement>> arr2D = new ArrayList<>();
-        for (DataStore.DataSet ds : loadedDSets)
+        ArrayList<ArrayList<DataCaptureModule.Element>> arr2D = new ArrayList<>();
+        for (DataCaptureModule m : loadedDataModules)
         {
-            Iterator<DataStore.DataSet.DataSetElement> it = ds.getIterator();
-            ArrayList<DataStore.DataSet.DataSetElement> row = new ArrayList<>();
+            Iterator<DataCaptureModule.Element> it = m.getIterator();
+            ArrayList<DataCaptureModule.Element> row = new ArrayList<>();
             while (it.hasNext())
             {
                 row.add(it.next());
@@ -207,10 +201,10 @@ public class DataGraphViewActivity extends AppCompatActivity
             ArrayList<Double> seriesNumbersY = new ArrayList<>();
             for (int row = 0; row < arr2D.size(); row++)
             {
-                DataStore.DataSet.DataSetElement elem = arr2D.get(row).get(col);
-                seriesNumbersX.add(elem.getParent().getMetaData().getDate().getTime());
+                DataCaptureModule.Element elem = arr2D.get(row).get(col);
+                seriesNumbersX.add(elem.getParent().getDate().getTime());
                 seriesNumbersY.add(elem.getComparativeValue());
-                Log.d("DEBUG", String.format("%d,%f\t", elem.getParent().getMetaData().getDate().getTime(), elem.getComparativeValue()));
+                Log.d("DEBUG", String.format("%d,%f\t", elem.getParent().getDate().getTime(), elem.getComparativeValue()));
             }
             Log.d("DEBUG", "\n");
 
@@ -266,16 +260,16 @@ public class DataGraphViewActivity extends AppCompatActivity
         @Override
         public void onActivityResult(ArrayList<String> result)
         {
-            loadedDSets.clear();
+            loadedDataModules.clear();
 
             for (String uKey : result)
             {
-                DataStore.DataSet dSet = DataStore.primaryDataStore
-                        .loadDSet(uKey, ActivityTransitions.FROM_DATA_GRAPH_VIEW_ACTIVITY);
-                loadedDSets.add(dSet);
+                DataModule module = DataStore.primaryDataStore
+                        .loadModule(uKey, ActivityTransitions.FROM_DATA_GRAPH_VIEW_ACTIVITY);
+                loadedDataModules.add((DataCaptureModule) module);
             }
 
-            displayDataSets();
+            displayDataModules();
         }
     }
 

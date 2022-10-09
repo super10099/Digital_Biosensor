@@ -2,6 +2,7 @@ package com.example.myapplication.datasystem;
 
 
 import com.example.myapplication.util.ActivityTransitions;
+import com.example.myapplication.util.DataCaptureModule;
 import com.example.myapplication.util.Visitor;
 
 import java.util.ArrayList;
@@ -37,21 +38,20 @@ public class DataBundlingVisitor implements Visitor
 
 
     /**
-     * Pack the gathered data into a DataSet object
-     * Put the DataSet object into DataStore
-     *
-     * @return unique key corresponding to the DataSet
+     * Save the data collected from the csGen
+     * It first packs it into a DataCaptureModule and then send that module into DS.
+     * @return
      */
-    public String PackDataSet()
+    public String saveData()
     {
-        DataStore.DataSet newDS = new DataStore.DataSet();
+        DataCaptureModule module = new DataCaptureModule();
         for (DataProcessor dp : dps)
         {
-            newDS.newElement(dp.getAvgRValue(), dp.getAvgGValue(), dp.getAvgBValue(),
-                    dp.getAvgRPoint(), dp.getRPointSTD(), dp.getComparativeValue(), dp.getTransformedValue());
+            DataCaptureModule.Element elem = new DataCaptureModule.Element(
+                    dp.getAvgRValue(), dp.getAvgGValue(), dp.getAvgBValue(),
+                    dp.getAvgRPoint(), dp.getRPointSTD(), dp.getComparativeValue());
+            module.putElement(elem);
         }
-
-        // Store the new DataSet and retrieve a new unique key for future references
-        return DataStore.primaryDataStore.putNewDataSet(newDS, ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY);
+        return DataStore.primaryDataStore.putModule(module, ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY);
     }
 }

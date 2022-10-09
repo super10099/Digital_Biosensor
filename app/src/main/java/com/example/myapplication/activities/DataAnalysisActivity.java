@@ -27,6 +27,7 @@ import com.example.myapplication.datasystem.DataBundlingVisitor;
 import com.example.myapplication.datasystem.DataStore;
 import com.example.myapplication.util.ActivityTransitions;
 import com.example.myapplication.balloons.DataAnalysisBalloons;
+import com.example.myapplication.util.DataCaptureModule;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -74,7 +75,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     // Information passed from DataCaptureActivity
     private SampleDataModelAdapter sampleDataModels;
 
-    private DataStore.DataSet loadedDataSet;
+    private DataCaptureModule loadedDataCaptureModule;
 
     private DataAnalysisBalloons balloons;
 
@@ -114,7 +115,7 @@ public class DataAnalysisActivity extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
         String uKey = (String) extras.get(DataBundlingVisitor.KEY_EXTRA_STRING);
         ActivityTransitions from = (ActivityTransitions) extras.getSerializable(ActivityTransitions.extraKey);
-        loadedDataSet = DataStore.primaryDataStore.loadDSet(uKey, from);
+        loadedDataCaptureModule = (DataCaptureModule) DataStore.primaryDataStore.loadModule(uKey, from);
 
         // only show save button if from data capture activity
         if (from == ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY)
@@ -235,26 +236,14 @@ public class DataAnalysisActivity extends AppCompatActivity
     }
 
     /**
-     * Convert data from DataSet into the array data model for ListView
+     * Convert data from module into the array data model for ListView
      */
     private void convertData()
     {
-        Iterator<DataStore.DataSet.DataSetElement> dsIterator = loadedDataSet.getIterator();
+        Iterator<DataCaptureModule.Element> dsIterator = loadedDataCaptureModule.getIterator();
         while (dsIterator.hasNext())
         {
-            DataStore.DataSet.DataSetElement elem = dsIterator.next();
-            Map<String, Double> sampleColor = new HashMap<>();
-            sampleColor.put("avgR", elem.getAvgR());
-            sampleColor.put("avgG", elem.getAvgG());
-            sampleColor.put("avgB", elem.getAvgB());
-            SampleDataModel newData =
-                    new SampleDataModel(
-                            sampleColor,
-                            elem.getRPoint(),
-                            elem.getRPointSTD(),
-                            elem.getComparativeValue(),
-                            elem.getTransformedValue());
-            sampleDataModels.add(newData);
+            sampleDataModels.add(dsIterator.next());
         }
     }
 
@@ -268,78 +257,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     }
 
 
-    /**
-     * Data model used in adapter for ListView.
-     */
-    private class SampleDataModel
-    {
-        private final Map<String, Double> sampleColor;
-        private final double RPoint;
-        private final double RPointSTD;
-        private final double comparisonValue;
-        private final double transformedValue;
-
-        public SampleDataModel(Map<String, Double> sampleColor, double RPoint, double RPointSTD, double comparisonValue, double transformedValue)
-        {
-            this.sampleColor = sampleColor;
-            this.RPoint = RPoint;
-            this.RPointSTD = RPointSTD;
-            this.comparisonValue = comparisonValue;
-            this.transformedValue = transformedValue;
-        }
-
-        /**
-         * @return average R value.
-         */
-        public Double getR()
-        {
-            return sampleColor.get("avgR");
-        }
-
-        /**
-         * @return average G value
-         */
-        public Double getG()
-        {
-            return sampleColor.get("avgG");
-        }
-
-        /**
-         * @return Average B value
-         */
-        public Double getB()
-        {
-            return sampleColor.get("avgB");
-        }
-
-        /**
-         * @return Ratio divided by ratio of control.
-         */
-        public double getRPoint()
-        {
-            return RPoint;
-        }
-
-        /**
-         * @return Standard deviation of R point values.
-         */
-        public double getRPointSTD()
-        {
-            return RPointSTD;
-        }
-
-        /**
-         * @return Ratio of current sample
-         */
-        public double getComparisonValue()
-        {
-            return comparisonValue;
-        }
-
-        public double getTransformedValue() { return transformedValue; }
-    }
-
-    private class SampleDataModelAdapter extends ArrayAdapter<SampleDataModel>
+    private class SampleDataModelAdapter extends ArrayAdapter<DataCaptureModule.Element>
     {
         /**
          * Constructor
@@ -373,13 +291,12 @@ public class DataAnalysisActivity extends AppCompatActivity
             }
 
             // this is to set the attributes of the convertView
-            SampleDataModel sampleData = getItem(position);
+            DataCaptureModule.Element sampleData = getItem(position);
             TextView sampleLabel = convertView.findViewById(LISTVIEW_SAMPLE_LABEL);
             TextView RGBLabel = convertView.findViewById(LISTVIEW_RGB_LABEL);
             TextView RPointLabel = convertView.findViewById(LISTVIEW_RPOINT_LABEL);
             TextView RPointSTDLabel = convertView.findViewById(LISTVIEW_RPOINTSTD_LABEL);
             TextView comparisonValueLabel = convertView.findViewById(LISTVIEW_COMPARISONVALUE_LABEL);
-            TextView transformedValueLabel = convertView.findViewById(LIST_VIEW_TRANSFORMEDVALUE_LABEL);
 
             // Setting the labels
             if (position == 0)
@@ -389,11 +306,10 @@ public class DataAnalysisActivity extends AppCompatActivity
             {
                 sampleLabel.setText("x" + position);
             }
-            RGBLabel.setText(String.format("(%.0f, %.0f, %.0f)", sampleData.getR(), sampleData.getG(), sampleData.getB()));
+            RGBLabel.setText(String.format("(%.0f, %.0f, %.0f)", sampleData.getAvgR(), sampleData.getAvgG(), sampleData.getAvgB()));
             RPointLabel.setText(String.format("%.2f", sampleData.getRPoint()));
             RPointSTDLabel.setText(String.format("%.2E", sampleData.getRPointSTD()));
-            comparisonValueLabel.setText(String.format("%.2f", sampleData.getComparisonValue()));
-            transformedValueLabel.setText(String.format("%.2f", sampleData.getTransformedValue()));
+            comparisonValueLabel.setText(String.format("%.2f", sampleData.getComparativeValue()));
 
             return convertView;
         }
@@ -438,7 +354,7 @@ public class DataAnalysisActivity extends AppCompatActivity
         public void onClick(View v)
         {
             String inputFileName = saveResultsFilenameEditText.getText().toString();
-            DataStore.primaryDataStore.putNewDataSet(loadedDataSet, ActivityTransitions.FROM_DATA_ANALYSIS_ACTIVITY, inputFileName);
+            DataStore.primaryDataStore.putModule(loadedDataCaptureModule, ActivityTransitions.FROM_DATA_ANALYSIS_ACTIVITY, inputFileName);
             saveResultsReset();
         }
     }
@@ -451,7 +367,7 @@ public class DataAnalysisActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            String rawCSV = loadedDataSet.getCSV();
+            String rawCSV = loadedDataCaptureModule.getCSV();
 
             try
             {
