@@ -166,13 +166,4 @@ public class DataProcessor
     {
         return comparativeValue;
     }
-
-    /** Get the tranformation from linear space to non-linear space
-     *
-     * @return
-     */
-    public double getTransformedValue()
-    {
-        return comparativeValue * Math.exp(comparativeValue);
-    }
 }
