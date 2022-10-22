@@ -19,7 +19,13 @@ public class DataProcessor
     /**
      * rPoints of each sampled point.
      */
-    private List<Double> rPoints;
+    private ArrayList<Double> rPoints = new ArrayList<>();
+
+    private double avg_rval;
+    private double avg_gval;
+    private double avg_bval;
+    private double avg_rpoint;
+    private double rPointSTD;
 
     /**
      * ratio of the rPoint compared to the control sample.
@@ -46,17 +52,8 @@ public class DataProcessor
      */
     public void start()
     {
-        rPoints = calculateRPoints();
-    }
-
-    /**
-     * Do (r + g)/ b algorithm, this calculates the R point.
-     *
-     * @return a list of rPoints in order.
-     */
-    public List<Double> calculateRPoints()
-    {
-        List<Double> rPoints = new ArrayList<>();
+        // Calculate rPoints
+        // Do (r + g) / b
         for (int i = 0; i < sampleColors.size(); i++)
         {
             int r = Color.red(sampleColors.get(i));
@@ -65,86 +62,87 @@ public class DataProcessor
             double rPoint = (double) (r + g) / b;
             rPoints.add(rPoint);
         }
-        return rPoints;
+
+        // Calculate r,g,b
+        for (int i = 0; i < sampleColors.size(); i++)
+        {
+            int color = sampleColors.get(i);
+            avg_rval += Color.red(color);
+            avg_gval += Color.green(color);
+            avg_bval += Color.blue(color);
+        }
+        int size = sampleColors.size();
+        avg_rval /= size;
+        avg_gval /= size;
+        avg_bval /= size;
+
+        // Calculate R Point
+        for (Double d : rPoints)
+        {
+            avg_rpoint += d;
+        }
+        avg_rpoint /= rPoints.size();
+
+        // Calculate R Point STD
+        double mean = getAvgRPoint();
+        double squaredDiffs = 0;
+        for (Double d : rPoints)
+        {
+            squaredDiffs += Math.pow(d - mean, 2);
+        }
+        rPointSTD = squaredDiffs / rPoints.size();
     }
 
+
     /**
-     * Calculate the average red values of each sampling point.
-     *
-     * @return Average red value
+     * @return Average red value of each sampling point.
      */
     public double getAvgRValue()
     {
-        double val = 0;
-        for (int i = 0; i < sampleColors.size(); i++)
-        {
-            val += Color.red(sampleColors.get(i));
-        }
-        return val / sampleColors.size();
+        return avg_rval;
     }
 
     /**
-     * Calculate the average green values of each sampling point.
-     *
-     * @return Average green value
+     * @return Average green value of each sampling point.
      */
     public double getAvgGValue()
     {
-        double val = 0;
-        for (int i = 0; i < sampleColors.size(); i++)
-        {
-            val += Color.green(sampleColors.get(i));
-        }
-        return val / sampleColors.size();
+        return avg_gval;
     }
 
     /**
-     * Calculate the average blue values of each sampling point.
-     *
-     * @return Average blue value
+     * @return Average blue value of each sampling point.
      */
     public double getAvgBValue()
     {
-        double val = 0;
-        for (int i = 0; i < sampleColors.size(); i++)
-        {
-            val += Color.blue(sampleColors.get(i));
-        }
-        return val / sampleColors.size();
+        return avg_bval;
+    }
+
+
+    /**
+     * @return Individual rPoints.
+     */
+    public ArrayList<Double> getRPoints()
+    {
+        return rPoints;
     }
 
     /**
      * Calculate the average rPoint value among the sampled rPoints
      *
-     * @return the average rPoint value.
+     * @return The average rPoint value of each sampling point.
      */
     public double getAvgRPoint()
     {
-        double val = 0;
-        for (Double d : rPoints)
-        {
-            val += d;
-        }
-        return val / rPoints.size();
-
-        //return getAvgRValue() / (getAvgGValue() + getAvgBValue());
+        return avg_rpoint;
     }
 
     /**
-     * Get the standard devation of the RPoints
-     *
-     * @return
+     * @return The STD of rPoints.
      */
     public double getRPointSTD()
     {
-        double mean = getAvgRPoint();
-        double squaredDiffs = 0;
-
-        for (Double d : rPoints)
-        {
-            squaredDiffs = Math.pow(d - mean, 2);
-        }
-        return squaredDiffs / rPoints.size();
+        return rPointSTD;
     }
 
     /**
@@ -158,9 +156,7 @@ public class DataProcessor
     }
 
     /**
-     * Getter for comparativeValue
-     *
-     * @return
+     * @return Comparative Value
      */
     public double getComparativeValue()
     {
