@@ -39,8 +39,7 @@ import java.util.Objects;
 /**
  * Activity responsible for gathering user input after a picture was taken.
  */
-public class DataCaptureActivity extends AppCompatActivity
-{
+public class DataCaptureActivity extends AppCompatActivity {
     /**
      * Settings of data capture, has options for user to adjust
      */
@@ -61,19 +60,12 @@ public class DataCaptureActivity extends AppCompatActivity
     private HorizontalScrollView horizontalScrollView;
 
 
-    public ImageView getPictureView()
-    {
+    public ImageView getPictureView() {
         return pictureView;
     }
 
-    public ScrollView getScrollView()
-    {
+    public ScrollView getScrollView() {
         return scrollView;
-    }
-
-    public HorizontalScrollView getHorizontalScrollViewScrollView()
-    {
-        return horizontalScrollView;
     }
 
 
@@ -83,8 +75,7 @@ public class DataCaptureActivity extends AppCompatActivity
      * @param savedInstanceState Saved instances
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_datacapture);
         Objects.requireNonNull(getSupportActionBar()).hide();
@@ -93,8 +84,7 @@ public class DataCaptureActivity extends AppCompatActivity
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // initializations
-        if (settings == null)
-        {
+        if (settings == null) {
             settings = new DataCaptureSettings();
         }
 
@@ -122,8 +112,7 @@ public class DataCaptureActivity extends AppCompatActivity
         pictureView.post(() ->
         {
             Uri currentPhotoUri = (Uri) getIntent().getExtras().get("bitmapUri");
-            try
-            {
+            try {
                 // load original bitmap
                 InputStream is = getContentResolver().openInputStream(currentPhotoUri);
                 pictureBitmap = BitmapFactory.decodeStream(is);
@@ -137,8 +126,7 @@ public class DataCaptureActivity extends AppCompatActivity
 
                 layoutImageView();
 
-            } catch (FileNotFoundException e)
-            {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         });
@@ -155,15 +143,12 @@ public class DataCaptureActivity extends AppCompatActivity
      * @param p Global position
      * @return Integer representation of argb.
      */
-    public int getPixelFromPosition(Point p)
-    {
+    public int getPixelFromPosition(Point p) {
         // Convert absolute coordinates to relative coordinates of pictureView
         // Descale the position to the unscaled bitmap.
         double scale = settings.getImageScale();
         int unscaledX = (int) ((p.x - pictureView.getX()) / scale);
         int unscaledY = (int) ((p.y - pictureView.getY()) / scale);
-        Log.d("DEBUG", String.format("scaled position = %d,%d", p.x, p.y));
-        Log.d("DEBUG", String.format("descaled position = %d,%d", unscaledX, unscaledY));
 
         Bitmap pictureBitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
         return pictureBitmap.getPixel(unscaledX, unscaledY);
@@ -177,8 +162,7 @@ public class DataCaptureActivity extends AppCompatActivity
      * @param visualDotView  ImageView to animate
      * @param targetPosition Target position in global space.
      */
-    public void animateVisualDot(ImageView visualDotView, Point targetPosition)
-    {
+    public void animateVisualDot(ImageView visualDotView, Point targetPosition) {
         int relativeX = Math.round(targetPosition.x);
         int relativeY = Math.round(targetPosition.y);
         visualDotView.setX(relativeX - Math.round(visualDotView.getWidth() / 2f));
@@ -188,8 +172,7 @@ public class DataCaptureActivity extends AppCompatActivity
     /**
      * When settings has been updated
      */
-    private void updatedSettings()
-    {
+    private void updatedSettings() {
         csGen.redraw();
         layoutImageView();
     }
@@ -197,8 +180,7 @@ public class DataCaptureActivity extends AppCompatActivity
     /**
      * Set the image view (as in layout).
      */
-    private void layoutImageView()
-    {
+    private void layoutImageView() {
         // set the dimensions of view according to scale settings
         double scale = settings.getImageScale();
         ConstraintLayout samplersCL = findViewById(R.id.cLCircularSamplers);
@@ -217,11 +199,9 @@ public class DataCaptureActivity extends AppCompatActivity
      * Listener for when the user is done picking deploying the samplers.
      * Mostly, this function generates the data and passes it the results activity.
      */
-    private class DeployedSamplersOnClickListener implements View.OnClickListener
-    {
+    private class DeployedSamplersOnClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             csGen.doTrials();
 
             // Create visitor to calculate comparative values of each sampler
@@ -241,13 +221,10 @@ public class DataCaptureActivity extends AppCompatActivity
     /**
      * Debugging mouse clicks
      */
-    private class ScreenDebuggingOnTouchListener implements View.OnTouchListener
-    {
+    private class ScreenDebuggingOnTouchListener implements View.OnTouchListener {
         @Override
-        public boolean onTouch(View v, MotionEvent event)
-        {
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
                 double x = event.getX();
                 double y = event.getY();
                 double rx = event.getRawX();
@@ -262,11 +239,9 @@ public class DataCaptureActivity extends AppCompatActivity
     /**
      *
      */
-    private class OptionsOnClickListener implements View.OnClickListener
-    {
+    private class OptionsOnClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             dataCaptureOptionsCL.setVisibility(View.VISIBLE);
 
             // update fields to current settings
@@ -282,11 +257,9 @@ public class DataCaptureActivity extends AppCompatActivity
     /**
      *
      */
-    private class OptionsCancelOnClickListener implements View.OnClickListener
-    {
+    private class OptionsCancelOnClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             dataCaptureOptionsCL.setVisibility(View.GONE);
         }
     }
@@ -295,11 +268,9 @@ public class DataCaptureActivity extends AppCompatActivity
     /**
      *
      */
-    private class OptionsConfirmOnClickListener implements View.OnClickListener
-    {
+    private class OptionsConfirmOnClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             dataCaptureOptionsCL.setVisibility(View.GONE);
 
             // update settings
@@ -319,8 +290,7 @@ public class DataCaptureActivity extends AppCompatActivity
      *
      * @param uKey Key to access the DataSet from TookPictureActivity
      */
-    private void goToResultsActivity(String uKey)
-    {
+    private void goToResultsActivity(String uKey) {
         // pass the bundle to next activity
         Intent resultsActivity = new Intent(DataCaptureActivity.this, DataAnalysisActivity.class);
         resultsActivity.putExtra(DataBundlingVisitor.KEY_EXTRA_STRING, uKey);

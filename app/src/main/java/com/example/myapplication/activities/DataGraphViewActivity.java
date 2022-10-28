@@ -54,7 +54,7 @@ public class DataGraphViewActivity extends AppCompatActivity
     private final ArrayList<DataCaptureModule> loadedDataModules = new ArrayList<>();
 
     /**
-     *
+     * Activity Launcher for receiving selected datasets
      */
     private final ActivityResultLauncher<DataGraphViewActivity> selectDataLauncher =
             registerForActivityResult(new SelectDataSetContract(), new selectDataCallBack());

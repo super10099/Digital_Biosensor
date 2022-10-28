@@ -57,7 +57,6 @@ public class DataAnalysisActivity extends AppCompatActivity
     private static final int LISTVIEW_RPOINT_LABEL = R.id.RPointLabelTitle;
     private static final int LISTVIEW_RPOINTSTD_LABEL = R.id.RPointSTDLabel;
     private static final int LISTVIEW_COMPARISONVALUE_LABEL = R.id.comparisonValueLabel;
-    private static final int LIST_VIEW_TRANSFORMEDVALUE_LABEL = R.id.transformedValueLabel;
 
     private static final int EXIT_BTN = R.id.discardBtn;
     private static final int EXPORT_DATA_BTN = R.id.exportDataBtn;
