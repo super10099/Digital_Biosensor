@@ -6,13 +6,13 @@ package com.example.myapplication.controller;
  */
 public class ControllerManager {
 
-    public static MenuController getMenuController() {
-        if (menuController == null)
-        {
-            menuController = new MenuController();
-        }
-        return menuController;
-    }
+//    public static MenuController getMenuController() {
+//        if (menuController == null)
+//        {
+//            menuController = new MenuController();
+//        }
+//        return menuController;
+//    }
 
     public static DataCaptureController getDataCaptureController() {
         if (dataCaptureController == null)

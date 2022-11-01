@@ -1,6 +1,6 @@
 package com.example.myapplication.controller;
 
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +13,7 @@ import androidx.core.content.FileProvider;
 import com.example.myapplication.activities.MenuActivity;
 import com.example.myapplication.model.MenuModel;
 import com.example.myapplication.util.PickPictureContract;
+import com.example.myapplication.util.TakePictureContract;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,13 +28,16 @@ public class MenuController {
     private MenuActivity applicationContext;
     private MenuModel model = new MenuModel();
 
-    private ActivityResultLauncher<Void> loadPictureContractLauncher;
+    private ActivityResultLauncher<Uri> takePictureContractLauncher;
+    private ActivityResultLauncher<Void> pickPictureContractLauncher;
 
 
     public MenuController(MenuActivity context)
     {
         applicationContext = context;
-        loadPictureContractLauncher = applicationContext.registerForActivityResult(
+        takePictureContractLauncher = applicationContext.registerForActivityResult(
+                new TakePictureContract(), new takePictureCallback());
+        pickPictureContractLauncher = applicationContext.registerForActivityResult(
                 new PickPictureContract(), new loadPictureCallback());
     }
 
@@ -73,6 +77,7 @@ public class MenuController {
             e.printStackTrace();
         }
 
+
         // Ensure that the image file was successfully created
         // If successful, create the Intent and attach file Uri
         // Image capture result will be stored at the Uri destination
@@ -80,17 +85,32 @@ public class MenuController {
             model.setImageBitmapUri(FileProvider.getUriForFile(applicationContext,
                     "com.example.myapplication.fileprovider",
                     pictureFile));
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, model.getImageBitmapUri());
-            applicationContext.startActivityForResult(takePictureIntent, model.REQUEST_IMAGE_CAPTURE);
+            takePictureContractLauncher.launch(model.getImageBitmapUri());
+        }
+    }
 
+    private class takePictureCallback implements ActivityResultCallback<Void>
+    {
+        @Override
+        public void onActivityResult(Void result) {
+            // saving it to storage
+            Bitmap bitmap = null;
+            Uri imageBitmapUri = model.getImageBitmapUri();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(),
+                        imageBitmapUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            MediaStore.Images.Media.insertImage(applicationContext.getContentResolver(), bitmap,
+                    imageBitmapUri.getLastPathSegment(), // last path is the name of the actual file
+                    "Picture taken by user");
+            startDataCaptureActivity();
         }
     }
 
     public void loadPicture() {
-        Intent pickPictureIntent = new Intent(Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(pickPictureIntent, model.REQUEST_LOAD_IMAGE);
+        pickPictureContractLauncher.launch(null);
     }
 
     private class loadPictureCallback implements ActivityResultCallback<Uri>

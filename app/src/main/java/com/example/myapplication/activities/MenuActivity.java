@@ -1,25 +1,19 @@
 package com.example.myapplication.activities;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import com.example.myapplication.controller.MenuController;
 import com.example.myapplication.datasystem.DataStore;
@@ -47,12 +41,6 @@ public class MenuActivity extends AppCompatActivity {
 
     // since the thread starts in MenuActivity, the view actually creates the controller.
     private MenuController controller;
-
-    /**
-     * Uri for the image file from loading or camera capture.
-     * this is sent to TookPictureActivity
-     */
-    private Uri pictureFileUri;
 
     /**
      * Initialize Activity by defining variables and attaching UI listeners.
@@ -92,32 +80,6 @@ public class MenuActivity extends AppCompatActivity {
         controller = new MenuController(this);
     }
 
-
-    /**
-     * When picture is taken, save the picture as a bitmap and update the pictureView with that bitmap.
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Check to make sure it is the result that needs to be handled
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // saving it to storage
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), pictureFileUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,
-                    pictureFileUri.getLastPathSegment(), // last path is the name of the actual file
-                    "Picture taken by user");
-            controller.startDataCaptureActivity(this);
-        } else if (requestCode == REQUEST_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
-            pictureFileUri = data.getData();
-        }
-    }
-
     private class TakePictureOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -143,7 +105,6 @@ public class MenuActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent changeActivity = new Intent(MenuActivity.this, SavedDataBrowsingActivity.class);
-            changeActivity.putExtra("bitmapUri", pictureFileUri);
             startActivity(changeActivity);
         }
     }
