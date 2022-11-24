@@ -1,6 +1,6 @@
 <resources>
     <!-- Names -->
-    <string name="app_name">Digital Biosensor</string>
+    <string name="app_name">Bio-analytics</string>
     <string name="sampler_view">Sampler View</string>
 
     <!-- Content descriptions -->

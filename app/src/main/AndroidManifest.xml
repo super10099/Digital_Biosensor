@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.myapplication">
+    package="com.bae.myapplication">
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/biosensors_lab_logo_shield"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/biosensors_lab_logo_shield"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
 
         <!--  Taking Picture Activity      -->
         <activity
-            android:name=".activities.MenuActivity"
+            android:name="com.bae.myapplication.activities.MenuActivity"
             android:screenOrientation="landscape"
             android:exported="true">
             <intent-filter>
@@ -27,32 +27,32 @@
 
         <!--  After taking picture Activity      -->
         <activity
-            android:name=".activities.DataCaptureActivity"
+            android:name="com.bae.myapplication.activities.DataCaptureActivity"
             android:screenOrientation="landscape">
         </activity>
 
         <!--  Showing the results activity      -->
         <activity
-            android:name=".activities.DataAnalysisActivity"
+            android:name="com.bae.myapplication.activities.DataAnalysisActivity"
             android:screenOrientation="landscape">
         </activity>
 
         <!-- Activity for browsing saved data   -->
         <activity
-            android:name=".activities.SavedDataBrowsingActivity"
+            android:name="com.bae.myapplication.activities.SavedDataBrowsingActivity"
             android:screenOrientation="landscape">
         </activity>
 
         <!-- Activity for graphing data   -->
         <activity
-            android:name=".activities.DataGraphViewActivity"
+            android:name="com.bae.myapplication.activities.DataGraphViewActivity"
             android:screenOrientation="landscape">
         </activity>
 
         <!--  for FileProvider      -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.myapplication.fileprovider"
+            android:authorities="com.bae.myapplication.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

@@ -42,20 +42,21 @@
             android:text="R Val STD" />
 
         <TextView
-            android:id="@+id/comparisonValueLabel"
+            android:id="@+id/TransformedValueLabel"
             android:layout_width="110dp"
             android:layout_height="35dp"
             android:layout_marginStart="35dp"
             android:gravity="center_vertical"
-            android:text="Comparative Val" />
+            android:text="Transformed Val"
+            tools:ignore="DuplicateIds" />
 
         <TextView
-            android:id="@+id/transformedValueLabel"
+            android:id="@+id/ComparativeValueLabel"
             android:layout_width="145dp"
             android:layout_height="35dp"
             android:layout_marginStart="35dp"
             android:gravity="center_vertical"
-            android:text="Transformed Val" />
+            android:text="Comparative Val" />
 
     </LinearLayout>
 
