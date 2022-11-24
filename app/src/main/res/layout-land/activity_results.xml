@@ -96,7 +96,7 @@
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:gravity="center_vertical"
-                android:text="AVG. R VAL" />
+                android:text="AVG. (R+G)/B" />
 
             <ImageButton
                 android:id="@+id/avgrgbTip3"
@@ -110,7 +110,7 @@
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:gravity="center_vertical"
-                android:text="R VAL STD" />
+                android:text="STD. (R+G)/B" />
 
             <ImageButton
                 android:id="@+id/avgrgbTip4"
@@ -120,11 +120,11 @@
                 app:srcCompat="@android:drawable/ic_menu_info_details" />
 
             <TextView
-                android:id="@+id/comparisonValueLabel"
+                android:id="@+id/transformedValueLabel_"
                 android:layout_width="110dp"
                 android:layout_height="35dp"
                 android:gravity="center_vertical"
-                android:text="RATIO" />
+                android:text="TRANSFORMED" />
 
             <ImageButton
                 android:id="@+id/avgrgbTip5"
@@ -135,11 +135,11 @@
                 app:srcCompat="@android:drawable/ic_menu_info_details" />
 
             <TextView
-                android:id="@+id/transformedValueLabel"
+                android:id="@+id/comparativeValueLabel_"
                 android:layout_width="110dp"
                 android:layout_height="35dp"
                 android:gravity="center_vertical"
-                android:text="FINAL" />
+                android:text="S/N" />
 
         </LinearLayout>
 
