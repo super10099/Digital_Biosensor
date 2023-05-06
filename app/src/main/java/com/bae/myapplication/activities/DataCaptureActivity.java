@@ -87,6 +87,7 @@ public class DataCaptureActivity extends AppCompatActivity {
             settings = new DataCaptureSettings();
         }
 
+        // All the View objects on that activity page
         scrollView = findViewById(R.id.DataCaptureImageScrollView);
         horizontalScrollView = findViewById(R.id.DataCaptureHorizontalScroll);
         pictureView = findViewById(R.id.DataCapturePictureView);

@@ -32,8 +32,11 @@ public class MenuController {
     private ActivityResultLauncher<Void> pickPictureContractLauncher;
 
 
-    public MenuController(MenuActivity context)
-    {
+    /**
+     * Constructor for initializing the contract launchers for each activity.
+     * @param context
+     */
+    public MenuController(MenuActivity context) {
         applicationContext = context;
         takePictureContractLauncher = applicationContext.registerForActivityResult(
                 new TakePictureContract(), new takePictureCallback());
@@ -42,29 +45,10 @@ public class MenuController {
     }
 
 
-    public void startDataCaptureActivity() {
-        Bundle extras = new Bundle();
-        extras.putParcelable("bitmapUri", model.getImageBitmapUri());
-        ControllerManager.getDataCaptureController().startActivity(applicationContext, extras);
-    }
-
-    /**
-     * Creates an image file with unique names each time.
-     * The file is stored in external directory.
+    /*
+     * ********************* Helper functions ************************************************
      */
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        // Save a file: path for use with ACTION_VIEW intents
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",    /* suffix */
-                storageDir      /* directory */
-        );
-    }
 
     public void takePicture() {
         // Create an image file to store the capture
@@ -89,8 +73,49 @@ public class MenuController {
         }
     }
 
-    private class takePictureCallback implements ActivityResultCallback<Void>
-    {
+    /**
+     * Creates an image file with unique names each time.
+     * The file is stored in external directory.
+     */
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        // Save a file: path for use with ACTION_VIEW intents
+        return File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",    /* suffix */
+                storageDir      /* directory */
+        );
+    }
+
+    /**
+     * Start the next screen activity after the user took a picture.
+     */
+    public void startDataCaptureActivity() {
+        Bundle extras = new Bundle();
+        extras.putParcelable("bitmapUri", model.getImageBitmapUri());
+        ControllerManager.getDataCaptureController().startActivity(applicationContext, extras);
+    }
+
+    /**
+     * Load picture by launching the phone photo library app.
+     */
+    public void loadPicture() {
+        pickPictureContractLauncher.launch(null);
+    }
+
+
+    /*
+     * ********************* Callbacks ************************************************
+     */
+
+    /**
+     * This function is called when the user clicks on the 'take picture' button
+     */
+    private class takePictureCallback implements ActivityResultCallback<Void> {
         @Override
         public void onActivityResult(Void result) {
             // saving it to storage
@@ -109,17 +134,14 @@ public class MenuController {
         }
     }
 
-    public void loadPicture() {
-        pickPictureContractLauncher.launch(null);
-    }
-
-    private class loadPictureCallback implements ActivityResultCallback<Uri>
-    {
+    /**
+     * This function is called when the user clicks on the 'load picture' button
+     */
+    private class loadPictureCallback implements ActivityResultCallback<Uri> {
         @Override
         public void onActivityResult(Uri result) {
             model.setImageBitmapUri(result);
             startDataCaptureActivity();
         }
     }
-
 }

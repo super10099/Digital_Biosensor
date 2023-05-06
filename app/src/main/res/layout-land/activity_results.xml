@@ -56,9 +56,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,9 +66,10 @@
 
             <TextView
                 android:id="@+id/sampleLabel"
-                android:layout_width="100dp"
+                android:layout_width="70dp"
                 android:layout_height="20dp"
-                android:text="SAMPLE" />
+                android:text="SAMPLE"
+                android:textSize="12sp" />
 
             <ImageButton
                 android:id="@+id/avgrgbTip"
@@ -82,7 +83,8 @@
                 android:layout_width="130dp"
                 android:layout_height="35dp"
                 android:gravity="center_vertical"
-                android:text="AVG. RGB" />
+                android:text="AVG. RGB"
+                android:textSize="12sp" />
 
             <ImageButton
                 android:id="@+id/avgrgbTip2"
@@ -93,10 +95,11 @@
 
             <TextView
                 android:id="@+id/RPointLabelTitle"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="AVG. (R+G)/B" />
+                android:text="AVG. (R+G)/B"
+                android:textSize="12sp" />
 
             <ImageButton
                 android:id="@+id/avgrgbTip3"
@@ -107,10 +110,11 @@
 
             <TextView
                 android:id="@+id/RPointSTDLabel"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="STD. (R+G)/B" />
+                android:text="STD. (R+G)/B"
+                android:textSize="12sp" />
 
             <ImageButton
                 android:id="@+id/avgrgbTip4"
@@ -121,10 +125,11 @@
 
             <TextView
                 android:id="@+id/transformedValueLabel_"
-                android:layout_width="110dp"
-                android:layout_height="35dp"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="TRANSFORMED" />
+                android:text="TRANSFORMED"
+                android:textSize="12sp" />
 
             <ImageButton
                 android:id="@+id/avgrgbTip5"
@@ -136,10 +141,11 @@
 
             <TextView
                 android:id="@+id/comparativeValueLabel_"
-                android:layout_width="110dp"
+                android:layout_width="80dp"
                 android:layout_height="35dp"
                 android:gravity="center_vertical"
-                android:text="S/N" />
+                android:text="S/N"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -149,9 +155,9 @@
         android:id="@+id/resultsListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="100dp"
         android:fadeScrollbars="false"
         android:visibility="visible"

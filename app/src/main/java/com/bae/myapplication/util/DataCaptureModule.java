@@ -76,7 +76,7 @@ public class DataCaptureModule extends DataModule implements Serializable
         StringBuilder rawCSV = new StringBuilder(new String());
 
         // append column titles
-        rawCSV.append("avgR,avgG,avgB,rPoint,rPointSTD,comparativeValue\n");
+        rawCSV.append("avgR,avgG,avgB,rPoint,rPointSTD,TransformedValue,S/N\n");
 
         // for each element, append a row
         for (Element elem : elements)
@@ -98,5 +98,4 @@ public class DataCaptureModule extends DataModule implements Serializable
     {
         return elements.iterator();
     }
-
 }
