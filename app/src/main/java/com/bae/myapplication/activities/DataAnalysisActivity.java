@@ -39,8 +39,7 @@ import java.util.Iterator;
  * Displays the sample results.
  * Attributed from https://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView
  */
-public class DataAnalysisActivity extends AppCompatActivity
-{
+public class DataAnalysisActivity extends AppCompatActivity {
     /**
      * Title for export menu
      */
@@ -85,8 +84,7 @@ public class DataAnalysisActivity extends AppCompatActivity
      */
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_results);
@@ -117,11 +115,9 @@ public class DataAnalysisActivity extends AppCompatActivity
         loadedDataCaptureModule = (DataCaptureModule) DataStore.primaryDataStore.loadModule(uKey, from);
 
         // only show save button if from data capture activity
-        if (from == ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY)
-        {
+        if (from == ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY) {
             saveResultsBtn.setVisibility(View.VISIBLE);
-        } else
-        {
+        } else {
             saveResultsBtn.setVisibility(View.GONE);
         }
 
@@ -141,8 +137,7 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Set OnClickListeners for tooltip buttons
      */
-    private void setBalloonListeners()
-    {
+    private void setBalloonListeners() {
         ImageButton b1 = findViewById(R.id.avgrgbTip);
         ImageButton b2 = findViewById(R.id.avgrgbTip2);
         ImageButton b3 = findViewById(R.id.avgrgbTip3);
@@ -157,16 +152,15 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Tooltip listener
      */
-    private class avgRGBOnClickListener implements View.OnClickListener
-    {
+    private class avgRGBOnClickListener implements View.OnClickListener {
         private ImageButton button;
+
         public avgRGBOnClickListener(ImageButton button) {
             this.button = button;
         }
 
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             balloons.getAvgRGBBalloon().showAlignBottom(button);
         }
     }
@@ -174,16 +168,15 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Tooltip listener
      */
-    private class avgRValOnClickListener implements View.OnClickListener
-    {
+    private class avgRValOnClickListener implements View.OnClickListener {
         private ImageButton button;
+
         public avgRValOnClickListener(ImageButton button) {
             this.button = button;
         }
 
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             balloons.getAvgRValBalloon().showAlignBottom(button);
         }
     }
@@ -191,16 +184,15 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Tooltip listener
      */
-    private class avgRValSTDOnClickListener implements View.OnClickListener
-    {
+    private class avgRValSTDOnClickListener implements View.OnClickListener {
         private ImageButton button;
+
         public avgRValSTDOnClickListener(ImageButton button) {
             this.button = button;
         }
 
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             balloons.getAvgRValSTDBalloon().showAlignBottom(button);
         }
     }
@@ -208,16 +200,15 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Tooltip listener
      */
-    private class RatioOnClickListener implements View.OnClickListener
-    {
+    private class RatioOnClickListener implements View.OnClickListener {
         private ImageButton button;
+
         public RatioOnClickListener(ImageButton button) {
             this.button = button;
         }
 
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             balloons.getRatioBalloon().showAlignBottom(button);
         }
     }
@@ -225,11 +216,9 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Transition to MainActivity to restart the process.
      */
-    private class ExitOnClickListener implements View.OnClickListener
-    {
+    private class ExitOnClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             finish();
         }
     }
@@ -237,11 +226,9 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Convert data from module into the array data model for ListView
      */
-    private void convertData()
-    {
+    private void convertData() {
         Iterator<DataCaptureModule.Element> dsIterator = loadedDataCaptureModule.getIterator();
-        while (dsIterator.hasNext())
-        {
+        while (dsIterator.hasNext()) {
             sampleDataModels.add(dsIterator.next());
         }
     }
@@ -249,22 +236,19 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Display data into listview.
      */
-    private void displayData()
-    {
+    private void displayData() {
         ListView resultsListView = findViewById(LISTVIEW_ACTUAL);
         resultsListView.setAdapter(sampleDataModels);
     }
 
 
-    private class SampleDataModelAdapter extends ArrayAdapter<DataCaptureModule.Element>
-    {
+    private class SampleDataModelAdapter extends ArrayAdapter<DataCaptureModule.Element> {
         /**
          * Constructor
          *
          * @param context Activity context
          */
-        public SampleDataModelAdapter(DataAnalysisActivity context)
-        {
+        public SampleDataModelAdapter(DataAnalysisActivity context) {
             super(context, LISTVIEW_LAYOUT_ID, LISTVIEW_TEXTVIEW);
         }
 
@@ -278,13 +262,11 @@ public class DataAnalysisActivity extends AppCompatActivity
          */
         @SuppressLint("ResourceType")
         @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             super.getView(position, convertView, parent);
 
             // inflate the view with the xml template
-            if (convertView == null)
-            {
+            if (convertView == null) {
                 convertView = LayoutInflater.from(getContext())
                         .inflate(LISTVIEW_LAYOUT_ID, parent, false);
             }
@@ -300,11 +282,9 @@ public class DataAnalysisActivity extends AppCompatActivity
 
 
             // Setting the labels
-            if (position == 0)
-            {
+            if (position == 0) {
                 sampleLabel.setText("Control");
-            } else
-            {
+            } else {
                 sampleLabel.setText("x" + position);
             }
             RGBLabel.setText(String.format("(%.0f, %.0f, %.0f)", sampleData.getAvgR(), sampleData.getAvgG(), sampleData.getAvgB()));
@@ -317,8 +297,7 @@ public class DataAnalysisActivity extends AppCompatActivity
         }
     }
 
-    private void saveResultsReset()
-    {
+    private void saveResultsReset() {
         saveResultsFilenameEditText.setText("");
         saveResultsCL.setVisibility(View.GONE);
     }
@@ -326,11 +305,9 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Open save results menu
      */
-    private class SaveResultsMenuOnClickListener implements View.OnClickListener
-    {
+    private class SaveResultsMenuOnClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             saveResultsCL.setVisibility(View.VISIBLE);
         }
     }
@@ -338,11 +315,9 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      * Cancel the act of saving results.
      */
-    private class SaveResultsCancelOnClickListener implements View.OnClickListener
-    {
+    private class SaveResultsCancelOnClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             saveResultsReset();
         }
     }
@@ -350,11 +325,9 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      *
      */
-    private class SaveResultsConfirmOnClickListener implements View.OnClickListener
-    {
+    private class SaveResultsConfirmOnClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             String inputFileName = saveResultsFilenameEditText.getText().toString();
             DataStore.primaryDataStore.putModule(loadedDataCaptureModule, ActivityTransitions.FROM_DATA_ANALYSIS_ACTIVITY, inputFileName);
             saveResultsReset();
@@ -364,15 +337,12 @@ public class DataAnalysisActivity extends AppCompatActivity
     /**
      *
      */
-    private class ExportOnClickListener implements View.OnClickListener
-    {
+    private class ExportOnClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             String rawCSV = loadedDataCaptureModule.getCSV();
 
-            try
-            {
+            try {
                 // create a temporary CSV file
                 File dir = DataStore.primaryDataStore.getTempDir();
                 File csvFile = File.createTempFile("resultsExport", ".csv", dir);
@@ -389,8 +359,7 @@ public class DataAnalysisActivity extends AppCompatActivity
                 exportDataIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 exportDataIntent.putExtra(Intent.EXTRA_STREAM, csvFileUri);
                 startActivity(Intent.createChooser(exportDataIntent, EXPORT_DATA_CHOOSER_TITLE));
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

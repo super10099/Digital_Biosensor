@@ -44,6 +44,6 @@ public class ComparativeValueVisitor implements Visitor
 
     private double nonlinearTransform(double r)
     {
-        return Math.exp(r);
+        return 1 / Math.exp(r);
     }
 }

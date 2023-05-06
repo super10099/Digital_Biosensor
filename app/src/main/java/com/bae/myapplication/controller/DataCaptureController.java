@@ -12,7 +12,6 @@ import com.bae.myapplication.model.DataCaptureModel;
  */
 public class DataCaptureController {
 
-
     private DataCaptureActivity dataCaptureActivity;
     private DataCaptureModel dataCaptureModel;
 
@@ -40,6 +39,4 @@ public class DataCaptureController {
     public void startSampleCalculations() {
 
     }
-
-
 }

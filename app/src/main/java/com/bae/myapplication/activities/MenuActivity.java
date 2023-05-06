@@ -51,17 +51,12 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        // init xml items and add listeners
-        Button takePictureBtn = findViewById(R.id.menuTakePictureBtn);
-        Button loadPictureBtn = findViewById(R.id.menuLoadPictureBtn);
-        Button savedDataBtn = findViewById(R.id.menuSavedDataBtn);
-        Button graphDataBtn = findViewById(R.id.menuDataGraphViewBtn);
-        Switch tutorialSwitch = findViewById(R.id.TutorialSwitch);
-        takePictureBtn.setOnClickListener(new TakePictureOnClickListener());
-        loadPictureBtn.setOnClickListener(new LoadPictureOnClickListener());
-        savedDataBtn.setOnClickListener(new SavedDataOnClickListener());
-        graphDataBtn.setOnClickListener(new GraphDataOnClickListener());
-        tutorialSwitch.setOnCheckedChangeListener(new TutorialOnCheckListener());
+        // add listeners to buttons
+        findViewById(R.id.menuTakePictureBtn).setOnClickListener(new TakePictureOnClickListener());
+        findViewById(R.id.menuLoadPictureBtn).setOnClickListener(new LoadPictureOnClickListener());
+        findViewById(R.id.menuSavedDataBtn).setOnClickListener(new SavedDataOnClickListener());
+        findViewById(R.id.menuDataGraphViewBtn).setOnClickListener(new GraphDataOnClickListener());
+        ((Switch) findViewById(R.id.TutorialSwitch)).setOnCheckedChangeListener(new TutorialOnCheckListener());
 
         // initiate DataStore if does not exist
         if (DataStore.primaryDataStore == null) {
@@ -76,6 +71,9 @@ public class MenuActivity extends AppCompatActivity {
         controller = new MenuController(this);
     }
 
+    /**
+     * Listener for request to take a picture.
+     */
     private class TakePictureOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {

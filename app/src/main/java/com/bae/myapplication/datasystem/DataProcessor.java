@@ -8,8 +8,7 @@ import android.graphics.Color;
 /**
  * Responsible for handling data processing
  */
-public class DataProcessor
-{
+public class DataProcessor {
 
     /**
      * Color of each sampled point.
@@ -34,8 +33,7 @@ public class DataProcessor
     private double transformedValue;
 
 
-    public DataProcessor()
-    {
+    public DataProcessor() {
         sampleColors = new ArrayList<>();
     }
 
@@ -44,30 +42,28 @@ public class DataProcessor
      *
      * @param sampleColor color (int) to add.
      */
-    public void addSampleColor(int sampleColor)
-    {
+    public void addSampleColor(int sampleColor) {
         sampleColors.add(sampleColor);
     }
 
     /**
      * Calculates the values after all the data points are installed.
      */
-    public void start()
-    {
+    public void start() {
         // Calculate rPoints
         // Do (r + g) / b
-        for (int i = 0; i < sampleColors.size(); i++)
-        {
+        for (int i = 0; i < sampleColors.size(); i++) {
             int r = Color.red(sampleColors.get(i));
             int g = Color.green(sampleColors.get(i));
             int b = Color.blue(sampleColors.get(i));
-            double rPoint = (double) (r + g) / b;
+//            double rPoint = (double) (r + g) / b;
+//            double rPoint = (double) r / (r + g + b);
+            double rPoint = (double) (r + g + b) / r;
             rPoints.add(rPoint);
         }
 
         // Calculate r,g,b
-        for (int i = 0; i < sampleColors.size(); i++)
-        {
+        for (int i = 0; i < sampleColors.size(); i++) {
             int color = sampleColors.get(i);
             avg_rval += Color.red(color);
             avg_gval += Color.green(color);
@@ -79,8 +75,7 @@ public class DataProcessor
         avg_bval /= size;
 
         // Calculate average R Point
-        for (Double d : rPoints)
-        {
+        for (Double d : rPoints) {
             avg_rpoint += d;
         }
         avg_rpoint /= rPoints.size();
@@ -88,8 +83,7 @@ public class DataProcessor
         // Calculate R Point STD
         double mean = getAvgRPoint();
         double squaredDiffs = 0;
-        for (Double d : rPoints)
-        {
+        for (Double d : rPoints) {
             squaredDiffs += Math.pow(d - mean, 2);
         }
         rPointSTD = squaredDiffs / rPoints.size();
@@ -99,24 +93,21 @@ public class DataProcessor
     /**
      * @return Average red value of each sampling point.
      */
-    public double getAvgRValue()
-    {
+    public double getAvgRValue() {
         return avg_rval;
     }
 
     /**
      * @return Average green value of each sampling point.
      */
-    public double getAvgGValue()
-    {
+    public double getAvgGValue() {
         return avg_gval;
     }
 
     /**
      * @return Average blue value of each sampling point.
      */
-    public double getAvgBValue()
-    {
+    public double getAvgBValue() {
         return avg_bval;
     }
 
@@ -124,8 +115,7 @@ public class DataProcessor
     /**
      * @return Individual rPoints.
      */
-    public ArrayList<Double> getRPoints()
-    {
+    public ArrayList<Double> getRPoints() {
         return rPoints;
     }
 
@@ -134,16 +124,14 @@ public class DataProcessor
      *
      * @return The average rPoint value of each sampling point.
      */
-    public double getAvgRPoint()
-    {
+    public double getAvgRPoint() {
         return avg_rpoint;
     }
 
     /**
      * @return The STD of rPoints.
      */
-    public double getRPointSTD()
-    {
+    public double getRPointSTD() {
         return rPointSTD;
     }
 
@@ -152,19 +140,22 @@ public class DataProcessor
      *
      * @param val
      */
-    public void setComparativeValue(double val)
-    {
+    public void setComparativeValue(double val) {
         comparativeValue = val;
     }
 
     /**
      * @return Comparative Value
      */
-    public double getComparativeValue()
-    {
+    public double getComparativeValue() {
         return comparativeValue;
     }
 
-    public void setTransformedValue(double val) {transformedValue = val;}
-    public double getTransformedValue() { return transformedValue; }
+    public void setTransformedValue(double val) {
+        transformedValue = val;
+    }
+
+    public double getTransformedValue() {
+        return transformedValue;
+    }
 }
