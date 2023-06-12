@@ -46,7 +46,7 @@
         <!-- Activity for graphing data   -->
         <activity
             android:name="com.bae.myapplication.activities.DataGraphViewActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" android:parentActivityName=".activities.MenuActivity">
         </activity>
 
         <!--  for FileProvider      -->

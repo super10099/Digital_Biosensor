@@ -47,9 +47,12 @@ public class DataBundlingVisitor implements Visitor
         DataCaptureModule module = new DataCaptureModule();
         for (DataProcessor dp : dps)
         {
+            double snr = dp.getBeta()/dps.get(0).getBeta(); // snr = Beta_sample/Beta_control
+
             DataCaptureModule.Element elem = new DataCaptureModule.Element(
                     dp.getAvgRValue(), dp.getAvgGValue(), dp.getAvgBValue(),
-                    dp.getAvgRPoint(), dp.getRPointSTD(), dp.getComparativeValue(), dp.getTransformedValue());
+                    dp.getAvgRPoint(), dp.getRPointSTD(), dp.getComparativeValue(), dp.getTransformedValue(),
+                    dp.getAlpha(), dp.getBeta(), snr);
             module.putElement(elem);
         }
         return DataStore.primaryDataStore.putModule(module, ActivityTransitions.FROM_DATA_CAPTURE_ACTIVITY);

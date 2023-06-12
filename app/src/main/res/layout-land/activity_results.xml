@@ -98,7 +98,7 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="AVG. (R+G)/B"
+                android:text="Alpha"
                 android:textSize="12sp" />
 
             <ImageButton
@@ -113,7 +113,7 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="STD. (R+G)/B"
+                android:text="Beta"
                 android:textSize="12sp" />
 
             <ImageButton
@@ -144,7 +144,7 @@
                 android:layout_width="80dp"
                 android:layout_height="35dp"
                 android:gravity="center_vertical"
-                android:text="S/N"
+                android:text="SNR"
                 android:textSize="12sp" />
 
         </LinearLayout>

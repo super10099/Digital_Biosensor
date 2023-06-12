@@ -28,7 +28,13 @@ public class DataCaptureModule extends DataModule implements Serializable
         private double comparativeValue;
         private double transformedValue;
 
-        public Element(double avgR, double avgG, double avgB, double rPoint, double rPointSTD, double comparativeValue, double transformedValue)
+        private double alpha;
+        private double beta;
+        private double snr;
+
+        public Element(double avgR, double avgG, double avgB, double rPoint, double rPointSTD,
+                       double comparativeValue, double transformedValue, double alpha, double beta,
+                       double snr)
         {
             this.avgR = avgR;
             this.avgG = avgG;
@@ -37,6 +43,9 @@ public class DataCaptureModule extends DataModule implements Serializable
             this.rPointSTD = rPointSTD;
             this.comparativeValue = comparativeValue;
             this.transformedValue = transformedValue;
+            this.alpha = alpha;
+            this.beta = beta;
+            this.snr = snr;
         }
 
         /** Getters */
@@ -48,6 +57,10 @@ public class DataCaptureModule extends DataModule implements Serializable
         public double getComparativeValue() { return comparativeValue; }
         public double getTransformedValue() { return transformedValue; }
 
+        public double getAlpha() {return alpha;}
+        public double getBeta() {return beta;}
+        public double getSnr() {return snr;}
+
 
         public DataCaptureModule getParent() { return parent; }
 
@@ -55,7 +68,7 @@ public class DataCaptureModule extends DataModule implements Serializable
 
     }
 
-    // Contains the examples. e.g. control, x1, x2, x3, x4
+    // Contains the samples. e.g. control, x1, x2, x3, x4
     private ArrayList<Element> elements = new ArrayList<>();
 
 
@@ -68,6 +81,8 @@ public class DataCaptureModule extends DataModule implements Serializable
         elements.add(elem);
     }
 
+
+    // Add beta, alpha, snr to csv file
     /**
      * @return A raw string that represents the DataSet as a CSV file extension.
      */
