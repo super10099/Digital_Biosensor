@@ -7,15 +7,15 @@
 
     <Button
         android:id="@+id/GraphView_ExitBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_width="81dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="24dp"
         android:text="EXIT"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/GraphView_Plot" />
+        app:layout_constraintTop_toBottomOf="@+id/GraphViewAddDataSetsBtn" />
 
     <ImageButton
         android:id="@+id/GraphViewAddDataSetsBtn"

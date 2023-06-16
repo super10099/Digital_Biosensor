@@ -32,6 +32,9 @@ public class DataProcessor {
     private double comparativeValue;
     private double transformedValue;
 
+    private double alpha;
+    private double beta;
+
 
     public DataProcessor() {
         sampleColors = new ArrayList<>();
@@ -52,6 +55,8 @@ public class DataProcessor {
     public void start() {
         // Calculate rPoints
         // Do (r + g) / b
+        // May be irrelevant due to new algorithm...
+
         for (int i = 0; i < sampleColors.size(); i++) {
             int r = Color.red(sampleColors.get(i));
             int g = Color.green(sampleColors.get(i));
@@ -62,7 +67,7 @@ public class DataProcessor {
             rPoints.add(rPoint);
         }
 
-        // Calculate r,g,b
+        // Calculate avg(r,g,b)
         for (int i = 0; i < sampleColors.size(); i++) {
             int color = sampleColors.get(i);
             avg_rval += Color.red(color);
@@ -74,12 +79,14 @@ public class DataProcessor {
         avg_gval /= size;
         avg_bval /= size;
 
+        // May be irrelevant due to new algorithm
         // Calculate average R Point
         for (Double d : rPoints) {
             avg_rpoint += d;
         }
         avg_rpoint /= rPoints.size();
 
+        // May be irrelevant due to new algorithm
         // Calculate R Point STD
         double mean = getAvgRPoint();
         double squaredDiffs = 0;
@@ -87,6 +94,14 @@ public class DataProcessor {
             squaredDiffs += Math.pow(d - mean, 2);
         }
         rPointSTD = squaredDiffs / rPoints.size();
+
+
+        // Calculates alpha & beta
+        for (int i = 0; i < sampleColors.size(); ++i){
+            int color = sampleColors.get(i);
+            alpha = (double) avg_rval/avg_gval;
+            beta = alpha * Math.exp(alpha);
+        }
     }
 
 
@@ -158,4 +173,9 @@ public class DataProcessor {
     public double getTransformedValue() {
         return transformedValue;
     }
+
+    public double getAlpha(){ return alpha;}
+
+    public double getBeta() { return beta;}
+
 }
