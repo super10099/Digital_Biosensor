@@ -91,15 +91,15 @@ public class DataCaptureModule extends DataModule implements Serializable
         StringBuilder rawCSV = new StringBuilder(new String());
 
         // append column titles
-        rawCSV.append("avgR,avgG,avgB,rPoint,rPointSTD,TransformedValue,S/N\n");
+        rawCSV.append("\"avg(R,G,B)\",rPoint,rPointSTD,TransformedValue,Alpha, Beta,SNR\n");
 
         // for each element, append a row
         for (Element elem : elements)
         {
-            @SuppressLint("DefaultLocale") String newRow = String.format("%f,%f,%f,%f,%f,%f,%f\n",
+            @SuppressLint("DefaultLocale") String newRow = String.format("\"(%.0f, %.0f, %.0f)\",%f,%f,%f,%f,%f,%f\n",
                     elem.getAvgR(), elem.getAvgG(), elem.getAvgB(),
                     elem.getRPoint(), elem.getRPointSTD(), elem.getTransformedValue(),
-                    elem.getComparativeValue());
+                    elem.getAlpha(), elem.getBeta(), elem.getSnr());
             rawCSV.append(newRow);
         }
 

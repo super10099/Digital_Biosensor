@@ -9,7 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/sampleLabel"
@@ -28,7 +30,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/RPointLabelTitle"
+            android:id="@+id/AlphaLabel"
             android:layout_width="80dp"
             android:layout_height="35dp"
             android:layout_marginStart="35dp"
@@ -37,7 +39,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/RPointSTDLabel"
+            android:id="@+id/BetaLabel"
             android:layout_width="80dp"
             android:layout_height="35dp"
             android:layout_marginStart="35dp"

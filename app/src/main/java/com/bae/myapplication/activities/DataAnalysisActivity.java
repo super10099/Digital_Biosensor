@@ -51,8 +51,8 @@ public class DataAnalysisActivity extends AppCompatActivity {
     private static final int LISTVIEW_TEXTVIEW = R.id.sampleLabel;
     private static final int LISTVIEW_SAMPLE_LABEL = R.id.sampleLabel;
     private static final int LISTVIEW_RGB_LABEL = R.id.RGBLabel;
-    private static final int LISTVIEW_RPOINT_LABEL = R.id.RPointLabelTitle;
-    private static final int LISTVIEW_RPOINTSTD_LABEL = R.id.RPointSTDLabel;
+    private static final int LISTVIEW_Alpha_LABEL = R.id.AlphaLabel;
+    private static final int LISTVIEW_RPOINTBeta_LABEL = R.id.BetaLabel;
     private static final int LISTVIEW_TRANSFORMEDVALUE_LABEL = R.id.TransformedValueLabel;
     private static final int LISTVIEW_COMPARISONVALUE_LABEL = R.id.ComparativeValueLabel;
 
@@ -294,8 +294,8 @@ public class DataAnalysisActivity extends AppCompatActivity {
             DataCaptureModule.Element sampleData = getItem(position);
             TextView sampleLabel = convertView.findViewById(LISTVIEW_SAMPLE_LABEL);
             TextView RGBLabel = convertView.findViewById(LISTVIEW_RGB_LABEL);
-            TextView RPointLabel = convertView.findViewById(LISTVIEW_RPOINT_LABEL);
-            TextView RPointSTDLabel = convertView.findViewById(LISTVIEW_RPOINTSTD_LABEL);
+            TextView AlphaLabel = convertView.findViewById(LISTVIEW_Alpha_LABEL);
+            TextView BetaLabel = convertView.findViewById(LISTVIEW_RPOINTBeta_LABEL);
             TextView transformedValueLabel = convertView.findViewById(LISTVIEW_TRANSFORMEDVALUE_LABEL);
             TextView comparisonValueLabel = convertView.findViewById(LISTVIEW_COMPARISONVALUE_LABEL);
 
@@ -307,8 +307,8 @@ public class DataAnalysisActivity extends AppCompatActivity {
                 sampleLabel.setText("x" + position);
             }
             RGBLabel.setText(String.format("(%.0f, %.0f, %.0f)", sampleData.getAvgR(), sampleData.getAvgG(), sampleData.getAvgB()));
-            RPointLabel.setText(String.format("%.2f", sampleData.getAlpha()));
-            RPointSTDLabel.setText(String.format("%.2E", sampleData.getBeta()));
+            AlphaLabel.setText(String.format("%.2f", sampleData.getAlpha()));
+            BetaLabel.setText(String.format("%.2E", sampleData.getBeta()));
             transformedValueLabel.setText(String.format("%.2f", sampleData.getTransformedValue()));
             comparisonValueLabel.setText(String.format("%.2f", sampleData.getSnr()));
 
